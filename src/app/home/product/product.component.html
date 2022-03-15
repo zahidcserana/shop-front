@@ -1,0 +1,120 @@
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-header card-header-top">
+      <span class="margin-align-title card-header-title">
+        <div class="font-icon-wrapper font-icon-lg">
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Add Products
+        </div>
+      </span>
+      <div class="btn-actions-pane-right">
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Products List
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+            <form id="myForm" class="form-width-100 sale-filter-form-background" (ngSubmit)="AddProduct()">
+              <div class="form-row">
+                  <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <input name="product_name" id="product_name" [(ngModel)]="productDetails.product_name" placeholder="Name" type="text" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <select class="ace form-control" required name="company" [(ngModel)]="productDetails.company">
+                          <option value="">Select Company</option>
+                          <option *ngFor="let company of allCompanyList" value="{{ company.id }}">{{ company.name }}</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <select class="ace form-control" required name="type" [(ngModel)]="productDetails.type">
+                          <option value="">Select Type</option>
+                          <option *ngFor="let typeDetails of allTypeList" value="{{ typeDetails.id }}">{{ typeDetails.name }}</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <input name="generic" [(ngModel)]="productDetails.generic" placeholder="Generic" type="text" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <input name="power" [(ngModel)]="productDetails.power" placeholder="Power" type="text" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <div class="position-relative form-group vat-parcentage">
+                            <div style="color: white;">
+                                <div class="custom-radio custom-control custom-control-inline">
+                                  <input type="radio" name="product_type" [(ngModel)]="productDetails.product_type" id="medicine" value="1" class="custom-control-input">
+                                  <label class="custom-control-label" for="medicine">Medicine</label>
+                                </div>
+                                <div class="custom-radio custom-control custom-control-inline">
+                                  <input type="radio" [(ngModel)]="productDetails.product_type" name="product_type" id="consumer_products" value="2" class="custom-control-input">
+                                  <label class="custom-control-label" for="consumer_products">Consumer products</label>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <button type="button" (click)="AddProduct()" class="btn btn-info">
+                          Add Product
+                        </button> &nbsp;
+                        <button type="button" (click)="resetList()" class="btn btn-warning">
+                          Reset
+                        </button>
+                      </div>
+                  </div>
+              </div>
+            </form>
+        </div>
+        <div class="col-lg-12">
+          <div class="btn-actions-pane-right" *ngIf="!customLoader">
+            <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Newly Added Products List
+          </div>
+          <br/>
+          <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+          <table class="mb-0 table table-hover" *ngIf="!customLoader">
+            <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Type/Form</th>
+                  <th>Generic</th>
+                  <th>Strength</th>
+                  <th>Company</th>
+                  <th>Product Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of productList; let i='index';">
+                  <td>{{ i+1 }}</td>
+                  <td>{{ item.brand_name }}</td>
+                  <td>{{ item.type }}</td>
+                  <td>{{ item.generic_name }}</td>
+                  <td>{{ item.strength }}</td>
+                  <td>{{ item.company_name }}</td>
+                  <td>
+                    <div *ngIf="item.product_type==1">
+                        Medicine
+                    </div>
+                    <div *ngIf="item.product_type==2">
+                        Consumer products
+                    </div>
+                  </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

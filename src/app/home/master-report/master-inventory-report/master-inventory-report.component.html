@@ -1,0 +1,105 @@
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-header card-header-top">
+      <span class="margin-align-title card-header-title">
+        <div class="font-icon-wrapper font-icon-lg">
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Inventory Report
+        </div>
+      </span>
+      <div class="btn-actions-pane-right">
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Inventory Report
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12 sale-filter-form-background">
+            <form id="myForm" class="form-inline form-width-100" (ngSubmit)="filterList()">
+              <div class="position-relative form-group">
+                <!--<label for="company" class="label-margin-right"> Company </label>-->
+                <input name="company" [(ngModel)]="filterItem.company" [ngbTypeahead]="company_search" placeholder="Type Company" type="text" class="form-control">
+              </div>
+              <div class="position-relative form-group search-div">
+                <!--<label for="medicine" class="label-margin-right"> Medicine </label>-->
+                <div id="scrollable-dropdown-menu">
+                  <input id="typeahead-basic" name="search" [(ngModel)]="filterItem.medicine" placeholder="Type Medicine" type="text" [ngbTypeahead]="search" class="form-control">
+                </div>
+              </div>
+              <div class="position-relative form-group search-div">
+                <!--<label for="type" class="label-margin-right"> Type </label>-->
+                <input id="type" name="search_type" [(ngModel)]="filterItem.type" placeholder="Type" type="text" [ngbTypeahead]="search_type" class="form-control">
+              </div>
+              <div class="position-relative form-group search-div">
+                <!--<label for="quantity" class="label-margin-right"> Quantity </label>-->
+                <input name="quantity" [(ngModel)]="filterItem.quantity" id="quantity" placeholder="Type Quantity" type="number" class="form-control">
+              </div>
+              <div class="position-relative form-check">
+                <label class="form-check-label low-stock">
+                  <input type="checkbox" name="low_stock_qty" [(ngModel)]="filterItem.low_stock_qty" class="form-check-input"> <span style="color: white;">Low Stock QTY &nbsp;</span> 
+                </label>
+              </div>
+              <button type="button" (click)="filterList()" id="filter-medicine-btn" class="btn btn-info"> 
+                Filter
+              </button> &nbsp;
+              <button type="button" (click)="resetList()" class="btn btn-warning">
+                Reset
+              </button>
+            </form>
+        </div>
+        <div class="col-lg-12">
+          <table class="mb-0 table table-bordered pull-right summary" style="font-size: 14px; width: 40%; margin-bottom: 20px !important;">
+              <thead>
+                  <tr>
+                      <th style="width: 20%;">Total Company</th>
+                      <th style="width: 20%;">Number Of Medicine</th>
+                      <th style="width: 20%;">Total TP</th>
+                      <th style="width: 20%;">Total MRP</th>
+                      <th style="width: 20%;">Total Profit</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td><span style="font-weight: bold;"> {{ summary.company}}</span></td>
+                      <td><span style="font-weight: bold;"> {{ summary.total_medicine }}</span></td>
+                      <td><span style="font-weight: bold;"> &#2547; {{ summary.tp | number: "1.2-2" }}</span></td>
+                      <td><span style="font-weight: bold;"> &#2547; {{ summary.mrp | number: "1.2-2" }}</span></td>
+                      <td><span style="font-weight: bold;"> &#2547; {{ summary.profit | number: "1.2-2" }}</span></td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+        <div class="col-lg-12">
+            <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+            <table class="mb-0 table table-bordered" *ngIf="!customLoader" style="font-size: 12px;">
+                <thead>
+                  <tr>
+                      <th>#</th>
+                      <th style="width: 50%;">Medicine/Product Details</th>
+                      <th>Stock Qty (Pcs)</th>
+                      <th>TP+VAT/Unit</th>
+                      <th>MRP/Unit</th>
+                      <th>Low Stock Alert Qty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of inventoryList; let i='index';">
+                      <td>{{ i+1 }}</td>
+                      <td style="text-align: left;">
+                        {{ item.medicine_type | slice:0:3 }}. {{ item.medicine_name }}
+                        <span class="small">({{ item.strength }}) {{ item.generic }}<br/>{{ item.company_name }}</span>
+                      </td>
+                      <td>
+                        <p *ngIf="item.quantity<'0'">0</p>
+                        <p *ngIf="item.quantity>='0'">{{ item.quantity }}</p>
+                      </td>
+                      <td>{{ item.tp }}</td>
+                      <td>{{ item.mrp }}</td>
+                      <td>{{ item.low_stock_qty }}</td>
+                  </tr>
+              </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

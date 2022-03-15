@@ -1,0 +1,507 @@
+.fixed-sidebar .app-main .app-main__outer {
+  z-index: 9;
+  padding-left: 0px !important;
+  background: url("pharmacy.jpg");
+}
+.table-bordar {
+  border: 1px solid #eee !important;
+}
+.thead {
+  background: #6f6f6f !important;
+  color: aliceblue !important;
+}
+.medicine-power {
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.bg-light {
+  background-color: #fafbfc !important;
+}
+
+.nav-link .nav-link-icon {
+  color: #6f6f6f !important;
+}
+
+.nav-bar-width {
+  width: 100% !important;
+}
+.user-account-ul {
+  float: right !important;
+  margin-right: 0px !important;
+}
+
+.qty-width {
+  width: 200px;
+}
+.margin-align-title {
+  margin-right: 25px;
+}
+
+.form-width-60 {
+  width: 77%;
+}
+
+.form-control-width-30 {
+  width: 30%;
+}
+
+.form-input-width-100 {
+  width: 100% !important;
+}
+
+.add-medicine-btn {
+  width: 18%;
+  padding: 8px;
+  background-color: #6f6f6f;
+  border: 1px solid #6f6f6f;
+}
+
+.add-medicine-btn:hover {
+  color: #fff;
+  background-color: #929292;
+  border-color: #888888;
+}
+
+.add-medicine-btn:active {
+  color: #fff;
+  background-color: #565656 !important;
+  border-color: #565656 !important;
+}
+
+.total_column {
+  background: beige !important;
+  font-weight: 700 !important;
+}
+
+.form-group-row {
+  width: 100% !important;
+}
+
+.row-margin {
+  margin: 4px 10px 0px 10px;
+}
+
+.row-margin-right {
+  margin-left: 0 !important;
+  margin-right: 30px;
+}
+
+.sub-total {
+  color: #fff;
+  font-weight: 700;
+  display: table-row!important;
+}
+
+.sub-discount {
+  background: #cacaca !important;
+}
+
+.border-table-tr {
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+
+.sub-tax {
+  background: #b1b1b1 !important;
+  color: #fff;
+}
+
+table > caption {
+  caption-side: top;
+}
+.net-total {
+  color: #fff;
+  font-weight: 700;
+  display: table-row!important;
+}
+
+.sale-cancle {
+  width: 100%;
+  padding: 8px;
+}
+
+.submit-background-last {
+  background: #dcdcdc !important;
+  color: #fff;
+}
+
+.submit-sale-btn {
+  background-color: #506fab;
+  border: 1px solid #506faa;
+  font-weight: 700;
+}
+
+.submit-sale-btn:hover {
+  background-color: #324a79;
+  border: 1px solid #324a79;
+}
+
+.submit-sale-btn:active {
+  background-color: #506fab !important;
+  border: 1px solid #506faa !important;
+}
+
+.submit-cancle-btn {
+  background-color: #f5f5db;
+  border: 1px solid #f5f5db;
+  color: #000000;
+  font-weight: 700;
+}
+.dropdown-menu {
+  font-size: 14px;
+}
+.submit-cancle-btn:hover {
+  background-color: #efefa6;
+  border: 1px solid #efefa6;
+  color: #000000;
+}
+
+.submit-cancle-btn:active {
+  background-color: #f5f5db !important;
+  border: 1px solid #f5f5db !important;
+  color: #000000;
+}
+.fa-caret-right {
+  font-size: 0.9rem!important;
+}
+
+.empty-data {
+  text-align: center;
+}
+
+.user-modal .jw-modal .jw-modal-body {
+  padding: 20px;
+  background: #fff;
+  margin: 40px;
+  margin-left: 25%;
+  width: 50%;
+}
+
+.data-view-modal #close-button-modal {
+  width: 7%;
+  left: 50%;
+}
+
+.card-header-title {
+  font-size: 1.88rem !important;
+}
+
+.availableQty {
+  color: #000000;
+  font-weight: 700;
+}
+.tdCommon {
+  color: #000000;
+  font-weight: 700;
+  padding-top: 0.45rem !important;
+  padding-bottom: 0.2rem !important;
+}
+.tdAmount {
+  font-size: 24px;
+  color: black !important;
+  font-weight: bold;
+  padding-top: 0.1rem !important;
+  padding-bottom: 0.1rem !important;
+}
+.tdLabel {
+  color: white;
+  font-weight: 700;
+  padding-top: 0.45rem !important;
+  padding-bottom: 0.2rem !important;
+}
+.tdValue {
+  font-size: 24px;
+  color: white !important;
+  font-weight: bold;
+  padding-top: 0.1rem !important;
+  padding-bottom: 0.1rem !important;
+}
+.tdDue {
+  background-color: #ff000059 !important;
+}
+.tdChange {
+  background-color: #00800091 !important;
+}
+.input-description-margin {
+  margin-top: 20px !important;
+}
+
+.border-div-row {
+  margin-right: 14px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border: 5px solid #cacaca;
+}
+
+.app-page-title .page-title-icon {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  padding: 0.2rem;
+  margin: 0 30px 0 0;
+  background: #fff;
+  box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03),
+    0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03),
+    0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05),
+    0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);
+  border-radius: 0.25rem;
+  width: 60px;
+  height: 35px;
+}
+.app-page-title {
+  padding: 0;
+  margin: -30px -30px 30px;
+  position: relative;
+}
+.widget-content .widget-content-left .widget-heading {
+  opacity: 0.8;
+  font-weight: bold;
+}
+.invalid-input {
+  border-style: solid;
+  border-color: red;
+}
+a {
+  color: gray;
+  text-decoration: none;
+  background-color: transparent;
+}
+/* @media (max-width: 990px) {
+.nav-bar-width {
+margin-top: 153px !important;
+}
+} */
+
+/* data-view-modal start */
+
+.data-view-modal .clearfix:after {
+  display: table;
+  clear: both;
+}
+
+.data-view-modal a {
+  color: #5d6975;
+  text-decoration: underline;
+}
+
+.data-view-modal header {
+  padding: 0 0;
+  margin-bottom: 30px;
+}
+
+.data-view-modal #logo {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.data-view-modal #logo img {
+  width: 90px;
+}
+
+.data-view-modal .pharmacy {
+  color: #5d6975;
+  font-size: 1.6em;
+  line-height: 1.4em;
+  font-weight: normal;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+table.preview {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+  border: solid gainsboro 1px;
+}
+
+table.preview tr:nth-child(2n-1) td {
+  background: #f5f5f5;
+}
+
+table.preview {
+  text-align: center;
+}
+
+table.preview th {
+  padding: 5px 0;
+  /* color: #5d6975; */
+  border-bottom: 1px solid #c1ced9;
+  white-space: nowrap;
+  font-weight: normal;
+}
+
+table.preview th .sl .qty,
+table.preview tr > td .sl .qty {
+  text-align: center;
+}
+
+table.preview td {
+  padding: 5px;
+}
+
+table.preview td.sl,
+table.preview td.qty,
+table.preview td.total {
+  font-size: 1.2em;
+}
+/* PDF Modal */
+.data-view-modal h1.pdf-div {
+  border-top: 1px solid #5d6975;
+  border-bottom: 1px solid #5d6975;
+  color: #5d6975;
+  font-size: .9em;
+  line-height: 1.8em;
+  font-weight: normal;
+  text-align: center;
+  margin: 0 0 20px 0;
+  background: url("/assets/images/dimension.png");
+}
+
+.data-view-modal #print-button {
+  width: 7%;
+  left: 50%;
+}
+.data-view-modal #close-button {
+  width: 7%;
+  left: 82%;
+}
+.data-view-modal div#customer-info,
+.data-view-modal div#pharmacy-info  {
+  flex: 1;
+}
+/* data-view-modal end */
+
+.amount {
+  font-weight: bold;
+}
+
+.data-list.table td,
+.data-list.table th {
+  padding: 0.5rem .75rem!important;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  font-size: 15px;
+}
+#scrollable-dropdown-menu .dropdown-menu {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.width40 {
+  width: 40%;
+}
+.width30 {
+  width: 30%;
+}
+.width20 {
+  width: 20%;
+}
+.width10 {
+  width: 10%;
+}
+.width5 {
+  width: 5%;
+}
+.custom_loader{
+  background: url("loader.gif");
+  min-height: 83px;
+  max-width: 90px;
+}
+
+.bg-deep-blue{
+  background-image:linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%) !important
+}
+.bg-ripe-malin{
+  background-image:linear-gradient(120deg, #f093fb 0%, #f5576c 100%) !important
+}
+.bg-arielle-smile{
+  background-image:radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%) !important
+}
+.bg-plum-plate{
+  background-image:linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important
+}
+.bg-happy-fisher{
+  background-image:linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%) !important
+}
+.bg-happy-itmeo{
+  background-image:linear-gradient(180deg, #2af598 0%, #009efd 100%) !important
+}
+.bg-mixed-hopes{
+  background-image:linear-gradient(to top, #c471f5 0%, #fa71cd 100%) !important
+}
+.bg-strong-bliss{
+  background-image:linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%) !important
+}
+.bg-grow-early{
+  background-image:linear-gradient(to top, #0ba360 0%, #3cba92 100%) !important
+}
+.bg-love-kiss{
+  background-image:linear-gradient(to top, #ff0844 0%, #ffb199 100%) !important
+}
+.bg-premium-dark{
+  background-image:linear-gradient(to right, #434343 0%, black 100%) !important
+}
+.bg-happy-green{
+  background-image:linear-gradient(to bottom, #00b09b, #96c93d) !important
+}
+.bg-vicious-stance{
+  background-image:linear-gradient(60deg, #29323c 0%, #485563 100%) !important
+}
+.bg-midnight-bloom{
+  background-image:linear-gradient(-20deg, #2b5876 0%, #4e4376 100%) !important
+}
+.bg-night-sky{
+  background-image:linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%) !important
+}
+
+.card {
+  background: none !important;
+}
+
+.card-header-top {
+  background: lightblue !important;
+}
+
+.bg-love-kiss{
+  background-image:linear-gradient(to top, #ff0844 0%, #ffb199 100%) !important
+}
+
+.bg-strong-bliss{
+  background-image:linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%) !important
+}
+
+.bg-grow-early{
+  background-image:linear-gradient(to top, #0ba360 0%, #3cba92 100%) !important
+}
+
+.bg-midnight-bloom {
+  background-image: linear-gradient(-20deg, #2b5876 0%, #4e4376 100%) !important;
+}
+
+.bg-grow-early {
+  background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%) !important;
+}
+
+.bg-night-fade {
+  background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%) !important;
+}
+
+table>thead{
+  background: #28a744 !important;
+  color: #ffffff !important;
+}
+
+.sale-filter-form-background{
+  background: darkslateblue !important;
+  padding-top: 15px;
+  padding-bottom: 7px;
+  margin-bottom: 9px;
+}
+
+.padding-bot-input{
+  padding-bottom: 8px !important;
+}

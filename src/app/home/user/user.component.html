@@ -1,0 +1,174 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div>
+          <div style="float: left">
+            <form *ngIf="user_id" class="form-inline" #form="ngForm" id="myForm" (ngSubmit)="update()">
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only">Name</label>
+                <input type="text" class="form-control" name="name" [(ngModel)]="userInfo.name" placeholder="Name" />
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only"> Email</label>
+                <input type="text" class="form-control" name="customer_mobile" [(ngModel)]="userInfo.email"
+                  placeholder="Mobile" />
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only"> User Type</label>
+                <select name="user_type" id="user_type" [(ngModel)]="userInfo.user_type" class="form-control">
+                  <option value="ADMIN" class="">ADMIN</option>
+                  <option value="SALESMAN" class="">SALESMAN</option>
+                  <option value="OWNER" class="">OWNER</option>
+                  <option value="TECHSUPPORT" class="">TECHSUPPORT</option>
+                </select>
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only"> Status</label>
+                <select name="user_status" id="user_status" [(ngModel)]="userInfo.user_status" class="form-control">
+                  <option value="ACTIVE">ACTIVE</option>
+                  <option value="INACTIVE">INACTIVE</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary mb-2" style="margin-right:10px">
+                <i class="fa fa-calendar-check-o"></i>
+                Update
+              </button>
+              <button type="button" (click)="closeForm()" class="btn btn-warning mb-2" style="margin-right:10px">
+                <i class="fa fa-calendar-check-o"></i>
+                Cancel
+              </button>
+            </form>
+            <form *ngIf="resetPassword" class="form-inline" #passwordForm="ngForm" id="resetPassword" (ngSubmit)="changePassword()">
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only">New Password</label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="userPassword.password" placeholder="New Password" />
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only"> Confirm Password </label>
+                <input type="password" class="form-control" name="cpassword" [(ngModel)]="userPassword.password_confirmation"
+                  placeholder="Confirm Password" />
+              </div>
+              <button type="submit" class="btn btn-primary mb-2" style="margin-right:10px">
+                <i class="fa fa-calendar-check-o"></i>
+                Update
+              </button>
+              <button type="button" (click)="closePasswordForm()" class="btn btn-warning mb-2" style="margin-right:10px">
+                <i class="fa fa-calendar-check-o"></i>
+                Cancel
+              </button>
+            </form>
+          </div>
+          <div style="float: right">
+            <button (click)="openModal('user-modal')" id="item_id" class="mb-2 mr-2 btn btn-success btn-block">
+              <i class="fa fa-user"></i>
+               New User
+            </button>
+          </div>
+        </div>
+        <table class="data-list mb-0 table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="userList.length > 0; else emptyData">
+            <tr *ngFor="
+                  let item of userList;
+                  trackBy: trackList;
+                  let i = index;
+                  let e = even;
+                  let o = odd
+                " [ngClass]="{ odd: o, even: e }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.user_type }}</td>
+              <td>{{ item.user_status }}</td>
+              <td>
+                <a style="cursor: pointer" class="btn btn-info fa fa-edit" (click)="editUser(item)"></a> &nbsp;
+                <a style="cursor: pointer" class="btn btn-success fa fa-lock" (click)="passwordChange(item)"></a> &nbsp;
+                <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="delete(item)"></a>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="6" class="empty-data">Empty data</td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<jw-modal id="user-modal" class="user-modal data-view-modal">
+  <h3 style="text-align: center;"> Usr Info</h3>
+  <div class="row" style="padding: 25px">
+    <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
+      <main style="margin-bottom: 5%">
+        <form [formGroup]="registerForm" (ngSubmit)="submit()" style="padding-top: 10px">
+          <div class="form-group">
+            <label>User Name</label>
+            <input type="text" formControlName="name" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+              <div *ngIf="f.name.errors.required">User Name is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>User Email</label>
+            <input type="text" formControlName="email" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">User Email is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>User Type</label>
+            <select name="user_type" formControlName="user_type" id="user_type" class="form-control">
+              <option value="ADMIN">ADMIN</option>
+              <option value="SALESMAN">SALESMAN</option>
+              <option value="OWNER">OWNER</option>
+              <option value="TECHSUPPORT">TECHSUPPORT</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" formControlName="password" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">Password is required</div>
+              <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" formControlName="confirmPassword" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+            <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+              <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+              <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary">Save</button>
+            &nbsp;
+            <a (click)="closeModal('user-modal')" class="btn btn-warning btn-xs">
+              Close
+            </a>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+</jw-modal>

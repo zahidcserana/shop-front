@@ -1,0 +1,211 @@
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-header card-header-top">
+      <span class="margin-align-title card-header-title">
+        <div class="font-icon-wrapper font-icon-lg">
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Sale Return Report
+        </div>
+      </span>
+      <div class="btn-actions-pane-right">
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Sale Return Report
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row sale-filter-form-background">
+        <div class="col-md-2 padding-bot-input">
+          <input id="typeahead-company" name="company" [(ngModel)]="filterItem.company"
+            [ngbTypeahead]="company_search" placeholder="Company" type="text" class="form-control">
+        </div>
+        <div class="col-md-2 padding-bot-input">
+          <div id="scrollable-dropdown-menu">
+            <input placeholder="Product" #cartMedicine id="typeahead-medicine" name="search"
+              [(ngModel)]="filterItem.product" type="text" class="form-control form-input-width-100"
+              [ngbTypeahead]="searchProduct" />
+          </div>
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <select class="ace form-control" name="type_id" [(ngModel)]="filterItem.product_type_id">
+            <option value="0">-Type-</option>
+            <option *ngFor="let type of types" value="{{ type.id }}">{{ type.name }}</option>
+          </select>
+        </div>
+        <div class="col-md-2 padding-bot-input">
+          <input id="typeahead-basic" name="generic" [(ngModel)]="filterItem.generic" placeholder="Generic" type="text" [ngbTypeahead]="generic_search" class="form-control">
+        </div>
+        <div class="col-md-2 padding-bot-input">
+          <input type="text" name="invoice" [(ngModel)]="filterItem.invoice" placeholder="Invoice"
+            class="form-control" />
+        </div>
+        <div class="col-md-2 padding-bot-input">
+          <input autocomplete="off" type="text" id="sale_date" name="sale_date" [(ngModel)]="filterItem.sale_date" placeholder="{{ summary.dateRangeData }}"
+            class="form-control" bsDaterangepicker />
+        </div>
+        <div class="col-md-1 padding-bot-input">
+          <select class="ace form-control" name="start_time" [(ngModel)]="filterItem.start_time">
+            <option value="">-From-</option>
+            <option *ngFor='let in of counter(12) ;let i = index' value="{{ i + 1 }}">{{i+1}} AM </option>
+            <option *ngFor='let in of counter(12) ;let i = index' value="{{ i + 13 }}">{{i+1}} PM </option>
+          </select>
+        </div>
+        <div class="col-md-1 padding-bot-input">
+          <select class="ace form-control" name="end_time" [(ngModel)]="filterItem.end_time">
+            <option value="">-To-</option>
+            <option *ngFor='let in of counter(12) ;let i = index' value="{{ i + 1 }}">{{i+1}} AM </option>
+            <option *ngFor='let in of counter(12) ;let i = index' value="{{ i + 13 }}">{{i+1}} PM </option>
+          </select>
+        </div>
+        <!--<div class="col-md-1">
+          <select class="ace form-control" name="sales_man" [(ngModel)]="filterItem.sales_man">
+            <option value="0">-To-</option>
+            <option *ngFor="let item of time | keyvalue" value="{{ item.key }}">{{ item.value }}  </option>
+          </select>
+          <br />
+        </div> -->
+        <div class="col-md-2 padding-bot-input">
+          <input type="text" name="customer_name" [(ngModel)]="filterItem.customer_name" placeholder="Customer Name"
+            class="form-control" />
+        </div>
+        <div class="col-md-2 padding-bot-input">
+          <input type="text" name="customer_mobile" [(ngModel)]="filterItem.customer_mobile"
+            placeholder="Customer Mobile" class="form-control" />
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <select name="payment_type" id="payment_type" [(ngModel)]="filterItem.payment_type" class="form-control">
+            <option value=""> - Select -</option>
+            <option *ngFor="let item of paymentTypes" value="{{ item.name }}">{{ item.name }}</option>
+          </select>
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <select class="ace form-control" name="sales_man" [(ngModel)]="filterItem.sales_man">
+            <option value="0">Select Sales Person</option>
+            <option *ngFor="let person of salesPersonList" value="{{ person.id }}">{{ person.name }}
+              ({{ person.email }})</option>
+          </select>
+        </div>
+        <div class="col-lg-2">
+          <button type="button" (click)="filterList()" id="filter-medicine-btn" class="btn btn-info mb-0">Filter</button> &nbsp;
+          <button type="button" (click)="reset()" class="btn btn-warning mb-0">Reset</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="mb-0 table table-bordered summary pull-right"
+            style="font-size: 14px; width: 80%; margin-bottom: 20px !important;">
+            <thead>
+              <tr>
+                <th style="width: 10%;">Start Date</th>
+                <th style="width: 10%;">End Date</th>
+                <th style="width: 10%;">Total Sale Amount</th>
+                <th style="width: 10%;">Total Quantity</th>
+                <th style="width: 10%;">Total Discount</th>
+                <th style="width: 10%;">Total Grand Amount</th>
+                <th style="width: 10%;">Total Profit</th>
+                <th style="width: 10%;">Total Due </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="summary">
+                <td><span style="font-weight: bold;">{{ dateDetails.start_date }}</span></td>
+                <td><span style="font-weight: bold;">{{ dateDetails.end_date }}</span></td>
+                <td><span style="font-weight: bold;">= {{ summary.sum_sale_amount | number: "1.2-2" }} Tk.</span></td>
+                <td><span style="font-weight: bold;">= {{ summary.sum_quantity }} Pcs</span></td>
+                <td><span
+                    style="font-weight: bold;">= {{ summary.sum_sale_discount | number: "1.2-2"}} Tk.</span>
+                </td>
+                <td><span
+                    style="font-weight: bold;">= {{ summary.sum_grand_total | number: "1.2-2"}} Tk.</span>
+                </td>
+                <td><span
+                    style="font-weight: bold;">= {{ summary.sum_total_profit | number: "1.2-2"}} Tk.</span>
+                </td>
+                <td><span
+                    style="font-weight: bold;">= {{ summary.sum_sale_due | number: "1.2-2"}} Tk.</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+        </div>
+        <div class="col-lg-12">
+          <div class="custom_loader" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+          <table class="mb-0 table table-bordered" *ngIf="!customLoader" style="font-size: 12px;">
+            <thead>
+              <tr>
+                <th>SL#</th>
+                <th>Sales Invoice</th>
+                <th>Sales Date</th>
+                <th>Medicine/Product Details</th>
+                <th>Sale Qty (Pcs)</th>
+                <th>Return (Pcs)</th>
+                <!-- <th>TP+VAT/Unit</th>
+                <th>MRP/Unit</th>
+                <th>Total T+V</th>
+                <th>Total MRP</th>
+                <th>Profit</th> 
+                <th>Total Profit</th>
+                <th>Total Amount</th>
+                <th>Total Discount</th>
+                <th>Grand Total</th>
+                <th>Total Due</th> -->
+                <th>Customer Details</th>
+                <th>Payment Type</th>
+                <th>Sales Man</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="showEmptyTable">
+                <td colspan="17">No Data Found! Please Select Search Parameter!</td>
+              </tr>
+              <ng-container *ngFor="let item of saleList; let i='index';">
+                <ng-container *ngFor="let product of item.item; let j='index' ;">
+                  <tr>
+                    <ng-container *ngIf="j==0">
+                      <td [attr.rowspan]="item.item.length">{{ i+1 }}</td>
+                      <td [attr.rowspan]="item.item.length">{{ item.invoice }}</td>
+                      <td [attr.rowspan]="item.item.length">{{ item.sale_date | date: 'dd/MM/yyyy' }}</td>
+                    </ng-container>
+                    <ng-container>
+                      <td>
+                        {{ product.medicine.type }}.&nbsp;{{ product.medicine.name }}
+                        <br>
+                        {{ product.medicine.strength }}
+                        <br>
+                        {{ product.medicine.company }}
+                      </td>
+                      <td>{{ product.quantity +  product.refund_quantity }}</td>
+                      <td>
+                        {{ product.refund_quantity }}
+                        <!-- <div *ngIf="product.change_log.length > 0">
+                          <p *ngFor="let log of product.change_log; let k='index' ;">
+                             <span *ngIf="k==0"> {{ log.quantity }} : {{ log.created_at | date: 'dd/MM/yy' }} </span>
+                             <span *ngIf="k>0"> {{ log.new_quantity }} : {{ log.updated_at | date: 'dd/MM/yy' }} </span>
+                          </p>
+                        </div> -->
+                      </td>
+                      <!-- <td>{{ product.tp | number: "1.2-2" }}</td>
+                      <td>{{ product.mrp | number: "1.2-2" }}</td>
+                      <td>{{ product.sub_tp | number: "1.2-2" }}</td>
+                      <td>{{ product.sub_total | number: "1.2-2" }}</td>
+                      <td>{{ product.profit | number: "1.2-2" }}</td> -->
+                    </ng-container>
+                    <ng-container *ngIf="j==0">
+                      <!-- <td [attr.rowspan]="item.item.length">{{ item.total_profit | number: "1.2-2" }}</td>
+                      <td [attr.rowspan]="item.item.length">{{ item.sale_amount | number: "1.2-2" }}</td>
+                      <td [attr.rowspan]="item.item.length">{{ item.sale_discount | number: "1.2-2" }}</td>
+                      <td [attr.rowspan]="item.item.length">{{ item.grand_total | number: "1.2-2" }}</td>
+                      <td [attr.rowspan]="item.item.length">{{ item.sale_due | number: "1.2-2" }}</td> -->
+                      <td [attr.rowspan]="item.item.length">{{ item.customer.name }} <br> {{ item.customer.mobile }}
+                      <td [attr.rowspan]="item.item.length">{{ item.payment_type }} </td>
+                      <td [attr.rowspan]="item.item.length">{{ item.sales_man }}</td>
+                    </ng-container>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

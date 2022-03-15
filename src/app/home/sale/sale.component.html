@@ -1,0 +1,524 @@
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-header card-header-top">
+        <span class="margin-align-title card-header-title">
+          <div class="font-icon-wrapper font-icon-lg">
+            <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i>  Sale
+          </div>
+        </span>
+        <div class="btn-actions-pane-right">
+          <a routerLink="/sale/list">
+            <i class="ace-icon fa fa-angle-double-left"></i>
+            Sale List
+          </a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+            <div class="col-lg-8">
+                <form id="myForm" class="form-inline sale-form" (keydown.enter)="$event.preventDefault()">
+                    <div class="row form-row form-input-width-100">
+                        <div class="col-md-4">
+                            <div class="form-group mb-0">
+                                <label for="medicine_name" class="sr-only">Medicine </label>
+                                <div id="scrollable-dropdown-menu">
+                                    <input placeholder="Medicine Name" #typeaheadInstance="ngbTypeahead"
+                                    #cartMedicine id="typeahead-basic" name="search" (keydown)="typeaheadKeydown($event)"
+                                    (keydown.enter)="$event.preventDefault()" [(ngModel)]="cartItem.medicine" type="text"
+                                    class="form-control form-input-width-100" [ngbTypeahead]="search" (change)="getAvailableQuantity()"
+                                    autofocus (keyup.enter)="goQty()" />
+                                </div>
+                            </div>
+                            <div class="form-group mb-0 input-details-margin">
+                                <small id="AvailableQty" class="form-text input-details-text">
+                                    IN Stock (
+                                    <span class="availableQty input-details-text details-text-color">{{ availability }} </span> Pcs)
+                                </small>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-4">
+                            <div class="form-group mb-0">
+                                <select #cartBatch name="batch_no" id="batch_no" [(ngModel)]="cartItem.batch_no"
+                                    class="form-control batch_style" (focus)="getBatch()" (change)="goQty()" (keydown.enter)="goQty()"
+                                    style=" width: 100%!important;">
+                                    <option value=""> - Select -</option>
+                                    <option *ngFor="let batch of batchList" value="{{ batch }}">{{ batch }}</option>
+                                </select>
+                            </div>
+                        </div> -->
+                        <div class="col-md-4">
+                            <div class="form-group mb-0">
+                                <label for="quantity" class="sr-only">QTY </label>
+                                <input #cartQty type="number" class="form-control form-input-width-100" aria-describedby="AvailableQty"
+                                    id="quantity" name="quantity" (keydown.enter)="addToCart()" [(ngModel)]="cartItem.quantity"
+                                    placeholder="Quantity" (input)="getAvailableQuantity()" />
+                            </div>
+                            <button style="display: none" type="submit" class="btn btn-primary mb-0 add-medicine-btn">Add</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="align-middle mb-0 table table-borderless table-striped table-hover table-bordar">
+                    <thead class="thead">
+                        <tr>
+                        <th style="width: 5%" class="text-center">#</th>
+                        <th style="width: 30%">Name</th>
+                        <!--<th style="width: 10%" class="text-center">TP(Tk.)</th>-->
+                        <th style="width: 10%" class="text-center">MRP(Tk.)</th>
+                        <th style="width: 20%" class="text-center qty-width">
+                            QTY(Pcs)
+                        </th>
+                        <th style="width: 10%" class="text-center">Amount(Tk.)</th>
+                        <th style="width: 15%" class="text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="
+                        productList && productList?.cart_items?.length > 0;
+                        else NoItem
+                        ">
+                        <ng-container *ngFor="
+                            let cart of productList?.cart_items;
+                            let i = index;
+                            trackBy: trackList
+                        ">
+                        <tr>
+                            <td class="text-center text-muted">{{ i + 1 }}.</td>
+                            <td>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                <div class="widget-content-left flex2">
+                                    <div class="widget-heading">
+                                    {{ cart.medicine.type }}.
+                                    {{ cart.medicine.brand_name }}
+                                    <span class="medicine-power">&nbsp;({{ cart.medicine.strength }})</span>
+                                    <br />
+                                    <small>{{ cart.company.name }}</small>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </td>
+                            <!--<td class="text-center">
+                                <input readonly  type="number" class="form-control form-input-width-100" aria-describedby="AvailableQty" value="{{ cart.tp }}"/>
+                            </td>-->
+                            <td class="text-center">
+                            <input type="number" class="form-control form-input-width-100" aria-describedby="AvailableQty"
+                                id="unit_price_{{ i }}" name="unit_price" value="{{ cart.unit_price }}" placeholder="Unit Price"
+                                (change)="updateItemPrice(cart, i)" /> <small>(TP+VAT {{ cart.tp }})</small>
+                            </td>
+                            <td class="text-center">
+                            <div class="quantity clearfix">
+                                <span style="background: black !important;" [ngClass]="{ 'block-cursor': increament == i }"
+                                class="btn btn-sm btn-dark no-m" (click)="decreaseQuant(cart, i)">-</span>
+                                <span class="cart-qunt btn btn-sm no-m"
+                                style="position: relative;background: #ffffff!important;color: black!important;">{{ cart.quantity }}
+                                <div *ngIf="increament == i" class="m-loader m-loader--brand"
+                                    style="position: absolute;width: 30px;top:15px; left:10px;"></div>
+                                </span>
+                                <span style="background: black !important;" [ngClass]="{ 'block-cursor': increament == i }"
+                                class="btn btn-sm btn-dark  no-m" (click)="increaseQuant(cart, i)">+</span>
+                            </div>
+                            </td>
+                            <td class="text-center">{{ cart.sub_total }}</td>
+                            <td class="text-center">
+                            <button (click)="removeItem(cart.id)" id="item_id"
+                                class="mr-2 btn-icon btn-icon-only btn btn-outline-danger">
+                                <i class="pe-7s-trash btn-icon-wrapper"></i>
+                            </button>
+                            </td>
+                        </tr>
+                        </ng-container>
+                    </tbody>
+                    <ng-template #NoItem>
+                        <tbody>
+                        <tr>
+                            <td colspan="9">
+                            <h5 class="text-center">No Item Found</h5>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </ng-template>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="row border-div-row">
+                    <div class="col-lg-12">
+                        <table class="align-middle mb-0 table table-borderless table-striped table-hover table-bordar">
+                            <tr class="sub-discount border-table-tr">
+                                <td class="availableQty">Customer Name</td>
+                                <td>
+                                    <input autocomplete="off" id="customer_name" [(ngModel)]="order.customer_name" name="customer_name"
+                                    type="text" class="form-control validation-input" />
+                                </td>
+                            </tr>
+                            <tr class="sub-discount border-table-tr">
+                                <td class="availableQty">Mobile</td>
+                                <td>
+                                    <input autocomplete="off" id="customer_mobile" [(ngModel)]="order.customer_mobile"
+                                    name="customer_mobile" type="text" class="form-control validation-input" />
+                                </td>
+                            </tr>
+                            <tr *ngIf="salesmanShow" class="sub-discount border-table-tr">
+                                <td class="availableQty">Salesman</td>
+                                <td>
+                                    <select name="created_by" id="created_by" [(ngModel)]="order.created_by" class="form-control">
+                                    <option value="0"> - Select -</option>
+                                    <option *ngFor="let user of users" value="{{ user.id }}">{{ user.name }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="sub-total swatch-holder swatch-holder-lg bg-asteroid">
+                                <td class="tdLabel">Sub Total</td>
+                                <td class="tdValue">{{ order.sub_total }} /-</td>
+                            </tr>
+                            <tr class="sub-discount">
+                                <td class="availableQty">Discount</td>
+                                <td class="position-relative form-check">
+                                    <label class="form-check-label radio-from-lebel">
+                                    <input value="fixed" [(ngModel)]="this.order.discount_type" name="discount_type" type="radio"
+                                        class="form-check-input" checked (click)="discountTypeChange('fixed')" />
+                                    Fixed
+                                    </label>
+                                    <label class="form-check-label radio-from-lebel" style="padding-left: 14%">
+                                    <input value="parcentage" [(ngModel)]="this.order.discount_type" name="discount_type" type="radio"
+                                        class="form-check-input" (click)="discountTypeChange('parcentage')" />
+                                    parcentage
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr class="sub-discount">
+                                <td class="availableQty">
+                                    <h5 style="display: none" id="dicountValue">
+                                    {{ order.discount | number: "1.2-2" }} /-
+                                    </h5>
+                                </td>
+                                <td style="padding-top: 0!important;">
+                                    <input autocomplete="off" type="number" class="form-control" id="discount" name="discount"
+                                    (input)="discountChange()" [(ngModel)]="order.discount_amount" placeholder="0"
+                                    (keydown.enter)="goTendered()" />
+                                </td>
+                            </tr>
+                            <tr class="net-total swatch-holder swatch-holder-lg bg-midnight-bloom">
+                                <td class="tdLabel">Net Total(Tk.)</td>
+                                <td class="tdValue">{{ order.total_payble_amount | number: "1.2-2" }} /-</td>
+                            </tr>
+                            <tr class="sub-tax border-table-tr">
+                                <td class="availableQty">Payment Type</td>
+                                <td>
+                                    <select name="payment_type" id="payment_type" [(ngModel)]="order.payment_type" class="form-control">
+                                    <option value=""> - Select -</option>
+                                    <option *ngFor="let item of paymentTypes" value="{{ item.name }}">{{ item.name }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="sub-discount border-table-tr">
+                                <td class="availableQty">Tendered</td>
+                                <td>
+                                    <input #tendered autocomplete="off" type="text" class="form-control validation-input" id="tendered"
+                                    name="tendered" (input)="getChange()" [(ngModel)]="order.tendered" (keydown.enter)="submitOrder()"
+                                    placeholder="0" />
+                                </td>
+                            </tr>
+                            <tr class="sub-tax border-table-tr tr-due">
+                                <td class="tdCommon">Due</td>
+                                <td class="tdAmount">
+                                    {{ order.total_due_amount | number: "1.2-2" }} /-
+                                </td>
+                            </tr>
+                            <tr class="sub-tax border-table-tr tr-change">
+                                <td class="tdCommon">Change</td>
+                                <td class="tdAmount">
+                                    {{ order.change | number: "1.2-2" }} /-
+                                </td>
+                            </tr>
+                            <tr class="submit-background-last border-table-tr">
+                                <td style="display: flex;">
+                                    <button *ngIf="!isCartEmpty" (click)="removeCart()" id="cancleButton"
+                                    class="mb-2 mr-2 btn btn-warning btn-lg btn-block">
+                                    Reset
+                                    </button>
+                                    <button #modalButton *ngIf="this.orderId" title="View" (click)="openModal(this.orderId, 'print-modal')"
+                                    id="modal_button" class="mb-2 mr-2 btn-transition btn btn-outline-success">
+                                    <i class="fa fa-file icon-gradient bg-malibu-beach"></i>
+                                    </button>
+                                    <button #modalButton *ngIf="this.orderId" (click)="openModal(this.orderId, 'print-modal-pos')"
+                                    id="modal_button" title="Print" class="mb-2 mr-2 btn-transition btn btn-outline-warning">
+                                    <i class="fa fa-print icon-gradient bg-malibu-beach"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button (click)="submitOrder()" class="mb-2 mr-2 btn btn-success btn-lg btn-block">
+                                    <i class="ace-icon fa fa-archive bigger-110"></i>
+                                    <span>&nbsp;Confirm</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<jw-modal id="print-modal-pos" class="data-view-modal">
+  <table *ngIf="orderDetails" id="pos-invoice-print" style="font-size: 9px!important;width: 100%;">
+    <tr>
+      <td align="center" style="font-size: 10px!important;text-align: center;">
+        <span style="font-size: 10px!important;">
+          <strong style="font-size: 13px!important;">{{ orderDetails.pharmacy }}</strong>
+          <br>
+          Address : {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }} <br>
+          Invoice : <span style="font-weight: bold;">{{ orderDetails.invoice }}</span> <br>
+          Sold by : {{ orderDetails.created_by }} <br>
+          <span *ngIf="orderDetails.salesman_mobile">Contact : {{ orderDetails.salesman_mobile }} <br></span>
+          <span *ngIf="orderDetails.customer_name" style="font-weight: bold;">Customer :
+            {{ orderDetails.customer_name }} <span
+              *ngIf="orderDetails.customer_mobile">({{ orderDetails.customer_mobile }})</span><br /></span>
+          Date : {{ orderDetails.created_at }} <br>
+        </span>
+      </td>
+    </tr>
+
+    <tr>
+      <td align="center">
+        <table>
+          <tr style="font-size: 11px!important;">
+            <td colspan="4"> .... ... ... ... ... ... ... ... ... ... ... ....</td>
+          </tr>
+          <tr style="font-size: 11px!important;text-align: center;">
+            <td>
+              Item
+            </td>
+            <td style="text-align: left;">
+              Qty
+            </td>
+            <td style="text-align: right;">
+              Unit Price (&#2547;)
+            </td>
+            <td style="text-align: right;">
+              Sub Total (&#2547;)
+            </td>
+          </tr>
+          <tbody style="font-size: 11px!important;">
+            <tr *ngFor=" let item of orderDetails?.order_items; let i = index;">
+              <td>
+                {{ i + 1 }}. {{ item.medicine_type |  substr3}}. {{ item.medicine | trimStr2 }}
+                ({{ item.medicine_power }})
+              </td>
+              <td>
+                {{ item.quantity }}
+              </td>
+              <td style="text-align: right;">
+                {{ item.unit_price }}
+              </td>
+              <td style="text-align: right;">
+                {{ item.sub_total }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4"> .... ... ... ... ... ... ... ... ... ... ... ....</td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Total
+              </td>
+              <td style="text-align: right; font-weight: bold;">
+                {{ orderDetails.sub_total | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Discount
+              </td>
+              <td style="text-align: right;">
+                {{ orderDetails.discount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Net
+              </td>
+              <td style="text-align: right; font-weight: bold;">
+                {{ orderDetails.total_payble_amount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Amount In Word
+              </td>
+              <td style="text-align: right; font-weight: bold;">
+                {{ priceInWord }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td align="center">
+        <span style="font-size: 9px!important;text-align: center;">
+          <strong> Sold items will be returned within 7 days with invoice. </strong>
+          <br>
+          বিঃ দ্রঃ পাতা কাঁটা ঔষধ, ইনসুলিন, ভ্যাক্সিন ও সুগার টেস্ট স্ট্রিপ ফেরত বা পরিবর্তন করা হয় না।
+          <br>
+          <strong>***Thank you for your order***</strong>
+          <br>
+          <strong>AnalyticalJ</strong>
+        </span>
+      </td>
+    </tr>
+  </table>
+
+  <div id="print-div">
+    <button id="print-button" (click)="printPosInvoice('pos-invoice-print')" class="mb-2 mr-2 border-0 btn btn-success">
+      <i class="fa fa-file-invoice"></i>
+    </button>
+    <button id="close-div" style="width: 7%;margin-left: 93%;" (click)="closeModal('print-modal-pos')"
+      class="btn btn-warning btn-xs">
+      Close
+    </button>
+  </div>
+</jw-modal>
+
+<jw-modal id="print-modal" class="data-view-modal">
+  <div class="row" style="padding: 50px">
+    <div *ngIf="orderDetails" class="col-md-12" style="border: black solid 1px; width: 100%">
+      <header class="clearfix">
+        <div id="logo">
+          <span class="pharmacy">{{ orderDetails.pharmacy }}</span>
+          <br />
+          <span class="branch_area">{{ orderDetails.branch_area }},
+            {{ orderDetails.branch_city }}</span>
+        </div>
+
+        <h1 class="pdf-div" style="font-size: 1.5em">
+          Invoice# {{ orderDetails.invoice }}
+        </h1>
+        <div style="display: flex;">
+          <div id="customer-info">
+            <div>Customer: {{ orderDetails.customer_name }}</div>
+            <div>Mobile: {{ orderDetails.customer_mobile }}</div>
+            <div>{{ orderDetails.created_at }}</div>
+          </div>
+          <div style="flex: 1;"></div>
+          <div id="pharmacy-info">
+            <div>{{ orderDetails.created_by }}</div>
+            <div>{{ orderDetails.pharmacy_address }}</div>
+            <div>{{ orderDetails.branch_mobile }}</div>
+          </div>
+        </div>
+      </header>
+      <main style="margin-bottom: 5%">
+        <table class="preview">
+          <thead>
+            <tr>
+              <th style="width:10%" class="unit">Sl.</th>
+              <th style="width:30%;text-align: left">Product</th>
+              <th style="width:20%">Quantity(Pcs)</th>
+              <th style="width:20%;text-align: right">Unit Price(&#x9f3;)</th>
+              <th style="width:20%;text-align: right;padding-right: 2%">
+                Amount(&#x9f3;)
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="
+                orderDetails && orderDetails?.order_items.length > 0;
+                else emptyItem
+              ">
+            <ng-container *ngFor="
+                  let item of orderDetails?.order_items;
+                  let i = index;
+                  trackBy: trackList
+                ">
+              <tr>
+                <td class="unit">{{ i + 1 }}</td>
+                <td class="service" style="text-align: left">
+                  {{ item.medicine }} ({{ item.medicine_power }}
+                  {{ item.medicine_type }})
+                </td>
+                <td class="qty">{{ item.quantity }}</td>
+                <td style="text-align: right">{{ item.unit_price }}</td>
+                <td style="text-align: right;padding-right: 2%">
+                  {{ item.sub_total }}
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+          <tfoot style="border-top: solid darkgray 1px">
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                Total Amount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Discount Amount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Net Amount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                    orderDetails.total_payble_amount | number: "1.2-2"
+                  }}
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td style="text-align: left;font-weight: bold">
+                Amount In Word
+              </td>
+              <td colspan="2" style="text-align: right;padding-right: 2%">
+                &nbsp;{{ priceInWord }}
+              </td>
+            </tr>
+          </tfoot>
+          <ng-template #emptyItem>
+            <tbody>
+              <tr>
+                <td colspan="5">
+                  <h5 class="text-center">No Item Found</h5>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </main>
+    </div>
+  </div>
+  <div id="print-div">
+    <button id="print-button" (click)="printInvoice('print-modal')" class="btn btn-success btn-xs">
+      Print
+    </button>
+    <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">
+      Close
+    </button>
+  </div>
+</jw-modal>

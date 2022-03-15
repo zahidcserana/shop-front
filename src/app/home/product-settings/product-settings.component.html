@@ -1,0 +1,134 @@
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-header card-header-top">
+      <span class="margin-align-title card-header-title">
+        <div class="font-icon-wrapper font-icon-lg">
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Product Settings
+        </div>
+      </span>
+      <div class="btn-actions-pane-right">
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Product Settings
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-6">
+
+          <div class="mb-3 card">
+            <div class="card-header-tab card-header">
+                <div class="card-header-title">
+                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    Add Or Modify Company
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane fade active show" id="tab-eg-55">
+                    <div class="widget-chart p-3">
+                        <div style="height: 400px">
+                          <form id="myForm" class="form-width-100" (ngSubmit)="AddCompany()">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="position-relative form-group">
+                                      <label for="company" class="">Company</label>
+                                      <input name="company" id="typeahead-basic" name="company" [(ngModel)]="companyDetails.company" [ngbTypeahead]="company_search" placeholder="Company" type="text" class="form-control" (selectItem)="setCompany($event)">
+                                    </div>
+                                </div>
+                            </div>
+                          </form>
+
+                          <div class="scroll-area-sm">
+                              <div class="scrollbar-container ps ps--active-y">
+                                  <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
+                                      <li class="list-group-item" *ngFor="let company of allCompanyList; let i='index';">
+                                          <div class="widget-content p-0">
+                                              <div class="widget-content-wrapper">
+                                                  <div class="widget-content-left mr-3">
+                                                      <small class="text-danger pl-2">
+                                                        <i class="fa fa-angle-right"></i>
+                                                      </small>
+                                                  </div>
+                                                  <div class="widget-content-left">
+                                                      <div class="widget-heading"> {{ company.name }}</div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </li>
+                                  </ul>
+                                  <div class="ps__rail-x" style="left: 0px; bottom: -86px;">
+                                      <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                                  </div>
+                                  <div class="ps__rail-y" style="top: 86px; height: 200px; right: 0px;">
+                                      <div class="ps__thumb-y" tabindex="0" style="top: 61px; height: 139px;"></div>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+          
+        </div>
+        <div class="col-lg-6">
+            <div class="mb-3 card">
+              <div class="card-header-tab card-header">
+                  <div class="card-header-title">
+                      <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                      Add New Type
+                  </div>
+              </div>
+              <div class="tab-content">
+                  <div class="tab-pane fade active show" id="tab-eg-55">
+                      <div class="widget-chart p-3">
+                          <div style="height: 400px">
+                            <form id="myForm" class="form-width-100" (ngSubmit)="AddNewType()">
+                              <div class="form-row">
+                                  <div class="col-md-12">
+                                      <div class="position-relative form-group">
+                                        <label class="">Type</label>
+                                        <input id="medicine_type" name="search" [(ngModel)]="typeDetails.type" placeholder="Type" type="text" [ngbTypeahead]="search" class="form-control" (selectItem)="setType($event)">
+                                      </div>
+                                  </div>
+                              </div>
+                            </form>
+
+                            <div class="scroll-area-sm">
+                                <div class="scrollbar-container ps ps--active-y">
+                                    <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
+                                        <li class="list-group-item" *ngFor="let type of allTypeList; let i='index';">
+                                            <div class="widget-content p-0">
+                                                <div class="widget-content-wrapper">
+                                                    <div class="widget-content-left mr-3">
+                                                        <small class="text-danger pl-2">
+                                                          <i class="fa fa-angle-right"></i>
+                                                        </small>
+                                                    </div>
+                                                    <div class="widget-content-left">
+                                                        <div class="widget-heading"> {{ type.name }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="ps__rail-x" style="left: 0px; bottom: -86px;">
+                                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                                    </div>
+                                    <div class="ps__rail-y" style="top: 86px; height: 200px; right: 0px;">
+                                        <div class="ps__thumb-y" tabindex="0" style="top: 61px; height: 139px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

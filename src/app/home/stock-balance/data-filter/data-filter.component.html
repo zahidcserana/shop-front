@@ -1,0 +1,34 @@
+<div class="m-portlet m-portlet--mobile search-div">
+  <div class="m-portlet__body search-panel">
+    <!--begin::Form-->
+    <form class="form-inline" #form="ngForm" (ngSubmit)="searchSaleData()">
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Date Range</label>
+        <input
+          autocomplete="off"
+          type="text"
+          placeholder="Date Range"
+          class="form-control"
+          bsDaterangepicker
+          [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+          [(ngModel)]="saleData.date_range"
+          name="sale_date"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-info mb-2"
+        style="margin-right:10px"
+      >
+        <i class="fa fa-calendar-check-o"></i>
+        Search
+      </button>
+      <button type="reset" class="btn btn-warning mb-2" (click)="resetSearch()">
+        <i class="fa fa-history"></i>
+        Reset
+      </button>
+    </form>
+    <!--end::Form-->
+  </div>
+</div>

@@ -1,0 +1,75 @@
+.menu-icon-header {
+  text-align: center!important;
+}
+.menu-dropdown-header {
+  font-size: 30px!important;
+}
+.dropdown-toggle {
+  white-space: nowrap;
+  font-size: 14px;
+}
+.single-menu {
+  font-size: 14px;
+}
+.app-header.header-shadow {
+  height: auto!important;
+}
+
+.menu-with-icon{
+  font-size: 30px !important;
+  display: block !important;
+  margin-bottom: 5px;
+}
+
+.notification-button{
+  border: 0 !important;
+  font-size: 30px !important;
+  background: #28a744;
+}
+
+.notification-area{
+  min-width: 18rem !important;
+}
+
+.dropdown-menu-area {
+  min-width: 13rem !important;
+}
+
+.shadow {
+  /* box-shadow: 0 0 10px rgba(0,0,0,0.2) inset !important; */
+  /* -moz-box-shadow:    inset 0 0 10px #000000;
+   -webkit-box-shadow: inset 0 0 10px #000000;
+   box-shadow:         inset 0 0 10px #000000;
+  margin-right: 5px; */
+  box-shadow: 0 0 10px #000000 !important;
+  margin-right: 10px;
+  background: #fff;
+  border-radius: 3px;
+}
+
+.app-theme-white .app-footer .app-footer__inner, .app-theme-white .app-header {
+  background: #ffc106 !important;
+}
+
+.bg-light-navbar-logo {
+  background: #ffc106 !important;
+}
+
+.bg-light-navbar-green{
+  background-color: #28a744 !important;
+}
+
+
+
+
+
+
+
+/* .shadow:hover {
+	-moz-box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
+	-webkit-box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
+	box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3,MakeShadow=true,ShadowOpacity=0.30);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Blur(PixelRadius=3,MakeShadow=true,ShadowOpacity=0.30)";
+	zoom: 1.2;
+} */

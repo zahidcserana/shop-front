@@ -1,0 +1,42 @@
+<div class="m-portlet m-portlet--mobile search-div">
+  <div class="m-portlet__body search-panel">
+    <!--begin::Form-->
+    <form class="form-inline" #form="ngForm" (ngSubmit)="dataSearch()">
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="medicine_name" class="sr-only">Medicine </label>
+        <div id="scrollable-dropdown-menu">
+          <input placeholder="Medicine Name" id="typeahead-basic" name="search" [(ngModel)]="searchData.medicine"
+            type="text" class="form-control form-input-width-100" [ngbTypeahead]="search" />
+        </div>
+      </div>
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="medicine_name" class="sr-only">Company </label>
+        <input name="company" id="typeahead-basic" name="company" [(ngModel)]="searchData.company"
+          [ngbTypeahead]="company_search" placeholder="Company" type="text" class="form-control">
+      </div>
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="medicine_name" class="sr-only">Expiry </label>
+        <select class="form-control m-input" name="type" [(ngModel)]="searchData.exp_type">
+          <option value=''>-Expiry Type-</option>
+          <option style="color: green" value="1">OK</option>
+          <option style="color: orange" value="3">Expired in 3 Month</option>
+          <option style="color: red" value="4">Expired</option>
+        </select>
+      </div>
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Date Range</label>
+        <input autocomplete="off" type="text" placeholder="Date Range" class="form-control" bsDaterangepicker
+          [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [(ngModel)]="searchData.expiry_date" name="expiry_date" />
+      </div>
+      <button type="submit" class="btn btn-info mb-2" style="margin-right:10px">
+        <i class="fa fa-calendar-check-o"></i>
+        Search
+      </button>
+      <button type="reset" class="btn btn-warning mb-2" (click)="resetSearch()">
+        <i class="fa fa-history"></i>
+        Reset
+      </button>
+    </form>
+    <!--end::Form-->
+  </div>
+</div>

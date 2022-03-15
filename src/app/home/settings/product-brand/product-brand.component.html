@@ -1,0 +1,88 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div  class="row sale-filter-form-background">
+          <div class="col-md-11">
+            <app-product-brand-filter style="width: 100%" (loadList)="filterList($event)"></app-product-brand-filter>
+            <form *ngIf="product_id" class="form-inline" #form="ngForm" id="myForm" (ngSubmit)="update()">
+              <div class="form-group mx-sm-3 mb-2">
+                <input type="text" class="form-control" name="brand_name" [(ngModel)]="productInfo.medicine"
+                  placeholder="Product Name" />
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <input id="typeahead-basic_a" name="company_name" [(ngModel)]="productInfo.company"
+                  [ngbTypeahead]="company_search" placeholder="Company" type="text" class="form-control">
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <input id="typeahead-basic_b" name="type" [(ngModel)]="productInfo.type" [ngbTypeahead]="type_search"
+                  placeholder="Type" type="text" class="form-control">
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <input type="text" class="form-control" name="generic_name" [(ngModel)]="productInfo.generic"
+                  placeholder="Generic" />
+              </div>
+              <button type="submit" class="btn btn-primary mb-2" style="margin-right:10px">
+                <i class="fa fa-calendar-check-o"></i>
+                Update
+              </button>
+              <button type="button" (click)="closeForm()" class="btn btn-warning mb-2" style="margin-right:10px">
+                <i class="fa fa-calendar-check-o"></i>
+                Cancel
+              </button>
+            </form>
+          </div>
+          <div class="col-md-1" style="float: right">
+            <a routerLink="/inventory">
+              <i class="ace-icon fa fa-angle-double-left"></i>
+              Inventory
+            </a>
+          </div>
+        </div>
+        <div class="custom_loader" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+        <table class="mb-0 table table-bordered" *ngIf="!customLoader">
+          <thead>
+            <tr>
+              <th class="width5">#</th>
+              <th class="width30">Brand Name</th>
+              <th class="width25">Company</th>
+              <th class="width10">Type</th>
+              <th class="width20">Generic</th>
+              <th class="width10">Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="dataList.length > 0; else emptyData">
+            <tr *ngFor="
+                let item of dataList;
+                trackBy: trackList;
+                let i = index;
+                let e = even;
+                let o = odd
+              " [ngClass]="{ odd: o, even: e }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.brand_name }}</td>
+              <td>{{ item.medicine_company }}</td>
+              <td>{{ item.medicine_type }}</td>
+              <td>{{ item.generic_name }}</td>
+              <td>
+                <a style="cursor: pointer" class="btn btn-info fa fa-edit" (click)="editProduct(item)"></a> &nbsp;
+                <a style="cursor: pointer" class="btn btn-danger fa fa-trash"
+                  (click)="deleteProduct(item.medicine_id)"></a> &nbsp;
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="6">Empty data</td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+        <boot-pagination style="width: 100%" [totalSize]="pagi.total" [listSize]="pagi.limit"
+          (pageChange)="reloadTable($event)">
+        </boot-pagination>
+      </div>
+    </div>
+  </div>
+</div>

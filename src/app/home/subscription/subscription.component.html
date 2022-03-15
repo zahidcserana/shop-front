@@ -1,0 +1,96 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div style="float: left;">
+          <form class="form" #form="ngForm" id="myForm" (ngSubmit)="submit()">
+            <div class="form-group row">
+              <label for="inputPassword" class="col-md-4"> Subscription Type</label>
+              <label class="form-check-label col-md-1">
+                <input name="coupon_type" type="radio" class="form-check-input" value="1MONTH"
+                  [(ngModel)]="subscriptionData.coupon_type"> 1 Month
+              </label>
+              <label class="form-check-label col-md-1">
+                <input name="coupon_type" type="radio" class="form-check-input" value="3MONTH"
+                  [(ngModel)]="subscriptionData.coupon_type"> 3 Month
+              </label>
+              <label class="form-check-label col-md-1">
+                <input name="coupon_type" type="radio" class="form-check-input" value="6MONTH"
+                  [(ngModel)]="subscriptionData.coupon_type"> 6 Month
+              </label>
+              <label class="form-check-label col-md-1">
+                <input name="coupon_type" type="radio" class="form-check-input" value="YEARLY"
+                  [(ngModel)]="subscriptionData.coupon_type"> Yearly
+              </label>
+            </div>
+            <div class="form-group row">
+              <label for="PlanCardnumber" class="col-md-4">Coupon Code (no dashes or spaces)</label>
+              <input #code1 class="form-control col-md-1" type="text" name="code_1"
+                [(ngModel)]="subscriptionData.coupon.code_1" maxlength="4" pattern="[A-Za-z0-9]+" required
+                (input)="goCode2()" />
+              &nbsp; _ &nbsp;
+              <input #code2 class="form-control col-md-1" type="text" name="code_2"
+                [(ngModel)]="subscriptionData.coupon.code_2" maxlength="4" pattern="[A-Za-z0-9]+" required
+                (input)="goCode3()" />
+              &nbsp; _ &nbsp;
+              <input #code3 class="form-control col-md-1" type="text" name="code_3"
+                [(ngModel)]="subscriptionData.coupon.code_3" maxlength="4" pattern="[A-Za-z0-9]+" required
+                (input)="goCode4()" />
+              &nbsp; _ &nbsp;
+              <input #code4 class="form-control col-md-1" type="text" name="code_4"
+                [(ngModel)]="subscriptionData.coupon.code_4" maxlength="4" pattern="[A-Za-z0-9]+" required />
+            </div>
+            <button style="margin-left: 50%;" type="submit" class="btn btn-primary">
+              <i class="fa fa-calendar-check-o"></i>
+              Submit
+            </button>
+          </form>
+        </div>
+        <div style="float: right;">
+            <button class="mb-2 mr-2 border-0 btn-transition btn btn-outline-danger" (click)="crearCache()"> <i class="pe-7s-refresh-2"></i> </button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div class="">
+          <table class="data-list mb-0 table table-bordered">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Coupon</th>
+                <th>Apply</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="subscriptionList.length > 0; else emptyData">
+              <tr *ngFor="
+                          let item of subscriptionList;
+                          let i = index;
+                          let e = even;
+                          let o = odd
+                        " [ngClass]="{ odd: o, even: e }">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.coupon_code }}</td>
+                <td>{{ item.apply_date | date: 'fullDate'}}</td>
+                <td>{{ item.coupon_type | couponType }}</td>
+              </tr>
+            </tbody>
+            <ng-template #emptyData>
+              <tbody>
+                <tr>
+                  <td colspan="6" class="empty-data">Empty data</td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

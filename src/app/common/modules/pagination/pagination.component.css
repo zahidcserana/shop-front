@@ -1,0 +1,125 @@
+ngb-pagination /deep/ .page-item {
+    padding:2px;
+}
+ngb-pagination /deep/ .page-item.disabled .page-link {
+    color:#ccc!important;
+    background-color: #fff!important;
+}
+ngb-pagination /deep/ .page-item .page-link {
+    border: 0px!important;
+    cursor: pointer;
+    display: inline-block;
+    height: 2.25rem;
+    min-width: 2.25rem;
+    vertical-align: middle;
+    padding: 0.5rem;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    text-align: center;
+    position: relative;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1rem;
+    line-height: 1rem;
+    font-weight: 400;
+    color: #898b96;
+}
+
+ngb-pagination /deep/ .page-item:first-child .page-link,  ngb-pagination /deep/ .page-item:nth-child(2) .page-link{
+    background: #ebe9f2;
+    border-top-left-radius: 50%!important;
+    border-bottom-left-radius: 50%!important;
+} 
+
+ngb-pagination /deep/ .page-item:last-child .page-link, ngb-pagination /deep/ .page-item:nth-last-child(2) .page-link {
+    background: #ebe9f2;
+    border-top-right-radius: 50%!important;
+    border-bottom-right-radius: 50%!important;
+} 
+
+ngb-pagination /deep/ .page-item .page-link:hover{
+    color:#fff;
+    background-color: #041531;
+    border-color: #041531;
+}
+ngb-pagination /deep/ .page-item.active .page-link{
+    color:#fff !important;
+    /* background-color: #041531; */
+    /* border-color: #041531; */
+}
+
+/* ngb-pagination /deep/ .page-item .page-link:hover{
+    color:#fff;
+    background-color: #e58222;
+    border-color: #e58222;
+}
+ngb-pagination /deep/ .page-item.active .page-link{
+    color:#fff;
+    background-color: #e58222;
+    border-color: #e58222;
+} */
+
+
+.styled-select {
+    position: relative;
+    width: 100px; display: inline;border-radius:20px;padding: 10px; background: #ebe9f2; color:#3f4047;
+    margin-right: 20px; 
+  }
+  .styled-select select { width: 70px; text-indent: 10px;display: inline;background: #ebe9f2; color:#3f4047}
+  select:focus { outline: none; }
+  .styled-select select {
+    height: 34px;
+    padding: 5px 0 5px 5px;
+    border: none;
+    cursor: pointer;
+    
+    /*hide default down arrow in webkit */
+    -webkit-appearance: none; 
+  }
+
+
+  .styled-select select > option{
+    background: #fff!important;
+    color:#3f4047!important;
+
+  }
+  
+  @-moz-document url-prefix(){
+    .styled-select select { width: 110%; }
+  }
+  
+  .styled-select .fa-angle-down {
+    position: absolute;
+    top: 9px;
+    right: 18px;
+    font-size: 20px;
+  }
+  .display-text{
+      float: right;
+  }
+  
+   select::-ms-expand { display: none; } /* hide default down arrow in IE10*/
+  
+
+
+@media only screen and (max-width: 767px){
+    .display-text{
+        float: left;
+    }
+}

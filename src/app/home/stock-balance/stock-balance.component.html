@@ -1,0 +1,145 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div class="row sale-filter-form-background">
+          <div class="col-md-10" style="float: left">
+            <app-data-filter style="width: 100%" (loadList)="filterList($event)"></app-data-filter>
+          </div>
+          <div class="col-md-2" style="float: right">
+            <a (click)="stockBalance()" class="btn btn-info">
+              <i class="fa fa-calendar"></i>
+              Make Balance Report </a>
+          </div>
+        </div>
+        <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+        <table class="mb-0 table table-bordered" *ngIf="!customLoader">
+          <!-- <caption>
+            <p>
+              Total Sale Amount:
+              <span class="amount">{{
+                sammary.total_sale_amount | number: "1.2-2"
+              }}</span>, Total Due Amount:
+              <span class="amount">{{
+                sammary.total_due_amount | number: "1.2-2"
+              }}</span>
+            </p>
+          </caption> -->
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Opening Date</th>
+              <th>Closing Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="dataList.length > 0; else emptyData">
+            <tr *ngFor="
+                let item of dataList;
+                trackBy: trackList;
+                let i = index;
+                let e = even;
+                let o = odd
+              " [ngClass]="{ odd: o, even: e }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.date_open | date: "MMM d, y" }}</td>
+              <td>{{ item.date_close | date: "MMM d" }}</td>
+              <td>
+                <a (click)="openModal(item, 'sale-modal')" id="item_id" class="btn btn-info"><i
+                    class="fa fa-eye"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="6">Empty data</td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+        <boot-pagination style="width: 100%" [totalSize]="pagi.total" [listSize]="pagi.limit"
+          (pageChange)="reloadTable($event)">
+        </boot-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<jw-modal id="sale-modal" class="data-view-modal">
+  <div class="row">
+    <div *ngIf="orderDetails" class="col-md-12">
+      <header class="clearfix" style="margin-bottom: 0;">
+        <div id="logo">
+          <span class="pharmacy">Monthly Balance Report</span>
+        </div>
+      </header>
+      <main>
+        <div style="text-align: center;padding-bottom: 1%">
+          <span style="padding-right: 2%">Opening Date: {{ orderDetails.date_open }}</span>
+          <span style="padding-left: 2%">Closing Date: {{ orderDetails.date_close }}</span>
+        </div>
+
+        <table class="preview table-bordered">
+          <thead>
+            <tr>
+              <th class="sl">#</th>
+              <th class="width30">Product</th>
+              <th>Opening Stock</th>
+              <th>Receive Qty(Pcs)</th>
+              <th>sale Qty(Pcs)</th>
+              <th>Closing Stock</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="
+              orderDetails;
+              else emptyData
+            ">
+            <ng-container *ngFor="
+                let item of orderDetails?.stock_balance_items;
+                let i = index;
+                trackBy: trackList
+              ">
+              <tr>
+                <td class="sl">{{ i + 1 }}</td>
+                <td style="text-align: left">
+                  {{ item.product.name }} ({{ item.product.strength }},{{ item.product.type }})
+                </td>
+                <td class="qty">
+                  {{ item.quantity_open }}
+                </td>
+                <td class="qty">
+                  {{ item.quantity_in }}
+                </td>
+                <td class="qty">
+                  {{ item.quantity_out }}
+                </td>
+                <td class="qty">
+                  {{ item.quantity_close }}
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="7">
+                  <h5 class="text-center">No Item Found</h5>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </main>
+    </div>
+  </div>
+  <div id="print-div">
+    <button id="print-button" (click)="printInvoice('sale-modal')" class="btn btn-success btn-xs">
+      Print
+    </button>
+    <button id="close-button" (click)="closeModal('sale-modal')" class="btn btn-warning btn-xs">
+      Close
+    </button>
+  </div>
+</jw-modal>

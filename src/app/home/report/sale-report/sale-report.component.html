@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div>
+          <div style="float: left">
+            <app-sale-report-filter style="width: 100%" (loadList)="filterList($event)"></app-sale-report-filter>
+          </div>
+          <div style="float: right">
+            <a routerLink="/sale">
+              <i class="ace-icon fa fa-angle-double-left"></i>
+              Sale
+            </a>
+          </div>
+        </div>
+        <table class="mb-0 table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Product</th>
+              <th>Company</th>
+              <th>Type Name</th>
+              <th>Quantity </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="dataList.length > 0; else emptyData">
+            <tr *ngFor="
+                  let item of dataList;
+                  trackBy: trackList;
+                  let i = index;
+                  let e = even;
+                  let o = odd
+                " [ngClass]="{ odd: o, even: e }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.medicine.name }}</td>
+              <td>{{ item.company.name }}</td>
+              <td>{{ item.type.name }}</td>
+              <td>{{ item.quantity }}</td>
+
+            </tr>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="6">Empty data</td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+        <!-- <boot-pagination style="width: 100%" [totalSize]="pagi.total" [listSize]="pagi.limit"
+            (pageChange)="reloadTable($event)">
+          </boot-pagination> -->
+      </div>
+    </div>
+  </div>
+</div>

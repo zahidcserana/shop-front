@@ -1,0 +1,54 @@
+.card-header-top {
+  height: 3rem !important;
+}
+
+.card-header-title {
+  font-size: 1rem !important;
+}
+
+.form-width-100{
+  width: 100% !important;
+}
+
+.search-div{
+  margin-left: 10px;
+}
+
+.label-margin-right{
+  margin-right: 5px;
+}
+
+.add-product-btn {
+  margin-top: 32px;
+  width: 126px;
+  padding: 6px;
+  background-color: #6f6f6f;
+  border: 1px solid #6f6f6f;
+  margin-left: 10px;
+}
+
+.reset-product-btn {
+  margin-top: 32px;
+  width: 100px;
+  padding: 6px;
+  color: black;
+  background-color: #b3b3b3;
+  border: 1px solid #b3b3b3;
+  margin-left: 10px;
+}
+
+.custom_loader_new{
+  background: url("loader.gif");
+  min-height: 83px;
+  max-width: 90px;
+}
+
+.sale-filter-form-background{
+  background: #eee;
+  padding: 10px;
+  margin-bottom: 9px;
+}
+
+.padding-bot-input{
+  padding-bottom: 8px !important;
+}

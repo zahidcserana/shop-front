@@ -1,0 +1,68 @@
+<div class="app-container app-theme-white body-tabs-shadow">
+  <div class="app-container">
+    <div class="h-100 bg-plum-plate bg-animation">
+      <div class="d-flex h-100 justify-content-center align-items-center">
+        <div class="mx-auto app-login-box col-md-8">
+          <div class="app-logo-inverse mx-auto mb-3"></div>
+          <div class="modal-dialog w-100 mx-auto">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div class="h5 modal-title text-center">
+                  <h4 class="mt-2">
+                    <div>
+                      <img style="padding-bottom: 8%; width: 82% !important;" src="assets/images/erp_logo_2.png" alt="">
+                    </div>
+                  </h4>
+                </div>
+                <form [formGroup]="registerForm" (ngSubmit)="signIn()" autocomplete="off">
+                  <div class="form-row">
+                    <div class="col-md-12">
+                      <div class="position-relative form-group">
+                        <input type="text" formControlName="email" [(ngModel)]="model.email" class="form-control"
+                          [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                          <div *ngIf="f.email.errors.required">User Email is required</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="position-relative form-group">
+                        <input type="password" formControlName="password" class="form-control" [(ngModel)]="model.password"
+                          [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                          <div *ngIf="f.password.errors.required">Password is required</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="custom-alert" #hasAlert></div>
+                      <div style="display: none" class="float-right spinner-border text-primary" id="spinner-load"
+                        role="status">
+                        <span class="sr-only">Loading...</span>
+                        <br />
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary btn-lg float-right" type="submit" id="login-btn">
+                    <i class="ace-icon fa fa-key"></i>
+                    <span id="login-span" class="bigger-110">&nbsp;Login</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <a href="javascript:void(0)">
+            <div class="text-white opacity-8 mt-3 footer-link">
+              <span class="footer-div">
+                AnalyticalJ
+              </span>
+              <span class="footer-div version-text">
+                Version: 3.0.5
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

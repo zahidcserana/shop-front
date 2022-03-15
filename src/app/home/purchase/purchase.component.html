@@ -1,0 +1,272 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-header card-header-top">
+        <span class="margin-align-title card-header-title">
+          <div class="font-icon-wrapper font-icon-lg">
+            <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Purchase
+          </div>
+        </span>
+        <div class="btn-actions-pane-right">
+          <a routerLink="/purchase-list"> <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> View Purchase List </a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-9">
+            <form id="myForm" class="form-width-100 purchase-form" (keydown.enter)="$event.preventDefault()">
+              <div class="form-row">
+                  <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <label class="">Product Name</label>
+                        <div id="scrollable-dropdown-menu">
+                          <input name="search" id="typeahead-basic" #typeaheadInstance="ngbTypeahead" (keydown)="typeaheadKeydown($event)" #medicineName [(ngModel)]="purchaseItem.medicine" placeholder="" [ngbTypeahead]="search" autofocus type="text" class="form-control">
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-md-1">
+                      <div class="position-relative form-group">
+                        <label for="batch_no" class="">Batch No</label>
+                        <input name="batch_no" #batchNo [(ngModel)]="purchaseItem.batch_no" (keydown.enter)="gotoExpDate()" (focus)="getMedicinePreviousPurchaseDetails()" placeholder="" type="text" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-1">
+                      <div class="position-relative form-group">
+                        <label for="exp_date" class="">Exp. Date</label>
+                        <input name="exp_date" id="expDate" #expDate [(ngModel)]="purchaseItem.exp_date" (keydown.enter)="gotoPiecePerBox()" placeholder="" type="text"  maxlength="7" pattern="[0-9]+" placeholder="10/2019" class="form-control" (input)="validateDate()">
+                      </div>
+                  </div>
+                  <div class="col-md-1">
+                      <div class="position-relative form-group">
+                        <label for="piece_per_box" class="">Piece/<span *ngIf="!UnitVal; else changeVal">Box</span><ng-template #changeVal>Unit</ng-template></label>
+                        <input name="piece_per_box" #piecePerBox [(ngModel)]="purchaseItem.piece_per_box" min="1" (keydown.enter)="gotoBoxTradePrice()" placeholder="" type="number" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-1">
+                      <div class="position-relative form-group">
+                        <label for="box_trade_price" class="">T.P(<span *ngIf="!UnitVal; else changeVal">Box</span><ng-template #changeVal>Unit</ng-template>)</label>
+                        <input name="box_trade_price" #boxTradePrice [(ngModel)]="purchaseItem.box_trade_price" (keydown.enter)="gotoVAT()" placeholder="" type="number" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-1">
+                      <div class="position-relative form-group">
+                        <label for="box_vat" class="">VAT(<span *ngIf="!UnitVal; else changeVal">Box</span><ng-template #changeVal>Unit</ng-template>)
+                        </label>
+                        <input name="box_vat" #boxVAT [(ngModel)]="purchaseItem.box_vat" (keydown.enter)="gotoBoxMrp()" placeholder="" type="number" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-1">
+                      <div class="position-relative form-group">
+                        <label for="box_mrp" data-toggle="tooltip" data-html="true" title="TP = (25% of MRP) <br>VAT = (17.4% of TP)" class="">M.R.P/<span *ngIf="!UnitVal; else changeVal">Box</span><ng-template #changeVal>Unit</ng-template>(?)
+                        </label>
+                        <input name="box_mrp" #boxMrp [(ngModel)]="purchaseItem.box_mrp" (keydown.enter)="gotoQuantity()" (input)="calculateTPVAT()" placeholder="" type="number" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-1">
+                      <div class="position-relative form-group">
+                        <label for="quantity" class="">QTY(<span *ngIf="!UnitVal; else changeVal">Box</span><ng-template #changeVal>Unit</ng-template>)
+                        </label>
+                        <input name="quantity" #quantity [(ngModel)]="purchaseItem.quantity" min="1" (keydown.enter)="gotoBarcode()" placeholder="" type="number" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-1">
+                      <div class="position-relative form-group">
+                        <label for="bar_code" class="">Barcode</label>
+                        <input name="bar_code" #barCode [(ngModel)]="purchaseItem.bar_code" (keydown.enter)="gotoRemarks()" placeholder="" type="text" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-1">
+                      <div class="position-relative form-group">
+                        <label for="low_stock_qty" class="">Low Stock QTY</label>
+                        <input name="low_stock_qty" #lowStockQty [(ngModel)]="purchaseItem.low_stock_qty" (keydown.enter)="addMedicine()" placeholder="" type="text" class="form-control">
+                      </div>
+                  </div>
+                  
+                  <button type="submit" style="display: none;" class="btn btn-primary mb-0 add-medicine-btn">
+                    Add
+                  </button>
+              </div>
+              <div class="row">
+                <div class="col-md-2 position-relative form-check">
+                  <label class="form-check-label checkbox-label-purchase">
+                    <input type="checkbox" name="update_price" [(ngModel)]="purchaseItem.update_price" class="form-check-input"> Update Price
+                  </label>
+                </div>
+                <div class="col-md-2">
+                  <div class="position-relative form-group">
+                    <input name="free_qty" [(ngModel)]="purchaseItem.free_qty" placeholder="Free Qty" type="number" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="position-relative form-group">
+                    <button class="btn btn-warning col-lg-12" (click)="getMedicineUnitPriceDetails()">Choose Unit Price</button>
+                  </div>
+                </div>
+              </div>
+            </form> 
+            <hr/>
+            <table class="mb-0 table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="td_text_align_left">Product Name</th>
+                    <th class="td_text_align_left">Batch no</th>
+                    <th>Exp. Date</th>
+                    <th>Piece/Box</th>
+                    <th>T.P (Box)</th>
+                    <th>VAT (Box)</th>
+                    <th>M.R.P/Box</th>
+                    <th>Qty (Box)</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of allPurchaseItems; let i='index';">
+                      <th scope="row">{{ i+1 }}</th>
+                      <td class="td_text_align_left">{{ item.medicine }}</td>
+                      <td class="td_text_align_left">{{ item.batch_no }}</td>
+                      <td>{{ item.exp_date }}</td>
+                      <td>{{ item.piece_per_box }}</td>
+                      <td>{{ item.box_trade_price | number: "1.2-2" }}</td>
+                      <td>{{ item.box_vat | number: "1.2-2" }}</td>
+                      <td>{{ item.box_mrp | number: "1.2-2" }}</td>
+                      <td>{{ item.quantity }}</td>
+                      <td>{{ item.amount | number: "1.2-2" }}</td>
+                      <td>
+                        <button (click)="deleteRow(i)" class="mr-2 btn-icon btn-icon-only btn btn-outline-danger"><i class="pe-7s-trash btn-icon-wrapper"> </i></button>
+                        <button (click)="pickValue(item)" class="mr-2 btn-icon btn-icon-only btn btn-outline-info"><i class="pe-7s-next-2 btn-icon-wrapper"> </i></button>
+                      </td>
+                  </tr>
+                </tbody>
+            </table> 
+          </div>
+          <div class="col-lg-3 total-div-border">
+            <h4 style="text-align: center;">Account Summary</h4>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card mb-3 widget-content widget-area-padding card-margin">
+                    <div class="widget-content-wrapper net-wiget">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Total Amount</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <input name="total_amount" [(ngModel)]="purchaseDetails.total" step="0.01" readonly="readonly" id="total_amount" placeholder="Total Amount" type="number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-lg-12" style="display:none;">
+                <div class="card mb-3 widget-content widget-area-padding card-margin">
+                    <div class="widget-content-wrapper net-wiget">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Total VAT</div>
+                            <div class="position-relative form-group vat-parcentage">
+                                <div>
+                                    <div class="custom-radio custom-control custom-control-inline">
+                                      <input type="radio" name="vat_percentage" [(ngModel)]="purchaseDetails.vat_percentage" (change)="calculateVat()" id="Fixed" value="fixed" class="custom-control-input">
+                                      <label class="custom-control-label" (click)="calculateVat()" for="Fixed">Fixed</label>
+                                    </div>
+                                    <div class="custom-radio custom-control custom-control-inline">
+                                      <input type="radio" [(ngModel)]="purchaseDetails.vat_percentage" name="vat_percentage" (change)="calculateVat()" id="percentage" value="percentage" class="custom-control-input">
+                                      <label class="custom-control-label" (click)="calculateVat()" for="percentage">Percentage (%)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-content-right">
+                            <input name="total_vat" id="total_vat" [(ngModel)]="purchaseDetails.vat" (input)="calculateVat()" placeholder="Total VAT" type="number" class="form-control">
+                            <span *ngIf="vatAmountInPercentage" class="small"> Amount: {{ vatAmountInPercentage | number: "1.2-2" }} Tk. </span>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="card mb-3 widget-content widget-area-padding card-margin">
+                    <div class="widget-content-wrapper net-wiget">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Discount</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <input name="discount" id="discount" [(ngModel)]="purchaseDetails.discount" (input)="calculateVat()" placeholder="0" type="number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="card mb-3 widget-content widget-area-padding card-margin">
+                    <div class="widget-content-wrapper net-wiget">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Net Amount</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <div class="widget-numbers text-success"><span>{{ purchaseDetails.net_amount | number: "1.2-2" }} Tk.</span></div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="card mb-3 widget-content widget-area-padding card-margin">
+                    <div class="widget-content-wrapper net-wiget">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Advance</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <input name="total_advance" id="total_advance" [(ngModel)]="purchaseDetails.advance" (input)="claculateDue()" placeholder="Advance" type="number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="card mb-3 widget-content widget-area-padding card-margin">
+                    <div class="widget-content-wrapper net-wiget">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Due</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <input name="total_due" id="total_due" placeholder="Due" readonly="readonly" [(ngModel)]="purchaseDetails.due" type="number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="card mb-3 widget-content widget-area-padding card-margin">
+                    <div class="widget-content-wrapper net-wiget">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Company</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <select class="ace form-control" name="company" [(ngModel)]="purchaseDetails.company">
+                              <option value="0">--Select Company--</option>
+                              <option *ngFor="let company of companyList" value="{{ company.id }}">{{ company.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="card mb-3 widget-content widget-area-padding card-margin">
+                    <div class="widget-content-wrapper net-wiget">
+                        <div class="widget-content-left">
+                            <div class="widget-heading">Invoice</div>
+                        </div>
+                        <div class="widget-content-right">
+                            <input name="invoice" id="invoice" placeholder="Invoice" [(ngModel)]="purchaseDetails.invoice" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="position-relative form-group">
+                  <button type="button" (click)="submitPurchaseDetails()" id="submitButtonForSave" class="btn btn-primary mb-0 save-btn">
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>

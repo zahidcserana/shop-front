@@ -1,0 +1,56 @@
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="sale-filter-form-background">
+            <app-expiry-filter style="width: 100%" (loadList)="filterList($event)"></app-expiry-filter>
+          </div>
+          <table class="mb-0 table table-bordered" style="font-size: 12px;">
+            <thead>
+              <tr>
+                <th>SL</th>
+                <th>Product Description</th>
+                <th>Batch</th>
+                <th>Exp Date</th>
+                <th>Purchase Date</th>
+                <th>Qunatity(Pcs)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let item of dataList; let i='index';">
+                <tr>
+                  <td> {{ i + 1 }}</td>
+                  <td>
+                    {{ item.type | substr3 }}. {{ item.brand_name }} ({{ item.strength }})
+                    <br>
+                    {{ item.company }}
+                  </td>
+                  <td>
+                    {{ item.batch_no }}
+                  </td>
+                  <td>
+                    {{ item.exp_date }}
+                  </td>
+                  <td>
+                    {{ item.purchase_date }}
+                  </td>
+                  <td>
+                    {{ item.qty }}
+                  </td>
+                  <td>
+                      <button [ngClass]="expStatus(item.exp_status)" class="btn">{{item.exp_condition}}</button>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <boot-pagination style="width: 100%" [totalSize]="pagi.total" [listSize]="pagi.limit"
+            (pageChange)="reloadTable($event)">
+          </boot-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

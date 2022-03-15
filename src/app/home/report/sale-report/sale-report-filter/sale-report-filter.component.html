@@ -1,0 +1,41 @@
+<div class="m-portlet m-portlet--mobile search-div">
+  <div class="m-portlet__body search-panel">
+    <!--begin::Form-->
+    <form class="form-inline" #form="ngForm" (ngSubmit)="searchSaleData()">
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Company</label>
+        <input id="typeahead-company" name="company" [(ngModel)]="saleData.company" type="text"
+          class="form-control validation-input" [ngbTypeahead]="company_search" placeholder="Company Name" />
+
+      </div>
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Product</label>
+        <div id="scrollable-dropdown-menu">
+          <input placeholder="Medicine Name" #cartMedicine id="typeahead-basic" name="search"
+            [(ngModel)]="saleData.product" type="text" class="form-control form-input-width-100"
+            [ngbTypeahead]="searchProduct" />
+        </div>
+      </div>
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Type</label>
+        <input style="width: 116px;" id="typeahead-basic" name="search" [(ngModel)]="saleData.product_type"
+          placeholder="Type" type="text" [ngbTypeahead]="searchType" class="form-control">
+      </div>
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only">Date Range</label>
+        <input autocomplete="off" type="text" placeholder="Date Range" class="form-control" bsDaterangepicker
+          [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [(ngModel)]="saleData.sale_date" name="sale_date" />
+      </div>
+
+      <button type="submit" class="btn btn-primary mb-2 filter-medicine-btn" style="margin-right:10px">
+        <i class="fa fa-calendar-check-o"></i>
+        Search
+      </button>
+      <button type="reset" class="btn btn-danger mb-2 reset-medicine-btn" (click)="resetSearch()">
+        <i class="fa fa-history"></i>
+        Reset
+      </button>
+    </form>
+    <!--end::Form-->
+  </div>
+</div>

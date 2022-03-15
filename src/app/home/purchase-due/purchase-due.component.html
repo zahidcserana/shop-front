@@ -1,0 +1,216 @@
+<div class="row">
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-header card-header-top">
+      <span class="margin-align-title card-header-title">
+        <div class="font-icon-wrapper font-icon-lg">
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Purchase Due List
+        </div>
+      </span>
+      <div class="btn-actions-pane-right">
+        <button (click)="backToList()" *ngIf="orderId" style="display: inline-block;" class="mr-2 btn-icon btn-icon-only btn btn-outline-warning pull-right"><i class="pe-7s-back btn-icon-wrapper"> </i></button>
+        <span *ngIf="!orderId"><i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Purchase Due List</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12" *ngIf="!orderId">
+          <table class="mb-0 table table-hover">
+            <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Invoice</th>
+                  <th>Company</th>
+                  <th>Company Invoice</th>
+                  <th>Purchase Date</th>
+                  <th>Total</th>
+                  <th>VAT</th>
+                  <th>Discount</th>
+                  <th>Net Payable</th>
+                  <th>Advance</th>
+                  <th>Due</th>
+                  <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of purchaseList; let i='index';">
+                  <th scope="row">{{ i+1 }}</th>
+                  <td>{{ item.invoice }}</td>
+                  <td>{{ item.company_name }}</td>
+                  <td>{{ item.company_invoice }}</td>
+                  <td>{{ item.purchase_date }}</td>
+                  <td>{{ item.total_amount }}</td>
+                  <td>
+                    <div *ngIf="item.vat_type==='percentage'">
+                        {{ (item.total_amount*item.vat)/100 }} <span class="small">({{ item.vat }} %)</span>
+                    </div>
+                    <div *ngIf="item.vat_type==='fixed'">
+                        {{ (item.vat) }} <span class="small">({{ item.vat }} Tk.)</span>
+                    </div>
+                  </td>
+                  <td>{{ item.discount }}</td>
+                  <td>{{ item.total_payble_amount }}</td>
+                  <td>{{ item.total_advance_amount }}</td>
+                  <td>
+                    {{ item.total_due_amount }}
+                    <br/>
+                    <span class="small" style="color:RED;" *ngIf="item.total_due_amount<0">Receivable</span>
+                  </td>
+                  <td><button (click)="getPurchaseDetails(item.order_id)" id="order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-info"><i class="pe-7s-note2 btn-icon-wrapper"> </i></button></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="col-lg-12" *ngIf="orderId">
+          
+          <div class="row">
+            <div *ngIf="purchaseDetails" class="col-md-9">
+              <header class="clearfix" style="margin-bottom: 0;">
+                <div id="logo">
+                  <h4>Purchase Details</h4>
+                </div>
+              </header>
+              <main>
+                <div style="text-align: left; padding-bottom: 1%">
+                  <br/>
+                  <h6>Invoice: {{ purchase.invoice }}</h6>
+                  <h6>Date: {{ purchase.purchase_date }}</h6>
+                  <br/>
+                </div>
+                <table class="preview">
+                  <thead>
+                    <tr>
+                      <th class="sl">Sl</th>
+                      <th style="text-align: left;">MEDICINE</th>
+                      <th>QTY (PCS)</th>
+                      <th>EXP. DATE</th>
+                      <th>BATCH NO</th>
+                      <th>UNIT PRICE (Tk.)</th>
+                      <th>TOTAL (Tk.)</th>
+                      <th>PIECE/BOX</th>
+                      <th>M.R.P. (Tk.) <br>BOX</th>
+                      <th>T.P. (Tk.) <br>BOX</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of purchaseDetails; let i='index';">
+                      <td>{{ i+1 }}</td>
+                      <td style="text-align: left;">
+                        {{ item.medicine_type | slice:0:3 }}. {{ item.medicine_name }}<br/>
+                        <span class="small">{{ item.generic }}<br/>{{ item.company_name }}</span>
+                      </td>
+                      <td>{{ item.quantity*item.pieces_per_box }}</td>
+                      <td>{{ item.exp_date }}</td>
+                      <td>{{ item.batch_no }}</td>
+                      <td>{{ item.unit_price }}</td>
+                      <td>{{ item.total }}</td>
+                      <td>{{ item.pieces_per_box }}</td>
+                      <td>{{ item.mrp }}</td>
+                      <td>{{ item.trade_price }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </main>
+            </div>
+            <div class="col-lg-3">
+              <br/>
+              <h4 style="text-align: center;">Account Summary</h4>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="card mb-3 widget-content widget-area-padding card-margin">
+                      <div class="widget-content-wrapper net-wiget">
+                          <div class="widget-content-left">
+                              <div class="widget-heading">Total Amount</div>
+                          </div>
+                          <div class="widget-content-right">
+                            <div class="widget-numbers text-info"><span>{{ dueDetails.total }} Tk.</span></div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="card mb-3 widget-content widget-area-padding card-margin">
+                      <div class="widget-content-wrapper net-wiget">
+                          <div class="widget-content-left">
+                              <div class="widget-heading">Discount</div>
+                          </div>
+                          <div class="widget-content-right">
+                            <div class="widget-numbers text-deafult"><span>{{ dueDetails.discount }} Tk.</span></div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="card mb-3 widget-content widget-area-padding card-margin">
+                      <div class="widget-content-wrapper net-wiget">
+                          <div class="widget-content-left">
+                              <div class="widget-heading">VAT</div>
+                          </div>
+                          <div class="widget-content-right">
+                              <div class="widget-numbers text-deafult"><span>{{ dueDetails.total_vat }} Tk.</span></div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="card mb-3 widget-content widget-area-padding card-margin">
+                      <div class="widget-content-wrapper net-wiget">
+                          <div class="widget-content-left">
+                              <div class="widget-heading">Due</div>
+                          </div>
+                          <div class="widget-content-right">
+                              <div class="widget-numbers text-warning"><span>{{ dueDetails.payble_due }} Tk.</span></div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="card mb-3 widget-content widget-area-padding card-margin">
+                      <div class="widget-content-wrapper net-wiget">
+                          <div class="widget-content-left">
+                              <div class="widget-heading">Payout Amount</div>
+                          </div>
+                          <div class="widget-content-right">
+                              <input name="pay_amount" placeholder="Payout Amount" [(ngModel)]="dueDetails.pay_amount" type="number" class="form-control">
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="card mb-3 widget-content widget-area-padding card-margin">
+                      <div class="widget-content-wrapper net-wiget">
+                          <div class="widget-content-left">
+                              <div class="widget-heading">Discount Amount</div>
+                          </div>
+                          <div class="widget-content-right">
+                              <input name="payble_discount" placeholder="Discount Amount" [(ngModel)]="dueDetails.payble_discount" type="number" class="form-control">
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="card mb-3 widget-content widget-area-padding card-margin">
+                      <div class="widget-content-wrapper net-wiget">
+                          <div class="widget-content-left">
+                              <div class="widget-heading"></div>
+                          </div>
+                          <div class="widget-content-right">
+                              <button type="button" (click)="submitDueDetails()" class="btn btn-primary mb-0 save-btn">
+                                Save
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                
+              </div>
+            </div> 
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

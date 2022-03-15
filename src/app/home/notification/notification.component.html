@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div class="main-card mb-3 card">
+        <div class="card-body">
+          <table class="data-list mb-0 table table-bordered">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Product Name</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="notificationList.length">
+              <tr *ngFor="let item of notificationList; let i='index';">
+                <td> {{ i+1 }} </td>
+                <td>{{ item.brand_name }}</td>
+                <td>{{ item.details }}</td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="!notificationList.length">
+              <tr>
+                <td [attr.colspan]="3">
+                  No Notifications found!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>

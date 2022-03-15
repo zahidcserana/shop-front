@@ -1,0 +1,129 @@
+.card-header-top {
+  height: 3rem !important;
+}
+.form-width-100 {
+  width: 100%;
+}
+
+.card-header-title {
+  font-size: 1rem !important;
+}
+
+.form-control-width-15 {
+  width: 15%;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.form-control-width-10 {
+  width: 10%;
+  margin-right: 10px;
+}
+
+/* *** invice style *** */
+#invoice-POS{
+  box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+  padding:2mm;
+  margin: 0 auto;
+  width: 75mm;
+  background: #FFF;
+}
+::selection {background: #f31544; color: #FFF;}
+::moz-selection {background: #f31544; color: #FFF;}
+#print-modal-pos h1{
+  font-size: 1.5em;
+  color: #222;
+}
+#print-modal-pos h2{font-size: .9em;}
+#print-modal-pos h3{
+  font-size: 1.2em;
+  font-weight: 300;
+  line-height: 2em;
+}
+#print-modal-pos p{
+  font-size: .7em;
+  color: #666;
+  line-height: 1.2em;
+}
+
+#top, #mid,#bot{
+  border-bottom: 1px solid #EEE;
+}
+
+#top{min-height: 100px;}
+#mid{min-height: 80px;}
+#bot{ min-height: 50px;}
+
+#print-modal-pos #top .logo{
+  float: left;
+	/* height: 60px;
+	width: 60px; */
+	background: url(assets/images/erp_logo_2.png) no-repeat;
+	background-size: 60px 60px;
+}
+.clientlogo{
+  float: left;
+	height: 60px;
+	width: 60px;
+	background: url(assets/images/erp_logo_2.png) no-repeat;
+	background-size: 60px 60px;
+  border-radius: 50px;
+}
+#print-modal-pos .info{
+  display: block;
+  float:left;
+  margin-left: 0;
+}
+#print-modal-pos .title{
+  float: right;
+}
+#print-modal-pos .title p{text-align: right;}
+#print-modal-pos table{
+  width: 100%;
+  border-collapse: collapse;
+}
+#print-modal-pos td{
+  padding: 5px 0 5px 15px;
+  border: 1px solid #EEE
+}
+.tabletitle{
+  padding: 5px;
+  font-size: .5em;
+  background: #EEE;
+}
+.service{border-bottom: 1px solid #EEE;}
+.item{width: 24mm;}
+.itemtext{font-size: .5em;}
+
+#legalcopy{
+  margin-top: 5mm;
+}
+/* ### invice style ### */
+
+.input-details-margin{
+  margin-top: -7px !important;
+}
+
+.input-details-text{
+  font-size: 118% !important;
+  font-weight: 700 !important;
+}
+
+.details-text-color{
+  color: #0b7122 !important;
+}
+
+.radio-from-lebel{
+  padding-left: 15px !important;
+  width: 50% !important;
+}
+
+#scrollable-dropdown-menu{
+  width: 100% !important;
+}
+
+.sale-form{
+  background: darkseagreen;
+  padding: 8px 8px 0px 8px;
+  margin-bottom: 10px;
+}

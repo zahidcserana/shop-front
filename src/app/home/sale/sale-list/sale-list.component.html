@@ -1,0 +1,703 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div class="row sale-filter-form-background">
+          <div class="col-md-11" style="float: left">
+            <app-sale-filter style="width: 100%" (loadList)="filterList($event)"></app-sale-filter>
+          </div>
+          <div class="col-md-1" style="float: right">
+            <a routerLink="/sale">
+              <i class="ace-icon fa fa-angle-double-left"></i>
+              Sale
+            </a>
+          </div>
+        </div>
+        <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+        <table class="mb-0 table table-bordered" *ngIf="!customLoader">
+          <caption>
+            <p>
+              Total Sale Amount:
+              <span class="amount">{{
+                sammary.total_sale_amount | number: "1.2-2"
+              }}</span>, Total Due Amount:
+              <span class="amount">{{
+                sammary.total_due_amount | number: "1.2-2"
+              }}</span>
+            </p>
+          </caption>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Invoice</th>
+              <th>Customer Name</th>
+              <th>Customer Mobile</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="dataList.length > 0; else emptyData">
+            <tr *ngFor="
+                let item of dataList;
+                trackBy: trackList;
+                let i = index;
+                let e = even;
+                let o = odd
+              " [ngClass]="{ odd: o, even: e }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.created_at | date: "MMM d, y, h:mm:ss a" }}</td>
+              <td>{{ item.invoice }}</td>
+              <td>{{ item.customer_name }}</td>
+              <td>{{ item.customer_mobile }}</td>
+              <td>{{ item.total_payble_amount }}</td>
+              <td>
+                <a (click)="openModal(item.id, 'sale-modal')" id="item_id" class="btn btn-info"><i
+                    class="fa fa-eye"></i>
+                </a>
+                &nbsp;
+                <a (click)="openModal(item.id, 'print-modal')" id="item_id" class="btn btn-warning"><i
+                    class="fa fa-file-pdf"></i>
+                </a>
+                &nbsp;
+                <a (click)="openModalPos(item.id,'print-modal-pos')" id="item_id" class="btn btn-success">
+                  <i class="fa fa-print"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="6">Empty data</td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+        <boot-pagination style="width: 100%" [totalSize]="pagi.total" [listSize]="pagi.limit"
+          (pageChange)="reloadTable($event)">
+        </boot-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<jw-modal id="print-modal-pos" class="data-view-modal">
+  <table *ngIf="orderDetails" id="pos-invoice-print" style="font-size: 9px!important;width: 100%;">
+    <tr>
+      <td align="center" style="font-size: 10px!important;text-align: center;">
+        <span style="font-size: 10px!important;">
+          <strong style="font-size: 13px!important;">{{ orderDetails.pharmacy }}</strong>
+          <br>
+          Address : {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }} <br>
+          Invoice : <span style="font-weight: bold;">{{ orderDetails.invoice }}</span> <br>
+          Sold by : {{ orderDetails.created_by }} <br>
+          <span *ngIf="orderDetails.salesman_mobile">Contact : {{ orderDetails.salesman_mobile }} <br></span>
+          <span *ngIf="orderDetails.customer_name" style="font-weight: bold;">Customer : {{ orderDetails.customer_name }} <span *ngIf="orderDetails.customer_mobile">({{ orderDetails.customer_mobile }})</span><br/></span>
+          Date : {{ orderDetails.created_at }} <br>
+        </span>
+      </td>
+    </tr>
+
+    <tr>
+      <td align="center">
+        <table>
+          <tr style="font-size: 11px!important;">
+            <td colspan="4"> .... ... ... ... ... ... ... ... ... ... ... ....</td>
+          </tr>
+          <tr style="font-size: 11px!important;text-align: center;">
+            <td>
+              Item
+            </td>
+            <td style="text-align: left;">
+              Qty
+            </td>
+            <td style="text-align: right;">
+              Unit Price
+            </td>
+            <td style="text-align: right;">
+              Sub Total
+            </td>
+          </tr>
+          <tbody style="font-size: 11px!important;">
+            <tr *ngFor=" let item of orderDetails?.order_items; let i = index;">
+              <td>
+                 {{ i + 1 }}. {{ item.medicine_type |  substr3}}. {{ item.medicine | trimStr2 }} ({{ item.medicine_power }})
+              </td>
+              <td>
+                {{ item.quantity }}
+              </td>
+              <td style="text-align: right;">
+                {{ item.unit_price }}
+              </td>
+              <td style="text-align: right;">
+                {{ item.sub_total }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4"> .... ... ... ... ... ... ... ... ... ... ... ....</td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Total
+              </td>
+              <td style="text-align: right; font-weight: bold;">
+                {{ orderDetails.sub_total | number: "1.2-2" }} &#2547;
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Discount
+              </td>
+              <td style="text-align: right;">
+                {{ orderDetails.discount | number: "1.2-2" }} &#2547;
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Net
+              </td>
+              <td style="text-align: right; font-weight: bold;">
+                {{ orderDetails.total_payble_amount | number: "1.2-2" }} &#2547;
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Amount In Word
+              </td>
+              <td style="text-align: right; font-weight: bold;">
+                {{ priceInWord }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td align="center">
+        <span style="font-size: 9px!important;text-align: center;">
+          <strong> Sold items will be returned within 7 days with invoice. </strong>
+          <br>
+          বিঃ দ্রঃ পাতা কাঁটা ঔষধ, ইনসুলিন, ভ্যাক্সিন ও সুগার টেস্ট স্ট্রিপ ফেরত বা পরিবর্তন করা হয় না।
+          <br>
+          <strong>***Thank you for your order***</strong>
+          <br>
+          <strong>Powered by AnalyticalJ</strong>
+        </span>
+      </td>
+    </tr>
+  </table>
+
+  <div id="print-div">
+    <button id="print-button" (click)="printPosInvoice('pos-invoice-print')" class="mb-2 mr-2 border-0 btn btn-success">
+      <i class="fa fa-file-invoice"></i>
+    </button>
+    <button id="close-div" style="width: 7%;margin-left: 93%;" (click)="closeModal('print-modal-pos')"
+      class="btn btn-warning btn-xs">
+      Close
+    </button>
+  </div>
+</jw-modal>
+
+<jw-modal id="print-modal-pos-v2" class="data-view-modal">
+  <table *ngIf="orderDetails" id="pos-invoice-print-v2" style="font-size: 9px!important;width: 100%;">
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td>&nbsp;</td>
+            <td align="center" style="font-size: 12px!important;">
+              <span style="font-size: 12px!important;">
+                <strong style="font-size: 14px!important;">{{ orderDetails.pharmacy }}</strong>
+                <br>
+                Address : {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }} <br>
+                Invoice : {{ orderDetails.invoice }} <br>
+                Sold by : {{ orderDetails.created_by }} <br>
+                Contact : {{ orderDetails.salesman_mobile }} <br>
+                Date : {{ orderDetails.created_at }} <br>
+              </span>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td align="center">
+        <table>
+          <tr style="font-size: 12px!important;">
+            <td colspan="4"> .... ... ... ... ... ... ... ... ... ... ... ....</td>
+          </tr>
+          <tr style="font-size: 12px!important;text-align: center;">
+            <td>
+              Item
+            </td>
+            <td style="text-align: left;">
+              Qty
+            </td>
+            <td style="text-align: right;">
+              Sub Total
+            </td>
+          </tr>
+          <tbody style="font-size: 12px!important;">
+            <tr *ngFor=" let item of orderDetails?.order_items;">
+              <td>
+                {{ item.medicine_type |  substr3}}. {{ item.medicine | trimStr2 }} ({{ item.medicine_power }})
+              </td>
+              <td>
+                {{ item.quantity }}
+              </td>
+              <td style="text-align: right;">
+                {{ item.sub_total }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4"> .... ... ... ... ... ... ... ... ... ... ... ....</td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Total
+              </td>
+              <td style="text-align: right;">
+                {{ orderDetails.sub_total | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Discount
+              </td>
+              <td style="text-align: right;">
+                {{ orderDetails.discount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Net
+              </td>
+              <td style="text-align: right;">
+                {{ orderDetails.total_payble_amount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                Amount In Word
+              </td>
+              <td style="text-align: right;">
+                {{ priceInWord }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td>&nbsp;</td>
+            <td align="center">
+              <span style="font-size: 10px!important;text-align: center;">
+                বিঃ দ্রঃ পাতা কাঁটা ঔষধ, ইনসুলিন, ভ্যাক্সিন ও সুগার টেস্ট স্ট্রিপ ফেরত বা পরিবর্তন করা হয় না।
+                <br>
+                <strong>***Thank you for your order***</strong>
+                <br>
+                <strong>Powered by AnalyticalJ</strong>
+              </span>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <div id="print-div">
+    <button id="print-button" (click)="printPosInvoice('pos-invoice-print')" class="mb-2 mr-2 border-0 btn btn-success">
+      <i class="fa fa-file-invoice"></i>
+    </button>
+    <button id="close-div" style="width: 7%;margin-left: 93%;" (click)="closeModal('print-modal-pos')"
+      class="btn btn-warning btn-xs">
+      Close
+    </button>
+  </div>
+</jw-modal>
+
+<jw-modal id="print-modal-pos-old" class="data-view-modal">
+  <div *ngIf="orderDetails" class="row" id="invoice-POS">
+    <div id="top">
+      <div class="logo"></div>
+      <div class="info">
+        <h2>{{ orderDetails.pharmacy }}</h2>
+      </div>
+      <!--End Info-->
+    </div>
+    <!--End InvoiceTop-->
+    <div id="mid">
+      <div class="info">
+        <h2>Contact Info</h2>
+        <p>
+          Address : {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}
+          Invoice : {{ orderDetails.invoice }}
+          Phone : {{ orderDetails.branch_mobile }}
+        </p>
+      </div>
+    </div>
+    <!--End Invoice Mid-->
+    <div id="bot">
+      <div id="table">
+        <table>
+          <tr class="tabletitle">
+            <td class="item">
+              <h2>Item</h2>
+            </td>
+            <td class="Hours">
+              <h2>Qty</h2>
+            </td>
+            <td class="Rate">
+              <h2>Sub Total</h2>
+            </td>
+          </tr>
+          <tbody *ngIf="
+                orderDetails && orderDetails?.order_items.length > 0;
+                else noData
+              ">
+            <ng-container *ngFor="
+                  let item of orderDetails?.order_items;
+                  let i = index;
+                  trackBy: trackList
+                ">
+              <tr class="service">
+                <td class="tableitem">
+                  <p class="itemtext">{{ item.medicine }} ({{ item.medicine_power }}
+                    {{ item.medicine_type }})</p>
+                </td>
+                <td class="tableitem">
+                  <p class="itemtext">{{ item.quantity }}</p>
+                </td>
+                <td class="tableitem">
+                  <p class="itemtext">{{ item.sub_total }}</p>
+                </td>
+              </tr>
+            </ng-container>
+
+            <tr class="tabletitle">
+              <td></td>
+              <td class="Rate">
+                <h2>Total</h2>
+              </td>
+              <td class="payment">
+                <h2>{{ orderDetails.sub_total | number: "1.2-2" }}</h2>
+              </td>
+            </tr>
+            <tr class="tabletitle">
+              <td></td>
+              <td class="Rate">
+                <h2>Discount</h2>
+              </td>
+              <td class="payment">
+                <h2>{{ orderDetails.discount | number: "1.2-2" }}</h2>
+              </td>
+            </tr>
+            <tr class="tabletitle">
+              <td></td>
+              <td class="Rate">
+                <h2>Net</h2>
+              </td>
+              <td class="payment">
+                <h2>{{ orderDetails.total_payble_amount | number: "1.2-2" }}</h2>
+              </td>
+            </tr>
+            <tr class="tabletitle">
+              <td></td>
+              <td class="Rate">
+                <h2>Amount In Word</h2>
+              </td>
+              <td class="payment">
+                <h2>{{ priceInWord }}</h2>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #noData>
+            <tbody>
+              <tr>
+                <td colspan="5">
+                  <h5 class="text-center">No Item Found</h5>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </div>
+      <!--End Table-->
+      <div id="legalcopy">
+        <p class="legal"><strong>Thank you for your order!</strong>
+          <br>
+          <p style="text-align: center;">***</p>
+      </div>
+    </div>
+    <!--End InvoiceBot-->
+  </div>
+  <div id="print-div">
+    <button id="print-button" (click)="printPosInvoice('pos-invoice-print')"
+      class="mb-2 mr-2 border-0 btn-transition btn btn-outline-success">
+      <i class="fa fa-file-invoice"></i>
+    </button>
+  </div>
+</jw-modal>
+
+<jw-modal id="sale-modal" class="data-view-modal">
+  <div class="row">
+    <div *ngIf="orderDetails" class="col-md-12">
+      <header class="clearfix" style="margin-bottom: 0;">
+        <div id="logo">
+          <span class="pharmacy">Sales Return</span>
+        </div>
+      </header>
+      <main>
+        <div style="text-align: center;padding-bottom: 1%">
+          <span style="padding-right: 2%">Invoice: {{ orderDetails.invoice }}</span>
+          <span style="padding-left: 2%">{{ orderDetails.created_at }}</span>
+        </div>
+        <form *ngIf="saleItem" class="form-inline" id="myForm" (ngSubmit)="submitReturn()">
+          <div class="form-group mx-sm-3 mb-2">
+            <input value="{{ saleItem.company }}" readonly type="text" class="form-control" />
+          </div>
+          <div class="form-group mx-sm-3 mb-2">
+            <input value="{{ saleItem.medicine }}" readonly type="text" class="form-control" />
+          </div>
+          <!-- <div class="form-group mx-sm-3 mb-2">
+            <select
+              class="form-control"
+              name="unit_type"
+              id="unit_type"
+              [(ngModel)]="returnItem.unit_type"
+            >
+              <option value="PCS">PCS</option>
+              <option value="STRIP">STRIP</option>
+              <option value="BOX">BOX</option>
+            </select>
+          </div> -->
+          <div class="form-group mx-sm-3 mb-2">
+            <input type="number" max="{{ saleItem.quantity }}" id="form-field-1-2" name="new_quantity" [(ngModel)]="returnItem.new_quantity"
+              placeholder="Quantity" class="form-control" />
+          </div>
+          <div class="form-group mx-sm-3 mb-2">
+            <button type="submit" class="btn btn-primary">
+              Update
+            </button>
+          </div>
+        </form>
+        <table class="preview">
+          <thead>
+            <tr>
+              <th style="width:10%" class="sl">Sl</th>
+              <th style="width:40%; text-align: left">DESCRIPTION</th>
+              <th style="width:10%">UNIT PRICE</th>
+              <th style="width:20%">QTY(PCS)</th>
+              <th style="width:10%">SUB TOTAL</th>
+              <th style="width:20%">ACTION</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="
+              orderDetails && orderDetails?.order_items.length > 0;
+              else emptyData
+            ">
+            <ng-container *ngFor="
+                let item of orderDetails?.order_items;
+                let i = index;
+                trackBy: trackList
+              ">
+              <tr>
+                <td class="sl">{{ i + 1 }}</td>
+                <td style="text-align: left">
+                  {{ item.medicine }} ({{ item.medicine_power }},
+                  {{ item.medicine_type }}), : {{ item.quantity }}&nbsp;{{
+                    item.unit_type
+                  }}
+                </td>
+                <td class="qty">
+                  {{ item.unit_price }}
+                </td>
+                <td class="qty">
+                  {{ item.quantity }}
+                </td>
+                <td class="qty">
+                  {{ item.sub_total }}
+                </td>
+                <td class="actions">
+                  <a (click)="itemReturn(item)" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
+                  &nbsp;
+                  <a (click)="removeItem(item)" id="item_id" class="btn btn-danger btn-sm"><i
+                      class="fa pe-7s-trash"></i></a>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="7">
+                  <h5 class="text-center">No Item Found</h5>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </main>
+    </div>
+  </div>
+  <button id="close-div" style="width: 7%;margin-left: 93%;" (click)="closeModal('sale-modal')"
+    class="btn btn-warning btn-xs">
+    Close
+  </button>
+</jw-modal>
+
+<jw-modal id="print-modal" class="data-view-modal">
+  <div class="row" style="padding: 50px">
+    <div *ngIf="orderDetails" class="col-md-12" style="border: black solid 1px; width: 100%">
+      <header class="clearfix">
+        <div id="logo">
+          <span class="pharmacy">{{ orderDetails.pharmacy }}</span>
+          <br />
+          <span class="branch_area">{{ orderDetails.branch_area }},
+            {{ orderDetails.branch_city }}</span>
+        </div>
+
+        <h1 class="pdf-div" style="font-size: 1.5em">
+          Invoice# {{ orderDetails.invoice }}
+        </h1>
+        <div style="display: flex;">
+          <div id="customer-info">
+            <div>Customer: {{ orderDetails.customer_name }}</div>
+            <div>Mobile: {{ orderDetails.customer_mobile }}</div>
+            <div>{{ orderDetails.created_at }}</div>
+          </div>
+          <div style="flex: 1;"></div>
+          <div id="pharmacy-info">
+            <div>{{ orderDetails.created_by }}</div>
+            <div>{{ orderDetails.pharmacy_address }}</div>
+            <div>{{ orderDetails.branch_mobile }}</div>
+          </div>
+        </div>
+      </header>
+      <main style="margin-bottom: 5%">
+        <table class="preview">
+          <thead>
+            <tr>
+              <th style="width:10%" class="unit">Sl.</th>
+              <th style="width:30%;text-align: left">Product</th>
+              <th style="width:20%">Quantity(Pcs)</th>
+              <th style="width:20%;text-align: right">Unit Price(&#x9f3;)</th>
+              <th style="width:20%;text-align: right;padding-right: 2%">
+                Amount(&#x9f3;)
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="
+                orderDetails && orderDetails?.order_items.length > 0;
+                else emptyItem
+              ">
+            <ng-container *ngFor="
+                  let item of orderDetails?.order_items;
+                  let i = index;
+                  trackBy: trackList
+                ">
+              <tr>
+                <td class="unit">{{ i + 1 }}</td>
+                <td class="service" style="text-align: left">
+                  {{ item.medicine }} ({{ item.medicine_power }}
+                  {{ item.medicine_type }})
+                </td>
+                <td class="qty">{{ item.quantity }}</td>
+                <td style="text-align: right">{{ item.unit_price }}</td>
+                <td style="text-align: right;padding-right: 2%">
+                  {{ item.sub_total }}
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+          <tfoot style="border-top: solid darkgray 1px">
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                Total Amount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td style="text-align: left;font-weight: bold;display: flex;">
+                <span> Discount &nbsp;</span>
+                <span style="display: none" id="dicountValue">
+                  ({{ discount_amount ? (discount_amount | number: "1.2-2") : '' }})
+                </span>
+              </td>
+              <td style="text-align: right;">
+                <label class="form-check-label"><input type="checkbox" [(ngModel)]="percentage" (change)="calculation()"
+                    class="form-check-input"> % </label>
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                <input type="number" [(ngModel)]="orderDetails.discount" class="form-control" autofocus
+                  (input)="calculation()" (keydown.enter)="submit()">
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Net Amount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                    orderDetails.total_payble_amount | number: "1.2-2"
+                  }}
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td style="text-align: left;font-weight: bold">
+                Amount In Word
+              </td>
+              <td colspan="2" style="text-align: right;padding-right: 2%">
+                {{ priceInWord }}
+              </td>
+            </tr>
+          </tfoot>
+          <ng-template #emptyItem>
+            <tbody>
+              <tr>
+                <td colspan="5">
+                  <h5 class="text-center">No Item Found</h5>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </main>
+    </div>
+  </div>
+  <div id="print-div">
+    <button id="print-button" (click)="printInvoice('print-modal')" class="btn btn-success btn-xs">
+      Print
+    </button>
+    <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">
+      Close
+    </button>
+  </div>
+</jw-modal>

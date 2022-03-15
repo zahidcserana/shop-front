@@ -1,0 +1,134 @@
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-header card-header-top">
+      <span class="margin-align-title card-header-title">
+        <div class="font-icon-wrapper font-icon-lg">
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Purchase Report
+        </div>
+      </span>
+      <div class="btn-actions-pane-right">
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Purchase Report
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row sale-filter-form-background">
+        <div class="col-lg-2 padding-bot-input">
+          <input name="company" id="typeahead-basic" name="company" [(ngModel)]="filterItem.company"
+            [ngbTypeahead]="company_search" placeholder="Company" type="text" class="form-control">
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <div id="scrollable-dropdown-menu">
+            <input type="text" name="product" [(ngModel)]="filterItem.product" placeholder="Medicine/Product"
+              [ngbTypeahead]="search" class="form-control" />
+          </div>
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <input type="text" name="invoice" [(ngModel)]="filterItem.invoice" placeholder="Invoice"
+            class="form-control" />
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <input type="text" name="purchase_date" [(ngModel)]="filterItem.purchase_date" placeholder="{{ summary.dateRangeData }}"
+            class="form-control" bsDaterangepicker />
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <select class="ace form-control" name="sales_man" [(ngModel)]="filterItem.sales_man">
+            <option value="0">Select Sales Person</option>
+            <option *ngFor="let person of salesPersonList" value="{{ person.id }}">{{ person.name }}
+              ({{ person.email }})</option>
+          </select>
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <button type="button" (click)="filterPurcheseList()" id="filter-medicine-btn" class="btn btn-info">Filter</button> &nbsp;
+          <button type="button" (click)="resetList()" class="btn btn-warning">Reset</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="mb-0 table table-bordered pull-right summary"
+            style="font-size: 14px; width: 60%; margin-bottom: 20px !important;">
+            <thead>
+              <tr>
+                <th style="width: 15%;">Total Invoice</th>
+                <th style="width: 15%;">Medicine (Box)</th>
+                <th style="width: 30%;">Total Amount</th>
+                <th style="width: 20%;">Total Discount</th>
+                <th style="width: 20%;">Total Due</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td><span style="font-weight: bold;">= {{ summary.total_invoice }}</span></td>
+                <td><span style="font-weight: bold;">= {{ summary.total_medicine }}</span></td>
+                <td><span style="font-weight: bold;">= {{ summary.total_amount | number: "1.2-2" }} Tk.</span></td>
+                <td><span style="font-weight: bold;">= {{ summary.total_discount | number: "1.2-2" }} Tk.</span></td>
+                <td><span style="font-weight: bold;">= {{ summary.total_due | number: "1.2-2" }} Tk.</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-12">
+          <div class="custom_loader" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+          <table class="mb-0 table table-bordered" *ngIf="!customLoader" style="font-size: 12px;">
+            <thead>
+              <tr>
+                <th>Sl#</th>
+                <th>Purchase Invoice</th>
+                <th>Purchase Date</th>
+                <th>Medicine/Product</th>
+                <th>Qty (Box)</th>
+                <th>TP+VAT/Unit</th>
+                <th>Total T+V</th>
+                <th>Total Amount</th>
+                <th>Total Discount</th>
+                <th>Grand Total</th>
+                <th>Total Advance</th>
+                <th>Total Due</th>
+                <th>Supplier Details</th>
+                <th>Purchase By</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="showEmptyTable">
+                <td colspan="14">No Data Found! Please Select Search Parameter!</td>
+              </tr>
+              <ng-container *ngFor="let item of purchaseList; let i='index';">
+                <ng-container *ngFor="let product of item.items; let j='index';">
+                  <tr>
+                    <ng-container *ngIf="j==0">
+                      <td [attr.rowspan]="item.items.length">{{ i+1 }}</td>
+                      <td [attr.rowspan]="item.items.length">{{ item.invoice }}</td>
+                      <td [attr.rowspan]="item.items.length">{{ item.purchase_date }}</td>
+                    </ng-container>
+                    <ng-container>
+                      <td>
+                        {{ product.medicine_type | slice:0:3 }}. {{ product.medicine }}<br />
+                        {{ product.company_name }}
+                      </td>
+                      <td>{{ product.quantity }}</td>
+                      <td>{{ product.tp_with_vat | number: "1.2-2" }}</td>
+                      <td>{{ product.tp_with_vat * product.quantity | number: "1.2-2" }}</td>
+                    </ng-container>
+                    <ng-container *ngIf="j==0">
+                      <td [attr.rowspan]="item.items.length">{{ item.total_amount | number: "1.2-2" }}</td>
+                      <td [attr.rowspan]="item.items.length">{{ item.discount | number: "1.2-2" }}</td>
+                      <td [attr.rowspan]="item.items.length">{{ item.total_payble_amount | number: "1.2-2" }}</td>
+                      <td [attr.rowspan]="item.items.length">{{ item.total_advance_amount | number: "1.2-2" }}</td>
+                      <td [attr.rowspan]="item.items.length">
+                        {{ item.total_due_amount | number: "1.2-2" }}
+                        <br />
+                        <span class="small" style="color:RED;" *ngIf="item.total_due_amount<0">Receivable</span>
+                      </td>
+                      <td [attr.rowspan]="item.items.length">{{ item.company_name }}</td>
+                      <td [attr.rowspan]="item.items.length">{{ item.created_by }}</td>
+                    </ng-container>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

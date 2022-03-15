@@ -1,0 +1,108 @@
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-header card-header-top">
+      <span class="margin-align-title card-header-title">
+        <div class="font-icon-wrapper font-icon-lg">
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Sale Due Report
+        </div>
+      </span>
+      <div class="btn-actions-pane-right">
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Sale Due Report
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row sale-filter-form-background">
+        <div class="col-lg-2 padding-bot-input">
+          <input type="text" name="invoice" [(ngModel)]="filterItem.invoice" placeholder="Invoice"
+            class="form-control" />
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <input type="text" name="customer_mobile" [(ngModel)]="filterItem.customer_mobile"
+            placeholder="Customer Mobile" class="form-control" />
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <input type="text" name="sale_date" [(ngModel)]="filterItem.sale_date" placeholder="{{ summary.dateRangeData }}"
+            class="form-control" bsDaterangepicker />
+        </div>
+        <div class="col-lg-2 padding-bot-input">
+          <input type="text" name="due_amount" [(ngModel)]="filterItem.due_amount" placeholder="Due Amount"
+            class="form-control" />
+        </div>
+        <!-- <div class="col-lg-2">
+          <select class="ace form-control" name="status" [(ngModel)]="filterItem.status">
+            <option value="0">--Select Status--</option>
+            <option value="paid">PAID</option>
+            <option value="pending">PENDING</option>
+          </select>
+          <br/>
+        </div> -->
+        <div class="col-lg-4 padding-bot-input">
+          <button type="button" (click)="filterList()" class="btn btn-info mb-0">Filter</button> &nbsp;
+          <button type="button" (click)="reset()" class="btn btn-warning mb-0">Reset</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="mb-0 table table-bordered pull-right summary" style="font-size: 14px; width: 40%; margin-bottom: 20px !important;">
+            <thead>
+              <tr>
+                <th style="width: 33.3%;">Total Sale Amount</th>
+                <th style="width: 33.3%;">Total Advance </th>
+                <th style="width: 33.3%;">Total Due</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="summary">
+                <td><span style="font-weight: bold;">{{ summary.sum_sale_amount | number: "1.2-2"}}</span></td>
+                <td><span style="font-weight: bold;">{{ summary.total_advance_amount | number: "1.2-2"}}</span></td>
+                <td><span style="font-weight: bold;">{{ summary.sum_sale_due | number: "1.2-2"}}</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+        </div>
+        <div class="col-lg-4"></div>
+
+        <div class="col-lg-12">
+          <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+          <table class="mb-0 table table-bordered"  *ngIf="!customLoader" style="font-size: 12px;">
+            <thead>
+              <tr>
+                <th>SL#</th>
+                <th>Sales Invoice</th>
+                <th>Customer Details</th>
+                <th>Sales Date</th>
+                <th>Total Amount</th>
+                <th>Total Discount</th>
+                <th>Grand Total</th>
+                <th>Total Advance</th>
+                <th>Total Due</th>
+                <th>Due Payment Date</th>
+                <th>Payment Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="showEmptyTable">
+                <td colspan="11">No Data Found! Please Select Search Parameter!</td>
+              </tr>
+              <tr *ngFor="let item of dueList; let i='index';">
+                <td>{{ i+1 }}</td>
+                <td>{{ item.invoice }}</td>
+                <td>{{ item.customer_name }}<br>{{ item.customer_mobile }}</td>
+                <td>{{ item.created_at | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ item.total_payble_amount | number: "1.2-2" }}</td>
+                <td>{{ item.discount | number: "1.2-2" }}</td>
+                <td>{{ item.total_payble_amount | number: "1.2-2" }}</td>
+                <td>{{ (item.total_payble_amount - item.total_due_amount) | number: "1.2-2" }}</td>
+                <td>{{ item.total_due_amount | number: "1.2-2" }}</td>
+                <td>{{ item.due_payment_date | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ item.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

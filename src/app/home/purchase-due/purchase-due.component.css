@@ -1,0 +1,106 @@
+.card-header-top {
+  height: 3rem !important;
+}
+
+.card-header-title {
+  font-size: 1rem !important;
+}
+
+.search-div{
+  margin-left: 10px;
+}
+
+.label-margin-right{
+  margin-right: 5px;
+}
+
+.filter-medicine-btn {
+  width: 100px;
+  padding: 6px;
+  background-color: #6f6f6f;
+  border: 1px solid #6f6f6f;
+  margin-left: 10px;
+}
+
+.reset-medicine-btn {
+  width: 100px;
+  padding: 6px;
+  color: black;
+  background-color: #b3b3b3;
+  border: 1px solid #b3b3b3;
+  margin-left: 10px;
+}
+
+.td_text_align_left{
+  text-align: left !important;
+}
+
+.h6-padding{
+  padding-left: 20px;
+}
+
+
+.first-div-margin{
+  margin-left: 10px;
+}
+
+.net-wiget{
+  width: 100%;
+}
+
+.vat-lebel-width{
+  width: 100%;
+}
+
+.vat-parcentage{
+  display: inline-block;
+  float: right;
+}
+
+.widget-area-padding{
+  padding: 5px 10px 5px 10px !important;
+  border: 0px !important;
+}
+
+.td_text_align_left{
+  text-align:left !important;
+}
+
+.total-div-border
+{
+  border: 2px solid #888;
+  padding-top: 15px;
+}
+
+.hr-margin{
+  margin-bottom: 0 !important;
+}
+
+@media (min-width: 768px){
+  .offset-md-9 {
+      margin-left: 74% !important;
+  }
+}
+
+input[type=number] {
+  text-align:right;
+}
+
+input[type=text] {
+  text-align:left;
+}
+
+.widget-content-left{
+  width: 50% !important;
+  text-align: left !important;
+}
+
+.card-margin{
+  margin-bottom: 10px!important;
+}
+
+.save-btn{
+  width: 100% !important;
+  background: #6f6f6f !important;
+  border: 1px solid #6f6f6f !important;
+}

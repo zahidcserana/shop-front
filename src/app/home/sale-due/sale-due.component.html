@@ -1,0 +1,223 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div class="row sale-filter-form-background">
+            <div  class="col-md-11" style="float: left">
+                <app-due-filter style="width: 100%" (loadList)="filterList($event)"></app-due-filter>
+              </div>
+            <div  class="col-md-1" style="float: right">
+              <a routerLink="/sale">
+                <i class="ace-icon fa fa-angle-double-left"></i>
+                Sale
+              </a>
+            </div>
+          </div>
+        <table class="mb-0 table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Invoice</th>
+              <th>Customer Name</th>
+              <th>Customer Mobile</th>
+              <th>Amount</th>
+              <th>Due</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="dataList.length > 0; else emptyData">
+            <tr *ngFor="
+                let item of dataList;
+                trackBy: trackList;
+                let i = index;
+                let e = even;
+                let o = odd
+              " [ngClass]="{ odd: o, even: e }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.created_at | date: "MMM d, y, h:mm:ss a" }}</td>
+              <td>{{ item.invoice }}</td>
+              <td>{{ item.customer_name }}</td>
+              <td>{{ item.customer_mobile }}</td>
+              <td>{{ item.total_payble_amount }}</td>
+              <td>{{ item.total_due_amount }}</td>
+              <td>
+                <a (click)="openModal(item.id, 'print-modal')" id="item_id" class="btn btn-warning"><i
+                    class="fa fa-file-pdf"></i></a>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="8" style="text-align: center">Empty data</td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+        <boot-pagination style="width: 100%" [totalSize]="pagi.total" [listSize]="pagi.limit"
+          (pageChange)="reloadTable($event)"></boot-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<jw-modal id="print-modal" class="data-view-modal">
+  <div class="row" style="padding: 50px">
+    <div *ngIf="orderDetails" class="col-md-12" style="border: black solid 1px; width: 100%">
+      <header class="clearfix">
+        <div id="logo">
+          <span class="pharmacy">{{ orderDetails.pharmacy }}</span>
+          <br />
+          <span class="branch_area">{{ orderDetails.branch_area }},
+            {{ orderDetails.branch_city }}</span>
+        </div>
+
+        <h1 class="pdf-div" style="font-size: 1.5em">
+          Invoice# {{ orderDetails.invoice }}
+        </h1>
+        <div style="display: flex;">
+          <div id="customer-info">
+            <div>Customer: {{ orderDetails.customer_name }}</div>
+            <div>Mobile: {{ orderDetails.customer_mobile }}</div>
+            <div>{{ orderDetails.created_at }}</div>
+          </div>
+          <div style="flex: 1;"></div>
+          <div id="pharmacy-info">
+            <div>{{ orderDetails.created_by }}</div>
+            <div>{{ orderDetails.pharmacy_address }}</div>
+            <div>{{ orderDetails.branch_mobile }}</div>
+          </div>
+        </div>
+      </header>
+      <main style="margin-bottom: 5%">
+        <table class="preview">
+          <thead>
+            <tr>
+              <th style="width:10%" class="unit">Sl.</th>
+              <th style="width:30%;text-align: left">Product</th>
+              <th style="width:20%">Quantity(Pcs)</th>
+              <th style="width:20%;text-align: right">Unit Price(&#x9f3;)</th>
+              <th style="width:20%;text-align: right;padding-right: 2%">
+                Amount(&#x9f3;)
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="
+              orderDetails && orderDetails?.order_items.length > 0;
+              else emptyItem
+            ">
+            <ng-container *ngFor="
+                let item of orderDetails?.order_items;
+                let i = index;
+                trackBy: trackList
+              ">
+              <tr>
+                <td class="unit">{{ i + 1 }}</td>
+                <td class="service" style="text-align: left">
+                  {{ item.medicine }} ({{ item.medicine_power }}
+                  {{ item.medicine_type }})
+                </td>
+                <td class="qty">{{ item.quantity }}</td>
+                <td style="text-align: right">{{ item.unit_price }}</td>
+                <td style="text-align: right;padding-right: 2%">
+                  {{ item.sub_total }}
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+          <tfoot style="border-top: solid darkgray 1px">
+            <tr>
+              <td colspan="2">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                Total Amount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Discount Amount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Net Amount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                  orderDetails.total_payble_amount | number: "1.2-2"
+                }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Due Amount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                  orderDetails.total_due_amount | number: "1.2-2"
+                }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Payout Amount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                <input type="number" [(ngModel)]="payout.amount" class="form-control" autofocus
+                  (keydown.enter)="payoutAmount()">
+              </td>
+            </tr>
+            <!-- <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Status
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                <select name="status" id="status" [(ngModel)]="payout.status" class="form-control">
+                  <option value="DUE">DUE</option>
+                  <option value="COMPLETE">COMPLETE</option>
+                  <option value="CANCEL">CANCEL</option>
+                  <option value="PENDING">PENDING</option>
+                </select>
+              </td>
+            </tr> -->
+            <tr>
+              <td colspan="3">&nbsp;</td>
+              <td colspan="2" style="text-align: right;padding-right: 2%">
+                <button style="width: 45%" class="btn btn-success" (click)="payoutAmount()">Save</button>
+              </td>
+            </tr>
+          </tfoot>
+          <ng-template #emptyItem>
+            <tbody>
+              <tr>
+                <td colspan="5">
+                  <h5 class="text-center">No Item Found</h5>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </main>
+    </div>
+  </div>
+  <div id="print-div">
+    <button id="print-button" (click)="printInvoice('print-modal')" class="btn btn-success btn-xs">
+      Print
+    </button>
+    <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">
+      Close
+    </button>
+  </div>
+</jw-modal>

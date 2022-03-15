@@ -1,0 +1,116 @@
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-header card-header-top">
+      <span class="margin-align-title card-header-title">
+        <div class="font-icon-wrapper font-icon-lg">
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Inventory List
+        </div>
+      </span>
+      <div class="btn-actions-pane-right">
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Inventory List
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12 sale-filter-form-background">
+            <form id="myForm" class="form-inline form-width-100" (ngSubmit)="filterList()">
+              <div class="position-relative form-group padding-bot-input">
+                <select class="ace form-control" name="company" [(ngModel)]="filterItem.company">
+                  <option value="0">Select Company</option>
+                  <option *ngFor="let company of companyList" value="{{ company.id }}">{{ company.name }}</option>
+                </select>
+              </div>
+              <div class="position-relative form-group search-div padding-bot-input">
+                <input id="typeahead-basic" name="generic" [(ngModel)]="filterItem.generic" placeholder="Generic" type="text" [ngbTypeahead]="generic_search" class="form-control">
+              </div>
+              <div class="position-relative form-group search-div padding-bot-input">
+                <div id="scrollable-dropdown-menu">
+                  <input id="typeahead-basic" name="search" [(ngModel)]="filterItem.medicine" placeholder="Medicine" type="text" [ngbTypeahead]="search" class="form-control">
+                </div>
+              </div>
+              <div class="position-relative form-group search-div padding-bot-input">
+                <input id="type" name="search_type" [(ngModel)]="filterItem.type" placeholder="Type" type="text" [ngbTypeahead]="search_type" class="form-control">
+              </div>
+              <div class="position-relative form-group search-div padding-bot-input">
+                <input name="quantity" [(ngModel)]="filterItem.quantity" id="quantity" placeholder="Quantity" type="number" class="form-control">
+              </div>
+              <div class="position-relative form-check padding-bot-input">
+                <label class="form-check-label low-stock">
+                  <input type="checkbox" name="low_stock_qty" [(ngModel)]="filterItem.low_stock_qty" class="form-check-input"> <span style="color: white">Low Stock QTY</span> &nbsp;
+                </label>
+              </div>
+              <div class="position-relative form-check">
+                <button type="button" (click)="filterList()" class="btn btn-info">
+                  Filter
+                </button>
+                &nbsp;
+                <button type="button" (click)="resetList()" class="btn btn-warning">
+                  Reset
+                </button>
+              </div>
+            </form>
+        </div>
+        <div class="col-lg-12">
+          <table class="mb-0 table table-bordered pull-right summary" style="font-size: 14px; width: 40%; margin-bottom: 20px !important;">
+              <thead>
+                  <tr>
+                      <th style="width: 25%;">Total TP</th>
+                      <th style="width: 25%;">Total MRP</th>
+                      <th style="width: 25%;">Total Profit</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td><span style="font-weight: bold;"> &#2547; {{ summary.total_tp | number: "1.2-2" }}</span></td>
+                      <td><span style="font-weight: bold;"> &#2547; {{ summary.total_mrp | number: "1.2-2" }}</span></td>
+                      <td><span style="font-weight: bold;"> &#2547; {{ summary.total_profit | number: "1.2-2" }}</span></td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+        <div class="col-lg-12">
+          <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+          <table  *ngIf="!customLoader" class="mb-0 table table-hover">
+            <thead>
+              <tr>
+                  <th>#</th>
+                  <th class="td_text_align_left" width="50%">Product Name</th>
+                  <th>QTY (Pcs)</th>
+                  <th>T.P. (Tk.)</th>
+                  <th>M.R.P. (Tk.)</th>
+                  <th>Low Stock Alert Qty</th>
+                  <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of inventoryList; let i='index';">
+                  <td>{{ i+1 }}</td>
+                  <td style="text-align: left;">
+                    {{ item.medicine_type | slice:0:3 }}. {{ item.medicine_name }}
+                    <span class="small">({{ item.strength }}) {{ item.generic }}<br/>{{ item.company_name }}<br/>{{ item.barcode }}</span>
+                  </td>
+                  <td>
+                    <p *ngIf="item.quantity<'0'">0</p>
+                    <p *ngIf="item.quantity>='0'">{{ item.quantity }}</p>
+                  </td>
+                  <td><span id='mrp{{ i }}'>{{ item.tp | number: "1.2-2" }}</span></td>
+                  <td><span id='tp{{ i }}'>{{ item.mrp | number: "1.2-2" }}</span></td>
+                  <td>
+                      <span id='{{ i }}'>{{ item.low_stock_qty }}</span>
+                  </td>
+                  <td>
+                    <button (click)="ChangeQty(item, i)" id="order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-info"><i class="pe-7s-bell btn-icon-wrapper"> </i></button>
+                    <button (click)="ChangeMrpTp(item, i)" id="order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-danger"><i class="pe-7s-note btn-icon-wrapper"> </i></button>
+                  </td>
+              </tr>
+            </tbody>
+          </table>
+          <boot-pagination style="width: 100%" *ngIf="paginationShow" [totalSize]="pagi.total" [listSize]="pagi.limit"
+            (pageChange)="reloadTable($event)">
+          </boot-pagination>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
