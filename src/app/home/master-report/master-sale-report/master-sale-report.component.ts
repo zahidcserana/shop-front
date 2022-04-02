@@ -44,7 +44,15 @@ export class MasterSaleReportComponent implements OnInit {
   showEmptyTable = false;
   medicineList = [];
   paymentTypes = [];
-  summary: any;
+  summary: any =
+  {
+    total_amount: 0,
+    total_discount: 0,
+    total_due: 0,
+    total_invoice: 0,
+    total_medicine: 0,
+    dateRangeData: '00-00-0000'
+  };
   customLoader = false;
   types: any;
   constructor(

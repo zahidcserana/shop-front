@@ -54,8 +54,8 @@ export class HeaderComponent implements OnInit {
     window.location.reload();
   }
   dataSync() {
-    this.purchaseDataSync();
-    this.saleDataSync();
+    // this.purchaseDataSync();
+    // this.saleDataSync();
     Swal.fire({
       position: "center",
       type: "success",

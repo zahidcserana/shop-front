@@ -37,7 +37,7 @@
                 <tr *ngFor="let item of purchaseList; let i='index';">
                   <th scope="row">{{ i+1 }}</th>
                   <td>{{ item.invoice }}</td>
-                  <td>{{ item.company_name }}</td>
+                  <td>{{ item.company == null ?  'N/A' : item.company.company_name}}</td>
                   <td>{{ item.company_invoice }}</td>
                   <td>{{ item.purchase_date }}</td>
                   <td>{{ item.total_amount }}</td>

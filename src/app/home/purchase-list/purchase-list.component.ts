@@ -57,7 +57,7 @@ export class PurchaseListComponent implements OnInit {
     private modalService: ModalService,
     private toastr: ToastrService
   ) {
-    this.pagi.limit = this.pagi.limit ? this.pagi.limit : 500;
+    this.pagi.limit = this.pagi.limit ? this.pagi.limit : 100;
     this.pagi.page = this.pagi.page ? this.pagi.page : 1;
   }
 
@@ -96,7 +96,7 @@ export class PurchaseListComponent implements OnInit {
         this.loader = false;
         this.purchaseList = response.data;
         this.customLoader = false;
-        if (!this.purchaseList.length) {
+        if (!response.total) {
           this.showEmptyTable = true;
         } else {
           this.showEmptyTable = false;
@@ -124,7 +124,7 @@ export class PurchaseListComponent implements OnInit {
     this.purchaseListService.getPurcheseDetails(orderId).subscribe(
       (response) => {
         let itemlist = response.data;
-        if (!itemlist.length) {
+        if (!response.total) {
           this.toastr.error("All Products has been deleted from the list!!");
           this.closeModal("print-modal");
         } else {
@@ -194,8 +194,7 @@ export class PurchaseListComponent implements OnInit {
     this.itemId = item.item_id;
     this.orderId = item.item_order_id;
     this.updatePurchaseItem.item_id = item.item_id;
-    const itemName =
-      item.medicine_type.substring(0, 3) + ". " + item.medicine_name;
+    const itemName = item.medicine_type.substring(0, 3) + '. ' + item.medicine_name;
     this.updatePurchaseItem.order_id = item.item_order_id;
     this.updatePurchaseItem.item_name = itemName;
     this.updatePurchaseItem.company = item.company_name;
