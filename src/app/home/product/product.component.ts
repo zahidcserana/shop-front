@@ -12,38 +12,23 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
-
-  constructor(
-      private ProductService: ProductService,
-      private router: Router,
-      private route: ActivatedRoute,
-    ) { }
-
-  ngOnInit() {
-    // this.sub = this.route.data.subscribe(
-    //   val => {
-    //     this.companyList = val && val['companies'] ? val['companies'] : [];
-    //   }
-    // );
-    this.getProductList();
-    this.getCompanyList();
-    this.getProductTypeList();
-  }
-
   loader: boolean;
   loader_sub: boolean;
   sub: Subscription;
   companyList: any[] = [];
 
   allCompanyList: any[] = [];
+  allBrandList: any[] = [];
   allTypeList: any[] = [];
 
   productDetails: any = {
+    id: undefined,
     company: '',
     product_name: '',
     generic: '',
     power: '',
     type: '',
+    brand_id: '',
     type_id: '',
     product_type: '1'
   }
@@ -58,32 +43,80 @@ export class ProductComponent implements OnInit {
 
   customLoader = true;
   showEmptyTable = false;
+  editForm = false;
+  swalWithBootstrapButtons = null;
 
-  company_search = (company$: Observable<string>) =>
-  company$.pipe(
-    debounceTime(200),
-    distinctUntilChanged(),
-    map(term => term.length < 2 ? []
-      : this.companyList.filter(name => name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-  );
+  constructor(
+    private ProductService: ProductService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+     this.swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success modal-button',
+        cancelButton: 'btn btn-danger modal-button'
+      },
+      buttonsStyling: false
+    });
+   }
 
-  search = (text$: Observable<string>) => {
-    return text$.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      tap(() => {
-        this.searchData = [];
-        this.loader_sub = true;
-      }),
-      switchMap(term => {
-        this.loader_sub = true;
-        this.typeSearch.search = term.trim();
-        return this.getTypeList(this.typeSearch);
-      })
-    );
-  };
+  ngOnInit() {
+    this.getProductList();
+    this.getCompanyList();
+    this.getBrandList();
+    this.getProductTypeList();
+  }
 
-  getCompanyList(){
+  editProduct(id) {
+    console.log(id);
+    const product = this.productList.find(element => element.id === id);
+    console.log(product);
+    this.productDetails.id = product.id;
+    this.productDetails.product_name = product.brand_name;
+    this.productDetails.brand_id = product.brand_id;
+    this.productDetails.type = product.medicine_type_id;
+    this.productDetails.generic = product.generic_name;
+
+    this.editForm = true;
+
+  }
+
+  deleteProduct(id) {
+    const product = this.productList.find(element => element.id === id);
+    this.swalWithBootstrapButtons.fire({
+      title: 'Do you want to delete this product?',
+      text: product.brand_name,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.value) {
+        this.remove(id);
+      }
+    });
+  }
+
+
+  remove(id) {
+    this.ProductService
+    .deleteProduct(id)
+    .subscribe(res => {
+      if (res.success === true) {
+        this.getProductList();
+        Swal.fire({
+          position: "center",
+          type: "success",
+          title: "Done",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    });
+  }
+
+  getCompanyList() {
     this.ProductService.getCompanyList().pipe(map(response => {
       return response;
     }), catchError(err => {
@@ -92,6 +125,18 @@ export class ProductComponent implements OnInit {
     })).subscribe(response => {
       this.loader = false;
       this.allCompanyList = response;
+    });
+  }
+
+  getBrandList(){
+    this.ProductService.getBrandList().pipe(map(response => {
+      return response;
+    }), catchError(err => {
+      this.loader = false;
+      return of([]);
+    })).subscribe(response => {
+      this.loader = false;
+      this.allBrandList = response;
     });
   }
 
@@ -145,8 +190,7 @@ export class ProductComponent implements OnInit {
   };
 
   AddProduct(){
-    if(this.productDetails.product_name && this.productDetails.company && this.productDetails.type)
-    {
+    if (this.productDetails.product_name && this.productDetails.type) {
       this.productDetails.type_id = this.productDetails.type;
 
       this.productDetails.product_name = this.productDetails.product_name.trim();
@@ -161,24 +205,15 @@ export class ProductComponent implements OnInit {
       company: '',
       product_name: '',
       generic: '',
-      power: '',
+      brand_id: '',
       type: '',
       type_id: '',
       product_type: '1'
     };
   }
 
-  submitProductDetails()
-  {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: 'btn btn-success modal-button',
-        cancelButton: 'btn btn-danger modal-button'
-      },
-      buttonsStyling: false
-    })
-    
-    swalWithBootstrapButtons.fire({
+  submitProductDetails() {
+    this.swalWithBootstrapButtons.fire({
       title: 'Do you want submit product details?',
       text: "Please check all the details!",
       type: 'warning',
@@ -187,35 +222,62 @@ export class ProductComponent implements OnInit {
       cancelButtonText: 'Cancel',
       reverseButtons: true
     }).then((result) => {
-
       if (result.value) {
-        this.ProductService.submitProduct(this.productDetails)
-        .then(response => {
+        if (this.productDetails.id) {
+          this.ProductService.updateProduct(this.productDetails)
+          .then(response => {
 
-          $("#product_name").focus();
+            $("#product_name").focus();
 
-          if(response.status){
-            swalWithBootstrapButtons.fire(
-              'Product details submitted successful!',
-              'Successful!',
-              'success'
-            );
-            this.getProductList();
-          }else{
-            swalWithBootstrapButtons.fire(
-              'Opps..',
-              'The Product information already exist!',
-              'error'
-            );
-          }
+            if(response.status){
+              this.swalWithBootstrapButtons.fire(
+                'Product details submitted successful!',
+                'Successful!',
+                'success'
+              );
+              this.getProductList();
+            }else{
+              this.swalWithBootstrapButtons.fire(
+                'Opps..',
+                'The Product information already exist!',
+                'error'
+              );
+            }
 
-          this.resetList();
-        })
-        .catch(err => {
-          console.log(err)
-        });
+            this.resetList();
+          })
+          .catch(err => {
+            console.log(err)
+          });
+        } else {
+          this.ProductService.submitProduct(this.productDetails)
+          .then(response => {
+
+            $("#product_name").focus();
+
+            if(response.status){
+              this.swalWithBootstrapButtons.fire(
+                'Product details submitted successful!',
+                'Successful!',
+                'success'
+              );
+              this.getProductList();
+            }else{
+              this.swalWithBootstrapButtons.fire(
+                'Opps..',
+                'The Product information already exist!',
+                'error'
+              );
+            }
+
+            this.resetList();
+          })
+          .catch(err => {
+            console.log(err)
+          });
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        swalWithBootstrapButtons.fire(
+        this.swalWithBootstrapButtons.fire(
           'Cancelled',
           '',
           'error'

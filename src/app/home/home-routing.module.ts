@@ -64,6 +64,11 @@ const routes: Routes = [
         resolve: { users: HomeResolveService }
       },
       {
+        path: 'supplier',
+        loadChildren: './supplier/supplier.module#SupplierModule',
+        resolve: { suppliers: HomeResolveService }
+      },
+      {
         path: 'notifications',
         loadChildren: './notification/notification.module#NotificationModule'
       },
@@ -78,8 +83,7 @@ const routes: Routes = [
       },
       {
         path: 'products/settings',
-        loadChildren: './product-settings/product-settings.module#ProductSettingsModule',
-        resolve: { companies: HomeResolveService }
+        loadChildren: './product-settings/product-settings.module#ProductSettingsModule'
       },
       {
         path: 'settings',

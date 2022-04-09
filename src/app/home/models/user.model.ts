@@ -18,3 +18,11 @@ export class ResetPasswordModel {
   user: number;
 }
 
+export class Supplier {
+  name: string;
+  contact_person: string;
+  address: string;
+  mobile: string;
+  email: string;
+  status = 'ACTIVE';
+}

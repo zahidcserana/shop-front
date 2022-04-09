@@ -178,6 +178,14 @@ table > caption {
   width: 50%;
 }
 
+.supplier-modal .jw-modal .jw-modal-body {
+  padding: 20px;
+  background: #fff;
+  margin: 40px;
+  margin-left: 25%;
+  width: 50%;
+}
+
 .data-view-modal #close-button-modal {
   width: 7%;
   left: 50%;

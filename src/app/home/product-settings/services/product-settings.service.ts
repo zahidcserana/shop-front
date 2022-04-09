@@ -21,6 +21,10 @@ export class ProductSettingsService {
     return this.http.get(`company-list`).pipe(map(res => res));
   }
 
+  getBrandList(){
+    return this.http.get(`brand/list`).pipe(map(res => res));
+  }
+
   submitItem(data: any) {
     return this.http.post('purchase/save', data).toPromise();
   }
@@ -41,7 +45,18 @@ export class ProductSettingsService {
     return this.http.post('type/update', data).toPromise();
   }
 
+  saveBrand(data: any) {
+    return this.http.post('brand/save', data).toPromise();
+  }
+
   getPreviousPurchasedetails(data: any) {
     return this.http.post('purchase/previous/details', data).toPromise();
+  }
+
+  deleteType(id) {
+    return this.http.delete(`type/${id}`).pipe(map(res => res));
+  }
+  deleteBrand(id) {
+    return this.http.delete(`brand/${id}`).pipe(map(res => res));
   }
 }

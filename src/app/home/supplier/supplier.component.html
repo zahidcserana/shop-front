@@ -1,0 +1,163 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div>
+          <div style="float: right">
+            <button (click)="openModal('supplier-modal')" id="item_id" class="mb-2 mr-2 btn btn-success btn-block">
+              <i class="fa fa-user"></i>
+               New Supplier
+            </button>
+          </div>
+        </div>
+        <table class="data-list mb-0 table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Contact Person</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="supplierList.length > 0; else emptyData">
+            <tr *ngFor="
+                  let item of supplierList;
+                  trackBy: trackList;
+                  let i = index;
+                  let e = even;
+                  let o = odd
+                " [ngClass]="{ odd: o, even: e }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.contact_person }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.mobile }}</td>
+              <td>{{ item.status }}</td>
+              <td>
+                <a style="cursor: pointer" class="btn btn-info fa fa-edit" (click)="editSupplier(item.id)"></a> &nbsp;
+                <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="remove(item.id)"></a>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="6" class="empty-data">Empty data</td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<jw-modal id="edit-modal" class="supplier-modal data-view-modal">
+  <h3 style="text-align: center;"> Supplier Edit</h3>
+  <div class="row" style="padding: 25px">
+    <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
+      <main style="margin-bottom: 5%">
+        <form class="form" #form="ngForm" id="myForm" (ngSubmit)="update()" style="padding-top: 10px">
+          <div class="form-group">
+            <label for="inputPassword2">Name</label>
+            <input type="text" class="form-control" name="name" [(ngModel)]="supplierInfo.name" placeholder="Name" />
+          </div>
+          <div class="form-group">
+            <label for="inputPassword2">Contact Person</label>
+            <input type="text" class="form-control" name="contact_person" [(ngModel)]="supplierInfo.contact_person" placeholder="Contact Person" />
+          </div>
+          <div class="form-group">
+            <label for="inputPassword2"> Email</label>
+            <input type="text" class="form-control" name="email" [(ngModel)]="supplierInfo.email" placeholder="Email" />
+          </div>
+          <div class="form-group">
+            <label for="inputPassword2"> Mobile</label>
+            <input type="text" class="form-control" name="mobile" [(ngModel)]="supplierInfo.mobile" placeholder="Mobile" />
+          </div>
+          <div class="form-group">
+            <label for="inputPassword2"> Address</label>
+            <input type="text" class="form-control" name="address" [(ngModel)]="supplierInfo.address" placeholder="Address" />
+          </div>
+          <div class="form-group">
+            <label for="inputPassword2"> Status</label>
+            <select name="supplier_status" id="status" [(ngModel)]="supplierInfo.status" class="form-control">
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="INACTIVE">INACTIVE</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary mb-2" style="margin-right:10px">
+            <i class="fa fa-calendar-check-o"></i>
+            Update
+          </button>
+          <button type="button" (click)="closeForm()" class="btn btn-warning mb-2" style="margin-right:10px">
+            <i class="fa fa-calendar-check-o"></i>
+            Cancel
+          </button>
+        </form>
+      </main>
+    </div>
+  </div>
+</jw-modal>
+
+<jw-modal id="supplier-modal" class="supplier-modal data-view-modal">
+  <h3 style="text-align: center;"> Supplier Info</h3>
+  <div class="row" style="padding: 25px">
+    <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
+      <main style="margin-bottom: 5%">
+        <form [formGroup]="registerForm" (ngSubmit)="submit()" style="padding-top: 10px">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" formControlName="name" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+              <div *ngIf="f.name.errors.required">Supplier name is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Contact Person</label>
+            <input type="text" formControlName="contact_person" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.contact_person.errors }" />
+            <div *ngIf="submitted && f.contact_person.errors" class="invalid-feedback">
+              <div *ngIf="f.contact_person.errors.required">Contact Person is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="text" formControlName="email" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">User Email is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Mobile</label>
+            <input type="text" formControlName="mobile" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }" />
+            <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+              <div *ngIf="f.mobile.errors.required">Mobile is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" formControlName="address" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.address.errors }" />
+            <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+              <div *ngIf="f.address.errors.required">Address is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary">Save</button>
+            &nbsp;
+            <a (click)="closeModal('supplier-modal')" class="btn btn-warning btn-xs">
+              Close
+            </a>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+</jw-modal>

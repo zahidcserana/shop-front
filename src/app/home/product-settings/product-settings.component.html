@@ -18,20 +18,20 @@
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
                     <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
-                    Add Or Modify Company
+                    Add Or Modify Brand
                 </div>
             </div>
             <div class="tab-content">
                 <div class="tab-pane fade active show" id="tab-eg-55">
                     <div class="widget-chart p-3">
                         <div style="height: 400px">
-                          <form id="myForm" class="form-width-100" (ngSubmit)="AddCompany()">
+                          <form id="myForm" class="form-width-100" (ngSubmit)="AddNewBrand()">
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <div class="position-relative form-group">
-                                      <label for="company" class="">Company</label>
-                                      <input name="company" id="typeahead-basic" name="company" [(ngModel)]="companyDetails.company" [ngbTypeahead]="company_search" placeholder="Company" type="text" class="form-control" (selectItem)="setCompany($event)">
-                                    </div>
+                                  <div class="position-relative form-group">
+                                    <label class="">Brand &nbsp; <a style="cursor: pointer" class="widget-heading" (click)="newBrand()"><u>Reset</u></a></label>
+                                    <input id="brand" name="search" [(ngModel)]="brandDetails.name" placeholder="Brand" type="text" class="form-control">
+                                  </div>
                                 </div>
                             </div>
                           </form>
@@ -39,7 +39,7 @@
                           <div class="scroll-area-sm">
                               <div class="scrollbar-container ps ps--active-y">
                                   <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
-                                      <li class="list-group-item" *ngFor="let company of allCompanyList; let i='index';">
+                                      <li class="list-group-item" *ngFor="let brand of allBrandList; let i='index';">
                                           <div class="widget-content p-0">
                                               <div class="widget-content-wrapper">
                                                   <div class="widget-content-left mr-3">
@@ -48,7 +48,10 @@
                                                       </small>
                                                   </div>
                                                   <div class="widget-content-left">
-                                                      <div class="widget-heading"> {{ company.name }}</div>
+                                                      <a style="cursor: pointer" class="widget-heading" (click)="editBrand(brand)">{{ brand.name }}</a>
+                                                  </div>
+                                                  <div class="widget-content-right">
+                                                    <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="deleteBrand(brand)"></a>
                                                   </div>
                                               </div>
                                           </div>
@@ -62,7 +65,6 @@
                                   </div>
                               </div>
                           </div>
-                          
                         </div>
                     </div>
                 </div>
@@ -76,7 +78,7 @@
               <div class="card-header-tab card-header">
                   <div class="card-header-title">
                       <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
-                      Add New Type
+                    Add Or Modify Type
                   </div>
               </div>
               <div class="tab-content">
@@ -87,8 +89,8 @@
                               <div class="form-row">
                                   <div class="col-md-12">
                                       <div class="position-relative form-group">
-                                        <label class="">Type</label>
-                                        <input id="medicine_type" name="search" [(ngModel)]="typeDetails.type" placeholder="Type" type="text" [ngbTypeahead]="search" class="form-control" (selectItem)="setType($event)">
+                                        <label class="">Type &nbsp; <a style="cursor: pointer" class="widget-heading" (click)="newType()"><u>Reset</u></a></label>
+                                        <input id="medicine_type" name="search" [(ngModel)]="typeDetails.type" placeholder="Type" type="text" class="form-control">
                                       </div>
                                   </div>
                               </div>
@@ -106,8 +108,11 @@
                                                         </small>
                                                     </div>
                                                     <div class="widget-content-left">
-                                                        <div class="widget-heading"> {{ type.name }}</div>
+                                                        <a style="cursor: pointer" class="widget-heading" (click)="editType(type)">{{ type.name }}</a>
                                                     </div>
+                                                    <div class="widget-content-right">
+                                                      <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="deleteType(type)"></a>
+                                                  </div>
                                                 </div>
                                             </div>
                                         </li>

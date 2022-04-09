@@ -1,5 +1,9 @@
 # Smart Pharmacy Management System
 
+## TODO
+
+- New module to add product like supplier
+
 ## Module
 
 - Purchase
@@ -26,3 +30,8 @@ npm run build
 npm run package-win
 
 npm run create-installer-win
+
+## Development tools
+
+- ng g m home/supplier --routing=true
+- ng g c home/supplier

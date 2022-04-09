@@ -21,8 +21,20 @@ export class ProductService {
     return this.http.get(`company-list`).pipe(map(res => res));
   }
 
+  getBrandList(){
+    return this.http.get(`brand/list`).pipe(map(res => res));
+  }
+
   submitProduct(data: any) {
     return this.http.post('product/save', data).toPromise();
+  }
+
+  updateProduct(data: any) {
+    return this.http.post(`product/update/${data.id}`, data).toPromise();
+  }
+
+  deleteProduct(id) {
+    return this.http.delete(`product/${id}/delete`).pipe(map(res => res));
   }
 
   getInventoryFilterList(params){
