@@ -5,6 +5,7 @@ import * as $ from "jquery";
 import Swal from 'sweetalert2';
 import { ProductService } from './services/product.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ModalService } from 'src/app/common/_modal';
 
 @Component({
   selector: 'app-product',
@@ -31,14 +32,14 @@ export class ProductComponent implements OnInit {
     brand_id: '',
     type_id: '',
     product_type: '1'
-  }
+  };
 
   typeList = [];
   productList = [];
 
   searchData: any[] = [];
   typeSearch: any = {
-    search: ""
+    search: ''
   };
 
   customLoader = true;
@@ -47,9 +48,10 @@ export class ProductComponent implements OnInit {
   swalWithBootstrapButtons = null;
 
   constructor(
-    private ProductService: ProductService,
+    private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute,
+    private modalService: ModalService,
   ) {
      this.swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -67,6 +69,13 @@ export class ProductComponent implements OnInit {
     this.getProductTypeList();
   }
 
+  openModal(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModal(id: string) {
+    this.modalService.close(id);
+  }
+
   editProduct(id) {
     console.log(id);
     const product = this.productList.find(element => element.id === id);
@@ -78,7 +87,7 @@ export class ProductComponent implements OnInit {
     this.productDetails.generic = product.generic_name;
 
     this.editForm = true;
-
+    this.modalService.open('edit-modal');
   }
 
   deleteProduct(id) {
@@ -100,7 +109,7 @@ export class ProductComponent implements OnInit {
 
 
   remove(id) {
-    this.ProductService
+    this.productService
     .deleteProduct(id)
     .subscribe(res => {
       if (res.success === true) {
@@ -117,7 +126,7 @@ export class ProductComponent implements OnInit {
   }
 
   getCompanyList() {
-    this.ProductService.getCompanyList().pipe(map(response => {
+    this.productService.getCompanyList().pipe(map(response => {
       return response;
     }), catchError(err => {
       this.loader = false;
@@ -129,7 +138,7 @@ export class ProductComponent implements OnInit {
   }
 
   getBrandList(){
-    this.ProductService.getBrandList().pipe(map(response => {
+    this.productService.getBrandList().pipe(map(response => {
       return response;
     }), catchError(err => {
       this.loader = false;
@@ -141,7 +150,7 @@ export class ProductComponent implements OnInit {
   }
 
   getProductTypeList(){
-    this.ProductService.getProductType().pipe(map(response => {
+    this.productService.getProductType().pipe(map(response => {
       return response;
     }), catchError(err => {
       this.loader = false;
@@ -154,7 +163,7 @@ export class ProductComponent implements OnInit {
 
   getProductList(){
     this.customLoader = true;
-    this.ProductService.getProductList().pipe(map(response => {
+    this.productService.getProductList().pipe(map(response => {
       return response;
     }), catchError(err => {
       this.loader = false;
@@ -172,7 +181,7 @@ export class ProductComponent implements OnInit {
       return [];
     }
 
-    return this.ProductService.searchProductType(params).pipe(
+    return this.productService.searchProductType(params).pipe(
       map(res => {
         this.typeList = [];
         this.loader_sub = false;
@@ -224,12 +233,11 @@ export class ProductComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         if (this.productDetails.id) {
-          this.ProductService.updateProduct(this.productDetails)
+          this.productService.updateProduct(this.productDetails)
           .then(response => {
-
-            $("#product_name").focus();
-
-            if(response.status){
+            this.modalService.close('edit-modal');
+            $('#product_name').focus();
+            if (response.status) {
               this.swalWithBootstrapButtons.fire(
                 'Product details submitted successful!',
                 'Successful!',
@@ -250,12 +258,11 @@ export class ProductComponent implements OnInit {
             console.log(err)
           });
         } else {
-          this.ProductService.submitProduct(this.productDetails)
+          this.productService.submitProduct(this.productDetails)
           .then(response => {
-
             $("#product_name").focus();
-
-            if(response.status){
+            if (response.status) {
+              this.modalService.close('create-modal');
               this.swalWithBootstrapButtons.fire(
                 'Product details submitted successful!',
                 'Successful!',

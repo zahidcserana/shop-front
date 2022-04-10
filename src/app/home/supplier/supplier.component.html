@@ -4,7 +4,7 @@
       <div class="card-body">
         <div>
           <div style="float: right">
-            <button (click)="openModal('supplier-modal')" id="item_id" class="mb-2 mr-2 btn btn-success btn-block">
+            <button (click)="openModal('create-modal')" id="item_id" class="mb-2 mr-2 btn btn-success btn-block">
               <i class="fa fa-user"></i>
                New Supplier
             </button>
@@ -55,7 +55,7 @@
   </div>
 </div>
 
-<jw-modal id="edit-modal" class="supplier-modal data-view-modal">
+<jw-modal id="edit-modal" class="view-modal data-view-modal">
   <h3 style="text-align: center;"> Supplier Edit</h3>
   <div class="row" style="padding: 25px">
     <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
@@ -103,7 +103,7 @@
   </div>
 </jw-modal>
 
-<jw-modal id="supplier-modal" class="supplier-modal data-view-modal">
+<jw-modal id="create-modal" class="view-modal data-view-modal">
   <h3 style="text-align: center;"> Supplier Info</h3>
   <div class="row" style="padding: 25px">
     <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
@@ -152,7 +152,7 @@
           <div class="form-group">
             <button class="btn btn-primary">Save</button>
             &nbsp;
-            <a (click)="closeModal('supplier-modal')" class="btn btn-warning btn-xs">
+            <a (click)="closeModal('create-modal')" class="btn btn-warning btn-xs">
               Close
             </a>
           </div>

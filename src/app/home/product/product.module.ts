@@ -6,6 +6,7 @@ import { ProductComponent } from './product.component';
 import { ProductService } from './services/product.service';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalModule } from 'src/app/common/_modal/modal.module';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     ProductRoutingModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    ModalModule
   ],
   providers: [ProductService]
 })
