@@ -12,10 +12,8 @@
       </div>
       <div class="form-group mx-sm-3 mb-2">
         <label for="inputPassword2" class="sr-only">Company</label>
-          <select class="ace form-control" name="brand_id" [(ngModel)]="filterData.brand_id">
-            <option value="">Select Brand</option>
-            <option *ngFor="let brand of allBrandList" value="{{ brand.id }}">{{ brand.name }}</option>
-          </select>
+        <input id="typeahead-basic_2" name="company_name" [(ngModel)]="filterData.company_name"
+          [ngbTypeahead]="company_search" placeholder="Company" type="text" class="form-control">
       </div>
       <div class="form-group mx-sm-3 mb-2">
         <label for="inputPassword2" class="sr-only">Product Type</label>
@@ -25,10 +23,10 @@
         </div>
       </div>
       <div class="form-group mx-sm-3 mb-2">
-        <label for="inputPassword2" class="sr-only">Specification</label>
+        <label for="inputPassword2" class="sr-only">Generic</label>
         <div id="scrollable-dropdown-menu">
           <input type="text" class="form-control" name="generic" [(ngModel)]="filterData.generic"
-            placeholder="Specification" />
+            placeholder="Generic" />
         </div>
       </div>
       <button type="submit" class="btn btn-info mb-2" style="margin-right:10px">

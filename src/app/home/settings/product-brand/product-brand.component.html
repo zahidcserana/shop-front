@@ -3,9 +3,9 @@
     <div class="main-card mb-3 card">
       <div class="card-body">
         <div  class="row sale-filter-form-background">
-          <div class="col-md-11">
+          <div class="col-md-10">
             <app-product-brand-filter style="width: 100%" (loadList)="filterList($event)"></app-product-brand-filter>
-            <form *ngIf="product_id" class="form-inline" #form="ngForm" id="myForm" (ngSubmit)="update()">
+            <!-- <form *ngIf="product_id" class="form-inline" #form="ngForm" id="myForm" (ngSubmit)="update()">
               <div class="form-group mx-sm-3 mb-2">
                 <input type="text" class="form-control" name="brand_name" [(ngModel)]="productInfo.medicine"
                   placeholder="Product Name" />
@@ -30,13 +30,13 @@
                 <i class="fa fa-calendar-check-o"></i>
                 Cancel
               </button>
-            </form>
+            </form> -->
           </div>
-          <div class="col-md-1" style="float: right">
-            <a routerLink="/inventory">
-              <i class="ace-icon fa fa-angle-double-left"></i>
-              Inventory
-            </a>
+          <div class="col-md-2" style="float: right">
+            <button (click)="openModal('create-modal')" id="item_id" class="mb-2 mr-2 btn btn-success btn-block">
+              <i class="fa fa-plus"></i>
+               New Product
+            </button>
           </div>
         </div>
         <div class="custom_loader" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
@@ -44,10 +44,10 @@
           <thead>
             <tr>
               <th class="width5">#</th>
-              <th class="width30">Brand Name</th>
-              <th class="width25">Company</th>
+              <th class="width30">Title</th>
+              <th class="width25">Brand</th>
               <th class="width10">Type</th>
-              <th class="width20">Generic</th>
+              <th class="width20">Specification</th>
               <th class="width10">Action</th>
             </tr>
           </thead>
@@ -61,14 +61,18 @@
               " [ngClass]="{ odd: o, even: e }">
               <td>{{ i + 1 }}</td>
               <td>{{ item.brand_name }}</td>
-              <td>{{ item.medicine_company }}</td>
-              <td>{{ item.medicine_type }}</td>
+              <td>{{ item.brand }}</td>
+              <td>{{ item.type }}</td>
               <td>{{ item.generic_name }}</td>
-              <td>
+              <td class="float-right">
+                <a style="cursor: pointer" class="btn btn-info fa fa-edit" (click)="editProduct(item.id)"></a> &nbsp;
+                <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="deleteProduct(item.id)"></a>
+              </td>
+              <!-- <td>
                 <a style="cursor: pointer" class="btn btn-info fa fa-edit" (click)="editProduct(item)"></a> &nbsp;
                 <a style="cursor: pointer" class="btn btn-danger fa fa-trash"
                   (click)="deleteProduct(item.medicine_id)"></a> &nbsp;
-              </td>
+              </td> -->
             </tr>
           </tbody>
           <ng-template #emptyData>
@@ -86,3 +90,90 @@
     </div>
   </div>
 </div>
+
+
+<jw-modal id="create-modal" class="view-modal data-view-modal">
+  <h3 style="text-align: center;"> Product Details</h3>
+  <div class="row" style="padding: 25px">
+    <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
+      <main style="margin-bottom: 5%">
+        <form id="myForm" class="form-width-100" (ngSubmit)="AddProduct()" style="padding-top: 10px">
+          <div class="form-group">
+            <label>Name</label>
+            <input name="product_name" id="product_name" [(ngModel)]="productDetails.product_name" placeholder="Title" type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select class="ace form-control" required name="type" [(ngModel)]="productDetails.type">
+              <option value="">Select Type</option>
+              <option *ngFor="let typeDetails of allTypeList" value="{{ typeDetails.id }}">{{ typeDetails.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Brand</label>
+            <select class="ace form-control" required name="brand_id" [(ngModel)]="productDetails.brand_id">
+              <option value="">Select Brand</option>
+              <option *ngFor="let brand of allBrandList" value="{{ brand.id }}">{{ brand.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Specification</label>
+            <input name="generic" [(ngModel)]="productDetails.generic" placeholder="Specification" type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <button type="button" (click)="AddProduct()" class="btn btn-info">Save</button>
+            &nbsp;
+            <button type="button" (click)="resetList()" class="btn btn-warning">Reset</button>
+            &nbsp;
+            <a (click)="closeModal('create-modal')" class="btn btn-danger btn-xs">
+              Close
+            </a>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+</jw-modal>
+
+<jw-modal id="edit-modal" class="view-modal data-view-modal">
+  <h3 style="text-align: center;"> Product Edit</h3>
+  <div class="row" style="padding: 25px">
+    <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
+      <main style="margin-bottom: 5%">
+        <form id="myForm" class="form-width-100" (ngSubmit)="AddProduct()" style="padding-top: 10px">
+          <div class="form-group">
+            <label>Name</label>
+            <input name="product_name" id="product_name" [(ngModel)]="productDetails.product_name" placeholder="Title" type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select class="ace form-control" required name="type" [(ngModel)]="productDetails.type">
+              <option value="">Select Type</option>
+              <option *ngFor="let typeDetails of allTypeList" value="{{ typeDetails.id }}">{{ typeDetails.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Brand</label>
+            <select class="ace form-control" required name="brand_id" [(ngModel)]="productDetails.brand_id">
+              <option value="">Select Brand</option>
+              <option *ngFor="let brand of allBrandList" value="{{ brand.id }}">{{ brand.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Specification</label>
+            <input name="generic" [(ngModel)]="productDetails.generic" placeholder="Specification" type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <button type="button" (click)="AddProduct()" class="btn btn-info">Save</button>
+            &nbsp;
+            <button type="button" (click)="resetList()" class="btn btn-warning">Reset</button>
+            &nbsp;
+            <a (click)="closeModal('create-modal')" class="btn btn-danger btn-xs">
+              Close
+            </a>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+</jw-modal>

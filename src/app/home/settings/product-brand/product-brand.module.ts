@@ -1,3 +1,4 @@
+import { ProductService } from 'src/app/home/product/services/product.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductBrandComponent } from './product-brand.component';
@@ -6,6 +7,8 @@ import { PaginationModule } from 'src/app/common/modules/pagination/pagination.m
 import { ProductBrandFilterComponent } from './product-brand-filter/product-brand-filter.component';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalModule } from 'src/app/common/_modal/modal.module';
+
 const routes: Routes = [
   {
     path: '',
@@ -20,8 +23,10 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     PaginationModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    ModalModule
   ],
+  providers: [ProductService],
   exports: [RouterModule]
 
 })

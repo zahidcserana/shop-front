@@ -7,10 +7,11 @@ import { ProductService } from './services/product.service';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'src/app/common/_modal/modal.module';
+import { FilterProductComponent } from './filter-product/filter-product.component';
 
 
 @NgModule({
-  declarations: [ProductComponent],
+  declarations: [ProductComponent, FilterProductComponent],
   imports: [
     CommonModule,
     ProductRoutingModule,

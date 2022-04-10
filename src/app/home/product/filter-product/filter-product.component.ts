@@ -1,5 +1,3 @@
-import { SaleService } from './../../../services/sale.service';
-import { HomeService } from './../../../services/home.service';
 import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MasterProductsFilterModel } from 'src/app/home/models/setting.model';
 import { Subscription, Observable, of } from 'rxjs';
@@ -7,14 +5,15 @@ import { ActivatedRoute } from '@angular/router';
 import { FORMAT_SEARCH } from 'src/app/common/_classes/functions';
 import { debounceTime, distinctUntilChanged, map, catchError, tap, switchMap } from 'rxjs/operators';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { ProductService } from 'src/app/home/product/services/product.service';
+import { HomeService } from '../../services/home.service';
+import { SaleService } from '../../services/sale.service';
 
 @Component({
-  selector: 'app-product-brand-filter',
-  templateUrl: './product-brand-filter.component.html',
-  styleUrls: ['./product-brand-filter.component.css']
+  selector: 'app-filter-product',
+  templateUrl: './filter-product.component.html',
+  styleUrls: ['./filter-product.component.css']
 })
-export class ProductBrandFilterComponent implements OnInit {
+export class FilterProductComponent implements OnInit {
   filterData: any = {
     company_id: '',
     company_name: '',
@@ -22,21 +21,26 @@ export class ProductBrandFilterComponent implements OnInit {
     medicine: '',
     type: '',
     type_id: '',
-    generic: '',
-    brand_id: ''
+    generic: ''
   };
   allTypeList: any[] = [];
   companyList: any[] = [];
   filter: string;
   search: boolean;
   CompanySearchData: any;
-  allBrandList: any[] = [];
-
+  typeList: any[] = [];
+  searchData: any[] = [];
+  medicineSearch: any = {
+    search: ''
+  };
+  searchList: any[];
+  medicineList = [];
+  @ViewChild('typeaheadInstance')
+  private typeaheadInstance: NgbTypeahead;
   sub: Subscription;
-  @Output("loadList") loadList: EventEmitter<string> = new EventEmitter();
+  @Output() loadList: EventEmitter<string> = new EventEmitter();
 
   constructor(
-    private productService: ProductService,
     private route: ActivatedRoute,
     private homeService: HomeService,
     private saleService: SaleService
@@ -45,9 +49,7 @@ export class ProductBrandFilterComponent implements OnInit {
   ngOnInit() {
     this.getCompanyList();
     this.getProductTypeList();
-    this.getBrandList();
   }
-  typeList: any[] = [];
   getProductTypeList() {
     this.homeService.getProductType().pipe(map(response => {
       return response;
@@ -57,20 +59,10 @@ export class ProductBrandFilterComponent implements OnInit {
       this.allTypeList = response;
 
       this.typeList = [];
-      for (let s of response) {
+      for (const s of response) {
         this.typeList.push(s.name);
       }
       return this.typeList;
-    });
-  }
-
-  getBrandList() {
-    this.productService.getBrandList().pipe(map(response => {
-      return response;
-    }), catchError(err => {
-      return of([]);
-    })).subscribe(response => {
-      this.allBrandList = response;
     });
   }
 
@@ -89,7 +81,7 @@ export class ProductBrandFilterComponent implements OnInit {
     });
   }
   getCompanyId() {
-    for (let s of this.CompanySearchData) {
+    for (const s of this.CompanySearchData) {
       if (s.name == this.filterData.company_name) {
         this.filterData.company_id = s.id;
       }
@@ -147,12 +139,6 @@ export class ProductBrandFilterComponent implements OnInit {
   }
 
   /** Start Medicine search */
-  searchData: any[] = [];
-  medicineSearch: any = {
-    search: ""
-  };
-  searchList: any[];
-  medicineList = [];
   medicine_search = (text$: Observable<string>) => {
     return text$.pipe(
       debounceTime(300),
@@ -168,22 +154,18 @@ export class ProductBrandFilterComponent implements OnInit {
         return [];
       })
     );
-  };
-  @ViewChild('typeaheadInstance')
-  private typeaheadInstance: NgbTypeahead;
+  }
+
   typeaheadKeydown($event: KeyboardEvent) {
     if (this.typeaheadInstance.isPopupOpen()) {
       setTimeout(() => {
         const popup = document.getElementById(this.typeaheadInstance.popupId);
         const activeElements = popup.getElementsByClassName('active');
         if (activeElements.length === 1) {
-          // activeElements[0].scrollIntoView();
           const elem = (activeElements[0] as any);
           if (typeof elem.scrollIntoViewIfNeeded === 'function') {
-            // non standard function, but works (in chrome)...
             elem.scrollIntoViewIfNeeded();
           } else {
-            //do custom scroll calculation or use jQuery Plugin or ...
             this.scrollIntoViewIfNeededPolyfill(elem as HTMLElement);
           }
         }
@@ -238,5 +220,4 @@ export class ProductBrandFilterComponent implements OnInit {
       }
     }
   }
-  /** End Medicine search */
 }

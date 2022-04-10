@@ -2,7 +2,7 @@
 
 ## TODO
 
-- New module to add product like supplier
+- Purchase add
 
 ## Module
 

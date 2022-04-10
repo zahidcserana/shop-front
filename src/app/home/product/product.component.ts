@@ -21,6 +21,7 @@ export class ProductComponent implements OnInit {
   allCompanyList: any[] = [];
   allBrandList: any[] = [];
   allTypeList: any[] = [];
+  typeList = [];
 
   productDetails: any = {
     id: undefined,
@@ -34,7 +35,6 @@ export class ProductComponent implements OnInit {
     product_type: '1'
   };
 
-  typeList = [];
   productList = [];
 
   searchData: any[] = [];
@@ -106,7 +106,6 @@ export class ProductComponent implements OnInit {
       }
     });
   }
-
 
   remove(id) {
     this.productService

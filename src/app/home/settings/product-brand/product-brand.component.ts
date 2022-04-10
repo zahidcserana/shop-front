@@ -7,6 +7,8 @@ import { catchError, map, debounceTime, distinctUntilChanged } from 'rxjs/operat
 import { of, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import * as $ from 'jquery';
+import { ProductService } from '../../product/services/product.service';
+import { ModalService } from 'src/app/common/_modal';
 
 @Component({
   selector: 'app-product-brand',
@@ -18,6 +20,26 @@ export class ProductBrandComponent implements OnInit {
   filter: string;
   dataList: MasterProductsModel[] = [];
   product_id: number;
+  allBrandList: any[] = [];
+  allTypeList: any[] = [];
+  allSupplierList: any[] = [];
+  productList = [];
+  typeList: any[] = [];
+
+  customLoader = true;
+  showEmptyTable = false;
+  productDetails: any = {
+    id: undefined,
+    company: '',
+    product_name: '',
+    generic: '',
+    power: '',
+    type: '',
+    brand_id: '',
+    type_id: '',
+    product_type: '1'
+  };
+
   productInfo: any = {
     company_id: '',
     company_name: '',
@@ -28,25 +50,93 @@ export class ProductBrandComponent implements OnInit {
     generic: ''
   };
   companyList: any;
+  swalWithBootstrapButtons = null;
+
   constructor(
+    private productService: ProductService,
     private settingService: SettingService,
-    private homeService: HomeService
+    private homeService: HomeService,
+    private modalService: ModalService,
   ) {
     this.filter = this.filter ? this.filter : '';
     this.pagi.limit = this.pagi.limit ? this.pagi.limit : 500;
     this.pagi.page = this.pagi.page ? this.pagi.page : 1;
-  }
 
-  customLoader = true;
-  showEmptyTable = false;
+    this.swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success modal-button',
+        cancelButton: 'btn btn-danger modal-button'
+      },
+      buttonsStyling: false
+      });
+  }
 
   ngOnInit() {
     this.getProductList(this.pagi.page, this.pagi.limit, this.filter);
   }
+
   ngAfterViewInit() {
-    this.getCompanyList();
+    // this.getCompanyList();
     this.getProductTypeList();
+    // this.getSupplierList();
+    this.getBrandList();
+    // this.getTypeList();
   }
+
+  openModal(modal: string) {
+    this.modalService.open(modal);
+  }
+  closeModal(id: string) {
+    this.modalService.close(id);
+  }
+
+  editProduct(id) {
+    console.log(id);
+    const product = this.productList.find(element => element.id === id);
+    console.log(product);
+    this.productDetails.id = product.id;
+    this.productDetails.product_name = product.brand_name;
+    this.productDetails.brand_id = product.brand_id;
+    this.productDetails.type = product.medicine_type_id;
+    this.productDetails.generic = product.generic_name;
+
+    this.modalService.open('edit-modal');
+  }
+
+  deleteProduct(id) {
+    const product = this.productList.find(element => element.id === id);
+    this.swalWithBootstrapButtons.fire({
+      title: 'Do you want to delete this product?',
+      text: product.brand_name,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.value) {
+        this.remove(id);
+      }
+    });
+  }
+
+  remove(id) {
+    this.productService
+    .deleteProduct(id)
+    .subscribe(res => {
+      if (res.success === true) {
+        this.getProductList(this.pagi.page, this.pagi.limit, this.filter);
+        Swal.fire({
+          position: "center",
+          type: "success",
+          title: "Done",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    });
+  }
+
   /* company search start */
   CompanySearchData: any;
 
@@ -74,8 +164,6 @@ export class ProductBrandComponent implements OnInit {
   /* company search end */
 
   /* Type search start */
-  allTypeList: any[] = [];
-  typeList: any[] = [];
   getProductTypeList() {
     this.homeService.getProductType().pipe(map(response => {
       return response;
@@ -88,7 +176,6 @@ export class ProductBrandComponent implements OnInit {
       for (let s of response) {
         this.typeList.push(s.name);
       }
-      return this.typeList;
     });
   }
   type_search = (type$: Observable<string>) =>
@@ -112,6 +199,7 @@ export class ProductBrandComponent implements OnInit {
     this.settingService.getProducts(p, l, q)
       .subscribe(res => {
         this.dataList = res.data;
+        this.productList = res.data;
         this.customLoader = false;
         if(!this.dataList.length){
           this.showEmptyTable = true;
@@ -136,58 +224,7 @@ export class ProductBrandComponent implements OnInit {
     this.filter = e;
     this.getProductList(1, 500, this.filter);
   }
-  deleteProduct(id) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.value) {
-        this.delete(id);
-      }
-    })
-  }
-  delete(id) {
-    this.settingService.deleteProduct(id).then(
-      res => {
-        if (res.success === true) {
-          Swal.fire({
-            position: "center",
-            type: "success",
-            title: "Product successfully deleted.",
-            showConfirmButton: false,
-            timer: 1500
-          });
-          this.getProductList(this.pagi.page, this.pagi.limit, this.filter);
-        } else {
-          Swal.fire({
-            type: "warning",
-            title: res.error,
-            text: "Something went wrong!"
-          });
-        }
-      }
-    ).catch(
-      err => {
-        Swal.fire({
-          type: "warning",
-          title: "Oops...",
-          text: "Something went wrong!"
-        });
-      }
-    );
-  }
 
-  editProduct(product) {
-    this.productInfo.medicine = product.brand_name;
-    this.productInfo.company = product.medicine_company;
-    this.productInfo.type = product.medicine_type;
-    this.productInfo.generic = product.generic_name;
-    this.product_id = product.medicine_id;
-  }
   closeForm() {
     $('#myForm').trigger('reset');
     this.product_id = null;
@@ -198,55 +235,133 @@ export class ProductBrandComponent implements OnInit {
       distinctUntilChanged(),
       map(term => term.length < 2 ? []
         : this.companyList.filter(name => name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
-  update() {
-    if (this.productInfo.company) {
-      this.getCompanyId();
-    }
-    if (this.productInfo.type) {
-      this.getTypeId();
-    }
+    )
 
-    console.log(this.productInfo);
+  getSupplierList() {
+    this.productService.getCompanyList().pipe(map(response => {
+      return response;
+    }), catchError(err => {
+      return of([]);
+    })).subscribe(response => {
+      this.allSupplierList = response;
+    });
+  }
 
-    if(this.productInfo.type_id && this.productInfo.company_id){
-      this.settingService.editProduct(this.product_id, this.productInfo).then(
-        res => {
-          if (res.success === true) {
-            $('#myForm').trigger('reset');
-            this.product_id = null;
-            Swal.fire({
-              position: "center",
-              type: "success",
-              title: "Product Data successfully updated.",
-              showConfirmButton: false,
-              timer: 1500
-            });
-            this.getProductList(this.pagi.page, this.pagi.limit, this.filter);
-          } else {
-            Swal.fire({
-              type: "warning",
-              title: res.error,
-              text: "Something went wrong!"
-            });
-          }
-        }
-      ).catch(
-        err => {
-          Swal.fire({
-            type: "warning",
-            title: "Oops...",
-            text: "Something went wrong!"
+  getBrandList() {
+    this.productService.getBrandList().pipe(map(response => {
+      return response;
+    }), catchError(err => {
+      return of([]);
+    })).subscribe(response => {
+      this.allBrandList = response;
+    });
+  }
+
+  getTypeList() {
+    this.productService.getProductType().pipe(map(response => {
+      return response;
+    }), catchError(err => {
+      return of([]);
+    })).subscribe(response => {
+      this.allTypeList = response;
+    });
+  }
+
+
+  AddProduct() {
+    if (this.productDetails.product_name && this.productDetails.type) {
+      this.productDetails.type_id = this.productDetails.type;
+
+      this.productDetails.product_name = this.productDetails.product_name.trim();
+      console.log(this.productDetails);
+      this.submitProductDetails();
+      $("#product_name").focus();
+    }
+  }
+
+  resetList(){
+    this.productDetails = {
+      company: '',
+      product_name: '',
+      generic: '',
+      brand_id: '',
+      type: '',
+      type_id: '',
+      product_type: '1'
+    };
+  }
+
+  submitProductDetails() {
+    this.swalWithBootstrapButtons.fire({
+      title: 'Do you want submit product details?',
+      text: "Please check all the details!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.value) {
+        if (this.productDetails.id) {
+          this.productService.updateProduct(this.productDetails)
+          .then(response => {
+            this.modalService.close('edit-modal');
+            $('#product_name').focus();
+            if (response.status) {
+              this.swalWithBootstrapButtons.fire(
+                'Product details submitted successful!',
+                'Successful!',
+                'success'
+              );
+              this.getProductList(this.pagi.page, this.pagi.limit, this.filter);
+            }else{
+              this.swalWithBootstrapButtons.fire(
+                'Opps..',
+                'The Product information already exist!',
+                'error'
+              );
+            }
+
+            this.resetList();
+          })
+          .catch(err => {
+            console.log(err)
+          });
+        } else {
+          this.productService.submitProduct(this.productDetails)
+          .then(response => {
+            $("#product_name").focus();
+            if (response.status) {
+              this.modalService.close('create-modal');
+              this.swalWithBootstrapButtons.fire(
+                'Product details submitted successful!',
+                'Successful!',
+                'success'
+              );
+              this.getProductList(this.pagi.page, this.pagi.limit, this.filter);
+            }else{
+              this.swalWithBootstrapButtons.fire(
+                'Opps..',
+                'The Product information already exist!',
+                'error'
+              );
+            }
+
+            this.resetList();
+          })
+          .catch(err => {
+            console.log(err);
           });
         }
-      );
-    }else{
-      Swal.fire({
-        type: "warning",
-        title: "Oops...",
-        text: "Please Check all the details!"
-      });
-    }
-
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        this.swalWithBootstrapButtons.fire(
+          'Cancelled',
+          '',
+          'error'
+        );
+        this.productDetails.type_id = '';
+      }
+    });
   }
+
 }

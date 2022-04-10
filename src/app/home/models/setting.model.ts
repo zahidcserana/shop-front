@@ -1,7 +1,8 @@
 export class MasterProductsModel {
+    id: undefined;
     brand_name: string;
-    medicine_company: string;
-    medicine_type: number;
+    brand: string;
+    type: number;
     generic_name: string;
 }
 
