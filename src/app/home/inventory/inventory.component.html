@@ -14,18 +14,18 @@
       <div class="row">
         <div class="col-lg-12 sale-filter-form-background">
             <form id="myForm" class="form-inline form-width-100" (ngSubmit)="filterList()">
-              <div class="position-relative form-group padding-bot-input">
+              <!-- <div class="position-relative form-group padding-bot-input">
                 <select class="ace form-control" name="company" [(ngModel)]="filterItem.company">
-                  <option value="0">Select Company</option>
+                  <option value="0">Select Supplier</option>
                   <option *ngFor="let company of companyList" value="{{ company.id }}">{{ company.name }}</option>
                 </select>
-              </div>
-              <div class="position-relative form-group search-div padding-bot-input">
+              </div> -->
+              <!-- <div class="position-relative form-group search-div padding-bot-input">
                 <input id="typeahead-basic" name="generic" [(ngModel)]="filterItem.generic" placeholder="Generic" type="text" [ngbTypeahead]="generic_search" class="form-control">
-              </div>
+              </div> -->
               <div class="position-relative form-group search-div padding-bot-input">
                 <div id="scrollable-dropdown-menu">
-                  <input id="typeahead-basic" name="search" [(ngModel)]="filterItem.medicine" placeholder="Medicine" type="text" [ngbTypeahead]="search" class="form-control">
+                  <input id="typeahead-basic" name="search" [(ngModel)]="filterItem.medicine" placeholder="Product" type="text" [ngbTypeahead]="search" class="form-control">
                 </div>
               </div>
               <div class="position-relative form-group search-div padding-bot-input">
@@ -75,9 +75,10 @@
               <tr>
                   <th>#</th>
                   <th class="td_text_align_left" width="50%">Product Name</th>
-                  <th>QTY (Pcs)</th>
-                  <th>T.P. (Tk.)</th>
-                  <th>M.R.P. (Tk.)</th>
+                  <th>Barcode</th>
+                  <th>QTY</th>
+                  <th>CPU (Tk.)</th>
+                  <th>RPU (Tk.)</th>
                   <th>Low Stock Alert Qty</th>
                   <th>Action</th>
               </tr>
@@ -87,8 +88,9 @@
                   <td>{{ i+1 }}</td>
                   <td style="text-align: left;">
                     {{ item.medicine_type | slice:0:3 }}. {{ item.medicine_name }}
-                    <span class="small">({{ item.strength }}) {{ item.generic }}<br/>{{ item.company_name }}<br/>{{ item.barcode }}</span>
+                    <span class="small">{{ item.generic }}<br/>{{ item.brand }}</span>
                   </td>
+                  <td>{{ item.barcode }}</td>
                   <td>
                     <p *ngIf="item.quantity<'0'">0</p>
                     <p *ngIf="item.quantity>='0'">{{ item.quantity }}</p>

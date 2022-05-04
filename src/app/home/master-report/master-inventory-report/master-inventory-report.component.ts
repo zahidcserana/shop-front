@@ -59,14 +59,14 @@ export class MasterInventoryReportComponent implements OnInit {
 
   customLoader = true;
 
-  filterList(){
+  filterList() {
     for (let medicine of this.searchData) {
       if (medicine.name == this.filterItem.medicine) {
         this.filterItem.medicine_id = medicine.id;
       }
     }
 
-    if(this.filterItem.company || this.filterItem.medicine_id || this.filterItem.quantity || this.filterItem.type || this.filterItem.low_stock_qty){
+    if (this.filterItem.medicine_id || this.filterItem.quantity || this.filterItem.type || this.filterItem.low_stock_qty){
       this.loader = true;
       for (let type of this.typeSearchData) {
         if (type.name == this.filterItem.type) {
@@ -85,7 +85,7 @@ export class MasterInventoryReportComponent implements OnInit {
         this.customLoader = false;
         $('#filter-medicine-btn').attr("disabled", false);	
         this.inventoryList = response.data;
-        this.calculateSummary(response.data);
+        this.calculateSummary(response.summary);
       });
     }
   }
@@ -126,35 +126,37 @@ export class MasterInventoryReportComponent implements OnInit {
       this.loader = false;
       this.customLoader = false;
       this.inventoryList = response.data;
-      console.log(response);
 //       var totalmrp= response.data.reduce((accum,item) => accum + item.mrp, 0);
 // console.log(totalmrp);
-      //this.calculateSummary(response.data);
-      this.summary.tp = response.summary.total_tp;
-      this.summary.mrp = response.summary.total_mrp;
-      this.summary.profit = response.summary.total_profit;
-      this.summary.total_medicine = response.summary.total_quantity;
+      this.calculateSummary(response.summary);
+      // this.summary.tp = response.summary.total_tp;
+      // this.summary.mrp = response.summary.total_mrp;
+      // this.summary.profit = response.summary.total_profit;
+      // this.summary.total_medicine = response.summary.total_quantity;
 
     });
   }
 
-  calculateSummary(items){
-    var lookup = {};
-    var result = [];
-    var qty = 0;
-    var mrp = 0;
-    var tp = 0;
+  calculateSummary(summary) {
+    // var lookup = {};
+    // var result = [];
+    // var qty = 0;
+    // var mrp = 0;
+    // var tp = 0;
 
-    items.forEach(function (element, index, item) {
-      var name = item.company_name;
-      qty = qty + item.quantity;
-      mrp = mrp + item.mrp;
-      tp = tp + item.tp;
-      if (!(name in lookup)) {
-        lookup[name] = 1;
-        result.push(name);
-      }
-    });
+    // items.forEach(function (element, index, item) {
+    //   console.log(element.quantity)
+    //   // var name = item.company_name;
+    //   qty = qty + element.quantity;
+    //   mrp = mrp + element.mrp;
+    //   tp = tp + element.tp;
+    //   console.log(qty);
+
+    //   // if (!(name in lookup)) {
+    //   //   lookup[name] = 1;
+    //   //   result.push(name);
+    //   // }
+    // });
 
     // for (var item, i = 0; item = items[i++];) {
     //   var name = item.company_name;
@@ -167,12 +169,12 @@ export class MasterInventoryReportComponent implements OnInit {
     //     result.push(name);
     //   }
     // }
-    this.summary.company = result.length;
-    this.summary.tp = tp;
-    this.summary.mrp = mrp;
-    this.summary.profit = mrp - tp;
-    this.summary.total_medicine = qty;
-   // console.log(this.summary);
+    // this.summary.company = result.length;
+    this.summary.tp = summary.total_tp;
+    this.summary.mrp = summary.total_mrp;
+    this.summary.profit = summary.total_profit;
+    this.summary.total_medicine = summary.quantity;
+    console.log(this.summary);
   }
 
   company_search = (company$: Observable<string>) =>

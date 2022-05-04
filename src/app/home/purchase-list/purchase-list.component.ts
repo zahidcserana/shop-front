@@ -106,25 +106,30 @@ export class PurchaseListComponent implements OnInit {
   }
 
   openModal(orderId: number, modal: string) {
+    console.log(this.orderId);
+    $('.detail-' + this.orderId).removeClass('detail-order');
+    $('.detail-' + orderId).addClass('detail-order');
+    this.orderId = orderId;
     this.getPurchaseDetails(orderId, modal);
+    console.log(this.orderId);
 
-    this.itemId = 0;
-    this.orderId = 0;
+    // this.itemId = 0;
+    // this.orderId = 0;
   }
 
   closeModal(id: string) {
     this.modalService.close(id);
     this.purchaseDetails = [];
     this.purchase = [];
-    this.itemId = 0;
-    this.orderId = 0;
+    // this.itemId = 0;
+    // this.orderId = 0;
   }
 
   getPurchaseDetails(orderId, modal) {
     this.purchaseListService.getPurcheseDetails(orderId).subscribe(
       (response) => {
         let itemlist = response.data;
-        if (!response.total) {
+        if (response.total) {
           this.toastr.error("All Products has been deleted from the list!!");
           this.closeModal("print-modal");
         } else {
@@ -197,7 +202,7 @@ export class PurchaseListComponent implements OnInit {
     const itemName = item.medicine_type.substring(0, 3) + '. ' + item.medicine_name;
     this.updatePurchaseItem.order_id = item.item_order_id;
     this.updatePurchaseItem.item_name = itemName;
-    this.updatePurchaseItem.company = item.company_name;
+    // this.updatePurchaseItem.company = item.company_name;
     this.updatePurchaseItem.previous_quantity = item.quantity;
     this.updatePurchaseItem.new_quantity = item.quantity;
   }
@@ -231,7 +236,7 @@ export class PurchaseListComponent implements OnInit {
           if (result.value) {
             this.purchaseListService.submitItemDetails(allParams)
               .then((response) => {
-                this.getPurchaseDetails(this.orderId, 0);
+                this.getPurchaseDetails(this.orderId, 'print-modal');
                 this.getPurcheseList();
 
                 swalWithBootstrapButtons.fire(

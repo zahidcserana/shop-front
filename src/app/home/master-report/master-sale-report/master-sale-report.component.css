@@ -69,3 +69,10 @@ tbody > tr > td{
 .padding-bot-input{
   padding-bottom: 8px !important;
 }
+
+.sale-info {
+  background-color: #5f9ea0a8;
+}
+.sale-item-info {
+  background-color: #a9a9a9a6;
+}

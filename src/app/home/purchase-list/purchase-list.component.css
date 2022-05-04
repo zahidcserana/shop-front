@@ -25,3 +25,7 @@ thead{
   min-height: 83px;
   max-width: 90px;
 }
+
+.detail-order {
+  background: darkkhaki;
+}

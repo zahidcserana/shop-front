@@ -27,7 +27,7 @@
       <div class="card mb-3 widget-content bg-grow-early">
          <div class="widget-content-wrapper text-white">
             <div class="widget-content-left">
-               <div class="widget-heading">Total Medicine &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+               <div class="widget-heading">Total Product &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             </div>
             <div class="widget-content-right">
                <div class="widget-numbers text-white"><span>{{ summary.total_medicine }}</span></div>
@@ -51,7 +51,7 @@
    <div class="col-md-6">
       <div class="main-card mb-3 card">
             <div class="card-header">
-               Top selling company
+               Top Brand (Tk)
             </div>
             <div class="card-body">
                <ul class="list-group">
@@ -60,7 +60,7 @@
                            <div class="widget-content-outer">
                               <div class="widget-content-wrapper">
                                     <div class="widget-content-left">
-                                       <div class="widget-heading">{{ item.company_name }}</div>
+                                       <div class="widget-heading">{{ item.brand == null ? 'N/A' : item.brand }}</div>
                                     </div>
                                     <div class="widget-content-right">
                                        <div class="widget-numbers text-success">{{ item.amount | number:'1.0-0' }} <span class="text-warning">&#2547;</span></div>
@@ -77,7 +77,7 @@
    <div class="col-md-6">
       <div class="main-card mb-3 card">
             <div class="card-header" style="background: #385176 !important;">
-               Top selling products
+               Top Products (Quantity)
             </div>
             <div class="card-body">
                <ul class="list-group">
@@ -86,11 +86,11 @@
                            <div class="widget-content-outer">
                               <div class="widget-content-wrapper">
                                     <div class="widget-content-left">
-                                       <div class="widget-heading">{{ item.brand_name }} <small>{{ item.generic_name }} {{ item.strength }}</small></div>
-                                       <div class="widget-subheading">{{ item.company_name }}</div>
+                                       <div class="widget-heading">{{ item.brand_name }} <small>{{ item.generic_name }}</small></div>
+                                       <div class="widget-subheading">{{ item.brand }}</div>
                                     </div>
                                     <div class="widget-content-right">
-                                       <div class="widget-numbers text-success">{{ item.quantity }} <small>Pcs</small></div>
+                                       <div class="widget-numbers text-success">{{ item.quantity }} <small></small></div>
                                     </div>
                               </div>
                            </div>
@@ -101,7 +101,7 @@
       </div>
    </div>
 
-   <div class="col-md-6">
+   <!-- <div class="col-md-6">
       <div class="main-card mb-3 card">
             <div class="card-header" style="background: #b78503 !important;">
                Expired Medicine Summary
@@ -172,7 +172,7 @@
                </ul>
             </div>
       </div>
-   </div>
+   </div> -->
 
    <!--<div class="col-lg-12">
       <div class="main-card mb-3 card">

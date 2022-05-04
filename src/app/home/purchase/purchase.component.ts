@@ -60,6 +60,7 @@ export class PurchaseComponent implements OnInit {
     piece_per_box: "",
     box_trade_price: "",
     box_vat: "",
+    percentage: '',
     box_mrp: "",
     amount: "",
     remarks: "",
@@ -442,11 +443,11 @@ export class PurchaseComponent implements OnInit {
 
   submitPurchaseDetails(){
     this.allPurchaseItems.reverse();
-    let allParams = {
-      'details': this.purchaseDetails,
-      'items': this.allPurchaseItems
-    }
-    
+    const allParams = {
+      details : this.purchaseDetails,
+      items : this.allPurchaseItems
+    };
+
     $("#submitButtonForSave").attr("disabled", true);
 
     const swalWithBootstrapButtons = Swal.mixin({
@@ -457,13 +458,13 @@ export class PurchaseComponent implements OnInit {
       buttonsStyling: false
     });
 
-    if(!this.allPurchaseItems.length){
+    if (!this.allPurchaseItems.length) {
       // swalWithBootstrapButtons.fire(
       //   'Please add items!',
       //   'Opps..!',
       //   'warning'
       // );
-    }else{
+    } else{
       $(".purchase-confirm").focus();
       swalWithBootstrapButtons.fire({
         title: 'Do you want submit details?',
@@ -628,8 +629,7 @@ export class PurchaseComponent implements OnInit {
 
   addMedicine()
   {
-    if(this.purchaseItem.medicine && this.purchaseItem.quantity && this.purchaseItem.box_mrp && this.purchaseItem.piece_per_box && this.purchaseItem.box_trade_price)
-    {
+    if (this.purchaseItem.medicine && this.purchaseItem.quantity && this.purchaseItem.box_mrp && this.purchaseItem.box_trade_price) {
       let exist = false;
       for (let medicine of this.searchData) {
         if (medicine.name == this.purchaseItem.medicine) {
@@ -637,15 +637,14 @@ export class PurchaseComponent implements OnInit {
           exist = true;
         }
       }
-      if(exist)
-      {
+      if (exist) {
         this.purchaseItem.amount = Number(this.purchaseItem.quantity) * (Number(this.purchaseItem.box_trade_price) + Number(this.purchaseItem.box_vat));
         
-        let date = this.purchaseItem.exp_date;
-        if(date){
-          let new_date = '25/' + date;
-          this.purchaseItem.exp_date = new_date;
-        }
+        // let date = this.purchaseItem.exp_date;
+        // if(date){
+        //   let new_date = '25/' + date;
+        //   this.purchaseItem.exp_date = new_date;
+        // }
         
         localStorage.removeItem("purchaseItems");
         this.allPurchaseItems.unshift(this.purchaseItem);
@@ -720,12 +719,14 @@ export class PurchaseComponent implements OnInit {
   }
 
   calculateTPVAT(){
-    let MRP = Number(this.purchaseItem.box_mrp);
-    let TP = MRP - ((MRP * 25)/100);
-    let VAT = ((TP * 17.4)/100);
+    const MRP = Number(this.purchaseItem.box_mrp);
+    const TP = Number(this.purchaseItem.box_trade_price);
+    const percentage = ((MRP - TP) / TP) * 100;
+    // let TP = MRP - ((MRP * 25)/100);
+    // let VAT = ((TP * 17.4)/100);
 
     this.purchaseItem.box_trade_price = TP.toFixed(2);
-    this.purchaseItem.box_vat = VAT.toFixed(2);
+    this.purchaseItem.percentage = percentage.toFixed(2);
   }
 
   validateDate(){

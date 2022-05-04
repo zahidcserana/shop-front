@@ -14,14 +14,14 @@
       <div class="row">
         <div class="col-lg-12 sale-filter-form-background">
             <form id="myForm" class="form-inline form-width-100" (ngSubmit)="filterList()">
-              <div class="position-relative form-group">
-                <!--<label for="company" class="label-margin-right"> Company </label>-->
+              <!-- <div class="position-relative form-group">
+                <label for="company" class="label-margin-right"> Company </label>
                 <input name="company" [(ngModel)]="filterItem.company" [ngbTypeahead]="company_search" placeholder="Type Company" type="text" class="form-control">
-              </div>
+              </div> -->
               <div class="position-relative form-group search-div">
                 <!--<label for="medicine" class="label-margin-right"> Medicine </label>-->
                 <div id="scrollable-dropdown-menu">
-                  <input id="typeahead-basic" name="search" [(ngModel)]="filterItem.medicine" placeholder="Type Medicine" type="text" [ngbTypeahead]="search" class="form-control">
+                  <input id="typeahead-basic" name="search" [(ngModel)]="filterItem.medicine" placeholder="Product Name" type="text" [ngbTypeahead]="search" class="form-control">
                 </div>
               </div>
               <div class="position-relative form-group search-div">
@@ -49,8 +49,7 @@
           <table class="mb-0 table table-bordered pull-right summary" style="font-size: 14px; width: 40%; margin-bottom: 20px !important;">
               <thead>
                   <tr>
-                      <th style="width: 20%;">Total Company</th>
-                      <th style="width: 20%;">Number Of Medicine</th>
+                      <th style="width: 20%;">Total Qty</th>
                       <th style="width: 20%;">Total TP</th>
                       <th style="width: 20%;">Total MRP</th>
                       <th style="width: 20%;">Total Profit</th>
@@ -58,7 +57,6 @@
               </thead>
               <tbody>
                   <tr>
-                      <td><span style="font-weight: bold;"> {{ summary.company}}</span></td>
                       <td><span style="font-weight: bold;"> {{ summary.total_medicine }}</span></td>
                       <td><span style="font-weight: bold;"> &#2547; {{ summary.tp | number: "1.2-2" }}</span></td>
                       <td><span style="font-weight: bold;"> &#2547; {{ summary.mrp | number: "1.2-2" }}</span></td>
@@ -73,10 +71,10 @@
                 <thead>
                   <tr>
                       <th>#</th>
-                      <th style="width: 50%;">Medicine/Product Details</th>
-                      <th>Stock Qty (Pcs)</th>
-                      <th>TP+VAT/Unit</th>
-                      <th>MRP/Unit</th>
+                      <th style="width: 50%;">Product Details</th>
+                      <th>Stock Qty</th>
+                      <th>CPU</th>
+                      <th>RPU</th>
                       <th>Low Stock Alert Qty</th>
                   </tr>
                 </thead>
@@ -85,7 +83,7 @@
                       <td>{{ i+1 }}</td>
                       <td style="text-align: left;">
                         {{ item.medicine_type | slice:0:3 }}. {{ item.medicine_name }}
-                        <span class="small">({{ item.strength }}) {{ item.generic }}<br/>{{ item.company_name }}</span>
+                        <span class="small">({{ item.brand }}) {{ item.generic }}</span>
                       </td>
                       <td>
                         <p *ngIf="item.quantity<'0'">0</p>
@@ -97,7 +95,6 @@
                   </tr>
               </tbody>
           </table>
-
         </div>
       </div>
     </div>

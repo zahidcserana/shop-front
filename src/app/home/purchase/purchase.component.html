@@ -24,69 +24,66 @@
                         </div>
                       </div>
                   </div>
-                  <div class="col-md-1">
+                  <!-- <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="batch_no" class="">Batch No</label>
                         <input name="batch_no" #batchNo [(ngModel)]="purchaseItem.batch_no" (keydown.enter)="gotoExpDate()" (focus)="getMedicinePreviousPurchaseDetails()" placeholder="" type="text" class="form-control">
                       </div>
-                  </div>
-                  <div class="col-md-1">
+                  </div> -->
+                  <!-- <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="exp_date" class="">Exp. Date</label>
                         <input name="exp_date" id="expDate" #expDate [(ngModel)]="purchaseItem.exp_date" (keydown.enter)="gotoPiecePerBox()" placeholder="" type="text"  maxlength="7" pattern="[0-9]+" placeholder="10/2019" class="form-control" (input)="validateDate()">
                       </div>
-                  </div>
-                  <div class="col-md-1">
+                  </div> -->
+                  <!-- <div class="col-md-1">
                       <div class="position-relative form-group">
-                        <label for="piece_per_box" class="">Piece/<span *ngIf="!UnitVal; else changeVal">Box</span><ng-template #changeVal>Unit</ng-template></label>
+                        <label for="piece_per_box" class="">Qty</label>
                         <input name="piece_per_box" #piecePerBox [(ngModel)]="purchaseItem.piece_per_box" min="1" (keydown.enter)="gotoBoxTradePrice()" placeholder="" type="number" class="form-control">
                       </div>
-                  </div>
+                  </div> -->
                   <div class="col-md-1">
                       <div class="position-relative form-group">
-                        <label for="box_trade_price" class="">T.P(<span *ngIf="!UnitVal; else changeVal">Box</span><ng-template #changeVal>Unit</ng-template>)</label>
-                        <input name="box_trade_price" #boxTradePrice [(ngModel)]="purchaseItem.box_trade_price" (keydown.enter)="gotoVAT()" placeholder="" type="number" class="form-control">
+                        <label for="box_trade_price" class="">CPU</label>
+                        <input name="box_trade_price" #boxTradePrice [(ngModel)]="purchaseItem.box_trade_price" (keydown.enter)="gotoBoxMrp()" placeholder="" type="number" class="form-control">
                       </div>
                   </div>
                   <div class="col-md-1">
                       <div class="position-relative form-group">
-                        <label for="box_vat" class="">VAT(<span *ngIf="!UnitVal; else changeVal">Box</span><ng-template #changeVal>Unit</ng-template>)
-                        </label>
-                        <input name="box_vat" #boxVAT [(ngModel)]="purchaseItem.box_vat" (keydown.enter)="gotoBoxMrp()" placeholder="" type="number" class="form-control">
+                        <label for="box_mrp" data-toggle="tooltip" data-html="true" class="">RPU</label>
+                        <input name="box_mrp" #boxMrp [(ngModel)]="purchaseItem.box_mrp" (keydown.enter)="gotoVAT()" (input)="calculateTPVAT()" placeholder="" type="number" class="form-control">
                       </div>
                   </div>
                   <div class="col-md-1">
-                      <div class="position-relative form-group">
-                        <label for="box_mrp" data-toggle="tooltip" data-html="true" title="TP = (25% of MRP) <br>VAT = (17.4% of TP)" class="">M.R.P/<span *ngIf="!UnitVal; else changeVal">Box</span><ng-template #changeVal>Unit</ng-template>(?)
-                        </label>
-                        <input name="box_mrp" #boxMrp [(ngModel)]="purchaseItem.box_mrp" (keydown.enter)="gotoQuantity()" (input)="calculateTPVAT()" placeholder="" type="number" class="form-control">
-                      </div>
-                  </div>
+                    <div class="position-relative form-group">
+                      <label for="box_vat" class="">Percentage(%)</label>
+                      <input name="box_vat" #boxVAT [(ngModel)]="purchaseItem.percentage" (keydown.enter)="gotoQuantity()" placeholder="" type="number" class="form-control">
+                    </div>
+                </div>
                   <div class="col-md-1">
                       <div class="position-relative form-group">
-                        <label for="quantity" class="">QTY(<span *ngIf="!UnitVal; else changeVal">Box</span><ng-template #changeVal>Unit</ng-template>)
-                        </label>
+                        <label for="quantity" class="">QTY</label>
                         <input name="quantity" #quantity [(ngModel)]="purchaseItem.quantity" min="1" (keydown.enter)="gotoBarcode()" placeholder="" type="number" class="form-control">
                       </div>
                   </div>
                   <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="bar_code" class="">Barcode</label>
-                        <input name="bar_code" #barCode [(ngModel)]="purchaseItem.bar_code" (keydown.enter)="gotoRemarks()" placeholder="" type="text" class="form-control">
+                        <input name="bar_code" #barCode [(ngModel)]="purchaseItem.bar_code"  (keydown.enter)="addMedicine()" placeholder="" type="text" class="form-control">
                       </div>
                   </div>
-                  <div class="col-md-1">
+                  <!-- <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="low_stock_qty" class="">Low Stock QTY</label>
                         <input name="low_stock_qty" #lowStockQty [(ngModel)]="purchaseItem.low_stock_qty" (keydown.enter)="addMedicine()" placeholder="" type="text" class="form-control">
                       </div>
-                  </div>
+                  </div> -->
                   
                   <button type="submit" style="display: none;" class="btn btn-primary mb-0 add-medicine-btn">
                     Add
                   </button>
               </div>
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col-md-2 position-relative form-check">
                   <label class="form-check-label checkbox-label-purchase">
                     <input type="checkbox" name="update_price" [(ngModel)]="purchaseItem.update_price" class="form-check-input"> Update Price
@@ -102,7 +99,7 @@
                     <button class="btn btn-warning col-lg-12" (click)="getMedicineUnitPriceDetails()">Choose Unit Price</button>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </form> 
             <hr/>
             <table class="mb-0 table table-hover">
@@ -110,13 +107,10 @@
                 <tr>
                     <th>#</th>
                     <th class="td_text_align_left">Product Name</th>
-                    <th class="td_text_align_left">Batch no</th>
-                    <th>Exp. Date</th>
-                    <th>Piece/Box</th>
-                    <th>T.P (Box)</th>
-                    <th>VAT (Box)</th>
-                    <th>M.R.P/Box</th>
-                    <th>Qty (Box)</th>
+                    <th>CPU</th>
+                    <th>RPU</th>
+                    <th>Percentage</th>
+                    <th>Qty</th>
                     <th>Total</th>
                     <th>Action</th>
                 </tr>
@@ -125,12 +119,9 @@
                   <tr *ngFor="let item of allPurchaseItems; let i='index';">
                       <th scope="row">{{ i+1 }}</th>
                       <td class="td_text_align_left">{{ item.medicine }}</td>
-                      <td class="td_text_align_left">{{ item.batch_no }}</td>
-                      <td>{{ item.exp_date }}</td>
-                      <td>{{ item.piece_per_box }}</td>
                       <td>{{ item.box_trade_price | number: "1.2-2" }}</td>
-                      <td>{{ item.box_vat | number: "1.2-2" }}</td>
                       <td>{{ item.box_mrp | number: "1.2-2" }}</td>
+                      <td>{{ item.percentage | number: "1.2-2" }}</td>
                       <td>{{ item.quantity }}</td>
                       <td>{{ item.amount | number: "1.2-2" }}</td>
                       <td>
@@ -233,11 +224,11 @@
                 <div class="card mb-3 widget-content widget-area-padding card-margin">
                     <div class="widget-content-wrapper net-wiget">
                         <div class="widget-content-left">
-                            <div class="widget-heading">Company</div>
+                            <div class="widget-heading">Supplier</div>
                         </div>
                         <div class="widget-content-right">
-                            <select class="ace form-control" name="company" [(ngModel)]="purchaseDetails.company">
-                              <option value="0">--Select Company--</option>
+                            <select class="ace form-control" name="company" [(ngModel)]="purchaseDetails.company" required>
+                              <option value="0">--Select Supplier--</option>
                               <option *ngFor="let company of companyList" value="{{ company.id }}">{{ company.name }}</option>
                             </select>
                         </div>

@@ -2,7 +2,7 @@
 
 ## TODO
 
-- Purchase add
+- http://localhost:4200/#/master-report/sale-due
 
 ## Module
 

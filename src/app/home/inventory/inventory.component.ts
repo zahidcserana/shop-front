@@ -188,13 +188,13 @@ export class InventoryComponent implements OnInit {
   ChangeMrpTp(item, index) {
     console.log(item);
     Swal.fire({
-      title: 'Change M.R.P & T.P. of ' + item.medicine_name,
+      title: 'Change RPU & CPU of ' + item.medicine_name,
       inputAttributes: {
         autocapitalize: 'off'
       },
       html:
-        '<p style="margin-bottom: 0;"><strong>M.R.P</strong></p><input id="item_mrp" type="number" value="' + item.mrp + '" class="swal2-input">' +
-        '<p style="margin-bottom: 0;"><strong>T.P</strong></p><input id="item_tp" type="number" value="' + item.tp + '" class="swal2-input">',
+        '<p style="margin-bottom: 0;"><strong>RPU</strong></p><input id="item_mrp" type="number" value="' + item.mrp + '" class="swal2-input">' +
+        '<p style="margin-bottom: 0;"><strong>CPU</strong></p><input id="item_tp" type="number" value="' + item.tp + '" class="swal2-input">',
       showCancelButton: true,
       confirmButtonText: 'Update',
     }).then((result) => {

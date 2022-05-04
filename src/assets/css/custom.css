@@ -1,7 +1,7 @@
 .fixed-sidebar .app-main .app-main__outer {
   z-index: 9;
   padding-left: 0px !important;
-  background: url("pharmacy.jpg");
+  /* background: url("clothes3.jpg"); */
 }
 .table-bordar {
   border: 1px solid #eee !important;

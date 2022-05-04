@@ -21,11 +21,10 @@
                 <tr>
                   <th>#</th>
                   <th>Invoice</th>
-                  <th>Company</th>
-                  <th>Company Invoice</th>
+                  <th>Supplier</th>
+                  <th>Supplier Invoice</th>
                   <th>Purchase Date</th>
                   <th>Total</th>
-                  <th>VAT</th>
                   <th>Discount</th>
                   <th>Net Payable</th>
                   <th>Advance</th>
@@ -34,21 +33,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of purchaseList; let i='index';">
+                <tr *ngFor="let item of purchaseList; let i='index';" class="detail-{{ item.id }}">
                   <th scope="row">{{ i+1 }}</th>
                   <td>{{ item.invoice }}</td>
                   <td>{{ item.company == null ?  'N/A' : item.company.company_name}}</td>
                   <td>{{ item.company_invoice }}</td>
                   <td>{{ item.purchase_date }}</td>
                   <td>{{ item.total_amount }}</td>
-                  <td>
-                    <div *ngIf="item.vat_type==='percentage'">
-                      {{ (item.total_amount*item.vat)/100 }} <span class="small">({{ item.vat }} %)</span>
-                    </div>
-                    <div *ngIf="item.vat_type==='fixed'">
-                      {{ (item.vat) }} <span class="small">({{ item.vat }} Tk.)</span>
-                    </div>
-                  </td>
                   <td>{{ item.discount }}</td>
                   <td>{{ item.total_payble_amount }}</td>
                   <td>{{ item.total_advance_amount }}</td>
@@ -58,10 +49,10 @@
                     <span class="small" style="color:RED;" *ngIf="item.total_due_amount<0">Receivable</span>
                   </td>
                   <td>
-                      <button (click)="openModal(item.order_id, 'print-modal')" id="order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-info">
+                      <button (click)="openModal(item.id, 'print-modal')" id="order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-info">
                       <i class="pe-7s-note2 btn-icon-wrapper"></i>
                       </button>
-                      <button (click)="deletePurchaseDetails(item.order_id)" id="purchase_order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-danger">
+                      <button (click)="deletePurchaseDetails(item.id)" id="purchase_order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-danger">
                       <i class="pe-7s-trash btn-icon-wrapper"></i>
                       </button>
                   </td>
@@ -101,13 +92,13 @@
                     class="form-control">
                 </div>
               </div>
-              <div class="col-md-3">
+              <!-- <div class="col-md-3">
                 <div class="position-relative form-group">
                   <label for="company" class="">Company</label>
                   <input name="company" [(ngModel)]="updatePurchaseItem.company" readonly placeholder="" type="text"
                     class="form-control">
                 </div>
-              </div>
+              </div> -->
               <div class="col-md-3">
                 <div class="position-relative form-group">
                   <label for="new_quantity" class="">Quantity (Box)</label>
@@ -131,13 +122,11 @@
               <tr>
                 <th class="sl">Sl</th>
                 <th style="text-align: left;">Medicine</th>
-                <th>QTY (Pcs)</th>
-                <th>Exp.</th>
-                <th>Batch</th>
-                <th>Unit Price (Tk.)</th>
+                <th>Qty</th>
+                <th>CPU (Tk.)</th>
                 <th>Total (Tk.)</th>
-                <th>M.R.P. (Tk.)</th>
-                <th>T.P+VAT (Tk.)</th>
+                <th>RPU (Tk.)</th>
+                <th>Percentage (Tk.)</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -147,15 +136,13 @@
                 <td style="text-align: left;">
                   {{ item.medicine_type | slice:0:3 }}. {{ item.medicine_name }}<br />
                   <span *ngIf="item.generic" class="small">{{ item.generic }}<br /></span><span
-                    class="small">{{ item.company_name }} <br>{{ item.barcode }}</span>
+                    class="small">{{ item.barcode }}</span>
                 </td>
-                <td>{{ item.quantity*item.pieces_per_box }}</td>
-                <td>{{ item.exp_date }}</td>
-                <td>{{ item.batch_no }}</td>
-                <td>{{ item.unit_price | number: "1.2-2"  }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.trade_price | number: "1.2-2"  }}</td>
                 <td>{{ item.total | number: "1.2-2"  }}</td>
                 <td>{{ item.mrp | number: "1.2-2"  }}</td>
-                <td>{{ item.trade_price + item.box_vat | number: "1.2-2"  }}</td>
+                <td>{{ item.percentage | number: "1.2-2"  }}</td>
                 <td>
                   <button (click)="changeItemDetails(item)" class="mr-2 btn-icon btn-icon-only btn btn-outline-info"><i
                       class="pe-7s-eyedropper btn-icon-wrapper"> </i></button>
