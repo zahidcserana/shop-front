@@ -12,10 +12,10 @@
     </div>
     <div class="card-body">
       <div class="row sale-filter-form-background">
-        <div class="col-md-2 padding-bot-input">
+        <!-- <div class="col-md-2 padding-bot-input">
           <input id="typeahead-company" name="company" [(ngModel)]="filterItem.company"
             [ngbTypeahead]="company_search" placeholder="Company" type="text" class="form-control">
-        </div>
+        </div> -->
         <div class="col-md-2 padding-bot-input">
           <div id="scrollable-dropdown-menu">
             <input placeholder="Product" #cartMedicine id="typeahead-medicine" name="search"
@@ -29,9 +29,9 @@
             <option *ngFor="let type of types" value="{{ type.id }}">{{ type.name }}</option>
           </select>
         </div>
-        <div class="col-md-2 padding-bot-input">
+        <!-- <div class="col-md-2 padding-bot-input">
           <input id="typeahead-basic" name="generic" [(ngModel)]="filterItem.generic" placeholder="Generic" type="text" [ngbTypeahead]="generic_search" class="form-control">
-        </div>
+        </div> -->
         <div class="col-md-2 padding-bot-input">
           <input type="text" name="invoice" [(ngModel)]="filterItem.invoice" placeholder="Invoice"
             class="form-control" />
@@ -71,13 +71,13 @@
         </div>
         <div class="col-lg-2 padding-bot-input">
           <select name="payment_type" id="payment_type" [(ngModel)]="filterItem.payment_type" class="form-control">
-            <option value=""> - Select -</option>
+            <option value=""> - Payment Type -</option>
             <option *ngFor="let item of paymentTypes" value="{{ item.name }}">{{ item.name }}</option>
           </select>
         </div>
         <div class="col-lg-2 padding-bot-input">
           <select class="ace form-control" name="sales_man" [(ngModel)]="filterItem.sales_man">
-            <option value="0">Select Sales Person</option>
+            <option value="0">- Sales Person -</option>
             <option *ngFor="let person of salesPersonList" value="{{ person.id }}">{{ person.name }}
               ({{ person.email }})</option>
           </select>
@@ -135,9 +135,9 @@
                 <th>SL#</th>
                 <th>Sales Invoice</th>
                 <th>Sales Date</th>
-                <th>Medicine/Product Details</th>
-                <th>Sale Qty (Pcs)</th>
-                <th>Return (Pcs)</th>
+                <th>Product Details</th>
+                <th>Sale Qty</th>
+                <th>Return Qty</th>
                 <!-- <th>TP+VAT/Unit</th>
                 <th>MRP/Unit</th>
                 <th>Total T+V</th>
@@ -169,11 +169,9 @@
                       <td>
                         {{ product.medicine.type }}.&nbsp;{{ product.medicine.name }}
                         <br>
-                        {{ product.medicine.strength }}
-                        <br>
-                        {{ product.medicine.company }}
+                        {{ product.medicine.brand }}
                       </td>
-                      <td>{{ product.quantity +  product.refund_quantity }}</td>
+                      <td>{{ product.quantity +  product.refund_quantity }}</td>
                       <td>
                         {{ product.refund_quantity }}
                         <!-- <div *ngIf="product.change_log.length > 0">

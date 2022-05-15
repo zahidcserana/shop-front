@@ -21,8 +21,7 @@
             placeholder="Customer Mobile" class="form-control" />
         </div>
         <div class="col-lg-2 padding-bot-input">
-          <input type="text" name="sale_date" [(ngModel)]="filterItem.sale_date" placeholder="{{ summary.dateRangeData }}"
-            class="form-control" bsDaterangepicker />
+          <input autocomplete="off" type="text" id="sale_date" name="sale_date" [(ngModel)]="filterItem.sale_date" placeholder="{{ summary.dateRangeData }}" class="form-control" bsDaterangepicker />
         </div>
         <div class="col-lg-2 padding-bot-input">
           <input type="text" name="due_amount" [(ngModel)]="filterItem.due_amount" placeholder="Due Amount"
@@ -72,13 +71,13 @@
                 <th>Sales Invoice</th>
                 <th>Customer Details</th>
                 <th>Sales Date</th>
-                <th>Total Amount</th>
-                <th>Total Discount</th>
+                <th>Subtotal</th>
+                <th>Discount</th>
                 <th>Grand Total</th>
-                <th>Total Advance</th>
-                <th>Total Due</th>
+                <th>Advance</th>
+                <th>Due</th>
                 <th>Due Payment Date</th>
-                <th>Payment Status</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -90,7 +89,7 @@
                 <td>{{ item.invoice }}</td>
                 <td>{{ item.customer_name }}<br>{{ item.customer_mobile }}</td>
                 <td>{{ item.created_at | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ item.total_payble_amount | number: "1.2-2" }}</td>
+                <td>{{ item.sub_total | number: "1.2-2" }}</td>
                 <td>{{ item.discount | number: "1.2-2" }}</td>
                 <td>{{ item.total_payble_amount | number: "1.2-2" }}</td>
                 <td>{{ (item.total_payble_amount - item.total_due_amount) | number: "1.2-2" }}</td>

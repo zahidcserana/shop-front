@@ -18,7 +18,7 @@
         </div>
         <div class="col-lg-2 padding-bot-input">
           <div id="scrollable-dropdown-menu">
-            <input type="text" name="product" [(ngModel)]="filterItem.product" placeholder="Medicine/Product"
+            <input type="text" name="product" [(ngModel)]="filterItem.product" placeholder="Product"
               [ngbTypeahead]="search" class="form-control" />
           </div>
         </div>
@@ -32,7 +32,7 @@
         </div>
         <div class="col-lg-2 padding-bot-input">
           <select class="ace form-control" name="sales_man" [(ngModel)]="filterItem.sales_man">
-            <option value="0">Select Sales Person</option>
+            <option value="0">- Created By -</option>
             <option *ngFor="let person of salesPersonList" value="{{ person.id }}">{{ person.name }}
               ({{ person.email }})</option>
           </select>
@@ -49,7 +49,7 @@
             <thead>
               <tr>
                 <th style="width: 15%;">Total Invoice</th>
-                <th style="width: 15%;">Medicine (Box)</th>
+                <th style="width: 15%;">Medicine Qty</th>
                 <th style="width: 30%;">Total Amount</th>
                 <th style="width: 20%;">Total Discount</th>
                 <th style="width: 20%;">Total Due</th>
@@ -57,11 +57,11 @@
               </thead>
               <tbody>
               <tr>
-                <td><span style="font-weight: bold;">= {{ summary.total_invoice }}</span></td>
-                <td><span style="font-weight: bold;">= {{ summary.total_medicine }}</span></td>
-                <td><span style="font-weight: bold;">= {{ summary.total_amount | number: "1.2-2" }} Tk.</span></td>
-                <td><span style="font-weight: bold;">= {{ summary.total_discount | number: "1.2-2" }} Tk.</span></td>
-                <td><span style="font-weight: bold;">= {{ summary.total_due | number: "1.2-2" }} Tk.</span></td>
+                <td><span style="font-weight: bold;"> {{ summary.total_invoice }}</span></td>
+                <td><span style="font-weight: bold;"> {{ summary.total_medicine }}</span></td>
+                <td><span style="font-weight: bold;"> {{ summary.total_amount | number: "1.2-2" }} Tk.</span></td>
+                <td><span style="font-weight: bold;"> {{ summary.total_discount | number: "1.2-2" }} Tk.</span></td>
+                <td><span style="font-weight: bold;"> {{ summary.total_due | number: "1.2-2" }} Tk.</span></td>
               </tr>
             </tbody>
           </table>
@@ -74,10 +74,10 @@
                 <th>Sl#</th>
                 <th>Purchase Invoice</th>
                 <th>Purchase Date</th>
-                <th>Medicine/Product</th>
-                <th>Qty (Box)</th>
-                <th>TP+VAT/Unit</th>
-                <th>Total T+V</th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>TP</th>
+                <th>Subtotal</th>
                 <th>Total Amount</th>
                 <th>Total Discount</th>
                 <th>Grand Total</th>
@@ -102,7 +102,7 @@
                     <ng-container>
                       <td>
                         {{ product.medicine_type | slice:0:3 }}. {{ product.medicine }}<br />
-                        {{ product.company_name }}
+                        {{ product.brand }}
                       </td>
                       <td>{{ product.quantity }}</td>
                       <td>{{ product.tp_with_vat | number: "1.2-2" }}</td>

@@ -21,58 +21,53 @@
                     Add Or Modify Brand
                 </div>
             </div>
-            <div class="tab-content">
-                <div class="tab-pane fade active show" id="tab-eg-55">
-                    <div class="widget-chart p-3">
-                        <div style="height: 400px">
-                          <form id="myForm" class="form-width-100" (ngSubmit)="AddNewBrand()">
-                            <div class="form-row">
-                                <div class="col-md-12">
-                                  <div class="position-relative form-group">
-                                    <label class="">Brand &nbsp; <a style="cursor: pointer" class="widget-heading" (click)="newBrand()"><u>Reset</u></a></label>
-                                    <input id="brand" name="search" [(ngModel)]="brandDetails.name" placeholder="Brand" type="text" class="form-control">
-                                  </div>
-                                </div>
-                            </div>
-                          </form>
-
-                          <div class="scroll-area-sm">
-                              <div class="scrollbar-container ps ps--active-y">
-                                  <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
-                                      <li class="list-group-item" *ngFor="let brand of allBrandList; let i='index';">
-                                          <div class="widget-content p-0">
-                                              <div class="widget-content-wrapper">
-                                                  <div class="widget-content-left mr-3">
-                                                      <small class="text-danger pl-2">
-                                                        <i class="fa fa-angle-right"></i>
-                                                      </small>
-                                                  </div>
-                                                  <div class="widget-content-left">
-                                                      <a style="cursor: pointer" class="widget-heading" (click)="editBrand(brand)">{{ brand.name }}</a>
-                                                  </div>
-                                                  <div class="widget-content-right">
-                                                    <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="deleteBrand(brand)"></a>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </li>
-                                  </ul>
-                                  <div class="ps__rail-x" style="left: 0px; bottom: -86px;">
-                                      <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                  </div>
-                                  <div class="ps__rail-y" style="top: 86px; height: 200px; right: 0px;">
-                                      <div class="ps__thumb-y" tabindex="0" style="top: 61px; height: 139px;"></div>
-                                  </div>
-                              </div>
-                          </div>
-                        </div>
+            <div class="card-body">
+              <form id="myForm" class="row form-width-100" (ngSubmit)="AddNewBrand()">
+                <div class="form-row">
+                    <div class="col-md-12">
+                      <div class="position-relative form-group">
+                        <label class="">Brand: &nbsp; <a style="cursor: pointer" class="widget-heading" (click)="newBrand()"><u>Reset</u></a></label>
+                        <input id="brand" name="search" [(ngModel)]="brandDetails.name" placeholder="Brand" type="text" class="form-control">
+                      </div>
                     </div>
                 </div>
+              </form>
+
+              <div class="row">
+                <div class="ul-list">
+                  <ul class="">
+                          <li class="list-group-item" *ngFor="let brand of allBrandList; let i='index';">
+                              <div class="widget-content p-0">
+                                  <div class="widget-content-wrapper">
+                                      <div class="widget-content-left mr-3">
+                                          <small class="text-danger pl-2">
+                                            <i class="fa fa-angle-right"></i>
+                                          </small>
+                                      </div>
+                                      <div class="widget-content-left">
+                                          <a style="cursor: pointer" class="widget-heading" (click)="editBrand(brand)">{{ brand.name }}</a>
+                                      </div>
+                                      <div class="widget-content-right">
+                                        <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="deleteBrand(brand)"></a>
+                                      </div>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+                      <div class="ps__rail-x" style="left: 0px; bottom: -86px;">
+                          <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                      </div>
+                      <div class="ps__rail-y" style="top: 86px; height: 200px; right: 0px;">
+                          <div class="ps__thumb-y" tabindex="0" style="top: 61px; height: 139px;"></div>
+                      </div>
+                  </div>
+              </div>
             </div>
         </div>
 
           
         </div>
+
         <div class="col-lg-6">
             <div class="mb-3 card">
               <div class="card-header-tab card-header">
@@ -81,54 +76,41 @@
                     Add Or Modify Type
                   </div>
               </div>
-              <div class="tab-content">
-                  <div class="tab-pane fade active show" id="tab-eg-55">
-                      <div class="widget-chart p-3">
-                          <div style="height: 400px">
-                            <form id="myForm" class="form-width-100" (ngSubmit)="AddNewType()">
-                              <div class="form-row">
-                                  <div class="col-md-12">
-                                      <div class="position-relative form-group">
-                                        <label class="">Type &nbsp; <a style="cursor: pointer" class="widget-heading" (click)="newType()"><u>Reset</u></a></label>
-                                        <input id="medicine_type" name="search" [(ngModel)]="typeDetails.type" placeholder="Type" type="text" class="form-control">
-                                      </div>
-                                  </div>
-                              </div>
-                            </form>
-
-                            <div class="scroll-area-sm">
-                                <div class="scrollbar-container ps ps--active-y">
-                                    <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
-                                        <li class="list-group-item" *ngFor="let type of allTypeList; let i='index';">
-                                            <div class="widget-content p-0">
-                                                <div class="widget-content-wrapper">
-                                                    <div class="widget-content-left mr-3">
-                                                        <small class="text-danger pl-2">
-                                                          <i class="fa fa-angle-right"></i>
-                                                        </small>
-                                                    </div>
-                                                    <div class="widget-content-left">
-                                                        <a style="cursor: pointer" class="widget-heading" (click)="editType(type)">{{ type.name }}</a>
-                                                    </div>
-                                                    <div class="widget-content-right">
-                                                      <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="deleteType(type)"></a>
-                                                  </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="ps__rail-x" style="left: 0px; bottom: -86px;">
-                                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                    </div>
-                                    <div class="ps__rail-y" style="top: 86px; height: 200px; right: 0px;">
-                                        <div class="ps__thumb-y" tabindex="0" style="top: 61px; height: 139px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-
+              <div class="card-body">
+                <form id="myForm" class="row form-width-100" (ngSubmit)="AddNewType()">
+                  <div class="form-row">
+                      <div class="col-md-12">
+                          <div class="position-relative form-group">
+                            <label class="">Type: &nbsp; <a style="cursor: pointer" class="widget-heading" (click)="newType()"><u>Reset</u></a></label>
+                            <input id="medicine_type" name="search" [(ngModel)]="typeDetails.type" placeholder="Type" type="text" class="form-control">
                           </div>
                       </div>
                   </div>
+                </form>
+
+                <div class="row">
+                    <div class="ul-list">
+                        <ul class="">
+                            <li class="list-group-item" *ngFor="let type of allTypeList; let i='index';">
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left mr-3">
+                                            <small class="text-danger pl-2">
+                                              <i class="fa fa-angle-right"></i>
+                                            </small>
+                                        </div>
+                                        <div class="widget-content-left">
+                                            <a style="cursor: pointer" class="widget-heading" (click)="editType(type)">{{ type.name }}</a>
+                                        </div>
+                                        <div class="widget-content-right">
+                                          <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="deleteType(type)"></a>
+                                      </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
               </div>
           </div>
         </div>

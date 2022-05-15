@@ -23,17 +23,17 @@
         </div>
         <div class="col-lg-2 padding-bot-input">
           <select class="ace form-control" name="sales_man" [(ngModel)]="filterItem.sales_man">
-            <option value="0">Select Sales Person</option>
+            <option value="0">- Created by -</option>
             <option *ngFor="let person of salesPersonList" value="{{ person.id }}">{{ person.name }} ({{ person.email }})</option>
           </select>
         </div>
-        <div class="col-lg-2 padding-bot-input">
+        <!-- <div class="col-lg-2 padding-bot-input">
           <select class="ace form-control" name="status" [(ngModel)]="filterItem.status">
             <option value="0">Select Status</option>
             <option value="DUE">DUE</option>
             <option value="PAID">PAID</option>
           </select>
-        </div>
+        </div> -->
         <div class="col-lg-2 padding-bot-input">
           <button type="button" (click)="filterPurcheseList()" class="btn btn-info">Filter</button> &nbsp;
           <button type="button" (click)="resetList()" class="btn btn-warning">Reset</button>
@@ -66,10 +66,10 @@
                       <th>Sl#</th>
                       <th>Purchase Invoice</th>
                       <th>Purchase Date</th>
-                      <th>Medicine/Product</th>
-                      <th>Qty (Box)</th>
-                      <th>TP+VAT/Unit</th>
-                      <th>Total T+V</th>
+                      <th>Product</th>
+                      <th>Qty</th>
+                      <th>TP</th>
+                      <th>Subtotal</th>
                       <th>Total Amount</th>
                       <th>Total Discount</th>
                       <th>Grand Total</th>
@@ -96,7 +96,7 @@
                       <ng-container>
                         <td>
                           {{ product.medicine_type | slice:0:3 }}. {{ product.medicine }}<br/>
-                          {{ product.company_name }}
+                          {{ product.brand }}
                         </td>
                         <td>{{ product.quantity }}</td>
                         <td>{{ product.tp_with_vat }}</td>

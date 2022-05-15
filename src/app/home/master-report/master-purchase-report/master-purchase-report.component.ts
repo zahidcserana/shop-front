@@ -1,21 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { MasterReportService } from '../master-report.service'
-import { map, catchError, debounceTime, distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { Component, OnInit } from "@angular/core";
+import { MasterReportService } from "../master-report.service";
+import {
+  map,
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  tap,
+  switchMap,
+} from "rxjs/operators";
+import { of, Observable } from "rxjs";
+import { DatePipe } from "@angular/common";
 import * as $ from "jquery";
+import Swal from "sweetalert2";
 
 @Component({
-  selector: 'app-master-purchase-report',
-  templateUrl: './master-purchase-report.component.html',
-  styleUrls: ['./master-purchase-report.component.css']
+  selector: "app-master-purchase-report",
+  templateUrl: "./master-purchase-report.component.html",
+  styleUrls: ["./master-purchase-report.component.css"],
 })
 export class MasterPurchaseReportComponent implements OnInit {
-
   constructor(
     private MasterReportService: MasterReportService,
-    private datePipe: DatePipe,
-  ) { }
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit() {
     this.getPurcheseList();
@@ -34,54 +41,56 @@ export class MasterPurchaseReportComponent implements OnInit {
 
   searchData: any[] = [];
   medicineSearch: any = {
-    search: ""
+    search: "",
   };
 
-  filterItem: any =
-    {
-      company: "",
-      invoice: "",
-      sales_man: 0,
-      product: "",
-      medicine_id: "",
-      purchase_date: "",
-      start_date: "",
-      end_date: "",
-    }
+  filterItem: any = {
+    company: "",
+    invoice: "",
+    sales_man: 0,
+    product: "",
+    medicine_id: "",
+    purchase_date: "",
+    start_date: "",
+    end_date: "",
+  };
 
-  summary: any =
-    {
-      total_amount: 0,
-      total_discount: 0,
-      total_due: 0,
-      total_invoice: 0,
-      total_medicine: 0,
-      dateRangeData: '00-00-0000'
-    }
+  summary: any = {
+    total_amount: 0,
+    total_discount: 0,
+    total_due: 0,
+    total_invoice: 0,
+    total_medicine: 0,
+    dateRangeData: "00-00-0000",
+  };
 
   customLoader = true;
   showEmptyTable = true;
 
   getPurcheseList() {
     this.customLoader = true;
-    this.MasterReportService.getPurcheseList().pipe(map(response => {
-      return response;
-    }), catchError(err => {
-      this.loader = false;
-      return of([]);
-    })).subscribe(response => {
-      this.loader = false;
-      this.customLoader = false;
-      this.purchaseList = response.data;
-      this.summary.dateRangeData = response.summary.dateRangeData;
-      if (!this.purchaseList.length) {
-        this.showEmptyTable = true;
-      } else {
-        this.showEmptyTable = false;
-      }
-      this.claculateSummary(this.purchaseList);
-
-    });
+    this.MasterReportService.getPurcheseList()
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((err) => {
+          this.loader = false;
+          return of([]);
+        })
+      )
+      .subscribe((response) => {
+        this.loader = false;
+        this.customLoader = false;
+        this.purchaseList = response.data;
+        this.summary.dateRangeData = response.summary.dateRangeData;
+        if (!this.purchaseList.length) {
+          this.showEmptyTable = true;
+        } else {
+          this.showEmptyTable = false;
+        }
+        this.claculateSummary(this.purchaseList);
+      });
   }
 
   claculateSummary(data) {
@@ -97,7 +106,8 @@ export class MasterPurchaseReportComponent implements OnInit {
 
       let item_list = item.items;
       item_list.forEach((product, index) => {
-        total_number_of_medicine = total_number_of_medicine + Number(product.quantity);
+        total_number_of_medicine =
+          total_number_of_medicine + Number(product.quantity);
       });
     });
 
@@ -109,73 +119,106 @@ export class MasterPurchaseReportComponent implements OnInit {
   }
 
   filterPurcheseList() {
-    let dateRange = [];
-    for (let d of this.filterItem.purchase_date) {
-      dateRange.push(this.datePipe.transform(new Date(d), "yyyy-MM-dd"));
-    }
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success modal-button purchase-confirm',
+        cancelButton: 'btn btn-danger modal-button'
+      },
+      buttonsStyling: false
+    });
 
-    for (let medicine of this.searchData) {
-      if (medicine.name == this.filterItem.product) {
-        this.filterItem.medicine_id = medicine.id;
-      }
-    }
-
-    this.filterItem.purchase_date = dateRange;
-
-    if (this.filterItem.purchase_date.length) {
-      this.filterItem.start_date = this.filterItem.purchase_date[0];
-      this.filterItem.end_date = this.filterItem.purchase_date[1];
-    }
-    this.customLoader = true;
-    $('#filter-medicine-btn').attr("disabled", true);
-    if (this.filterItem.purchase_date.length || this.filterItem.invoice || this.filterItem.company || this.filterItem.product || this.filterItem.sales_man) {
-      let allParams = {
-        'details': this.filterItem,
+    if (this.filterItem.purchase_date !== '') {
+      let dateRange = [];
+      for (let d of this.filterItem.purchase_date) {
+        dateRange.push(this.datePipe.transform(new Date(d), "yyyy-MM-dd"));
       }
 
-      this.MasterReportService.searchPurcheseList(allParams)
-        .then(response => {
-          this.loader = false;
-          this.purchaseList = response.data;
-          this.summary.dateRangeData = response.summary.dateRangeData;
-          this.customLoader = false;
-          if (!this.purchaseList.length) {
-            this.showEmptyTable = true;
-          } else {
-            this.showEmptyTable = false;
-          }
-          $('#filter-medicine-btn').attr("disabled", false);
-          this.claculateSummary(this.purchaseList);
-        })
-        .catch(err => {
-          console.log(err)
-        });
+      for (let medicine of this.searchData) {
+        if (medicine.name == this.filterItem.product) {
+          this.filterItem.medicine_id = medicine.id;
+        }
+      }
+
+      this.filterItem.purchase_date = dateRange;
+
+      if (this.filterItem.purchase_date.length) {
+        this.filterItem.start_date = this.filterItem.purchase_date[0];
+        this.filterItem.end_date = this.filterItem.purchase_date[1];
+      }
+
+      this.customLoader = true;
+      // $("#filter-medicine-btn").attr("disabled", true);
+      if (
+        this.filterItem.purchase_date.length ||
+        this.filterItem.invoice ||
+        this.filterItem.company ||
+        this.filterItem.product ||
+        this.filterItem.sales_man
+      ) {
+        let allParams = {
+          details: this.filterItem,
+        };
+
+        this.MasterReportService.searchPurcheseList(allParams)
+          .then((response) => {
+            this.loader = false;
+            this.purchaseList = response.data;
+            this.summary.dateRangeData = response.summary.dateRangeData;
+            this.customLoader = false;
+            if (!this.purchaseList.length) {
+              this.showEmptyTable = true;
+            } else {
+              this.showEmptyTable = false;
+            }
+            $("#filter-medicine-btn").attr("disabled", false);
+            this.claculateSummary(this.purchaseList);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    } else {
+      swalWithBootstrapButtons.fire(
+        'Please select date first',
+        'Opps..!',
+        'warning'
+      );
     }
   }
 
   getCompanyList() {
-    this.MasterReportService.getCompanyList().pipe(map(response => {
-      return response;
-    }), catchError(err => {
-      this.loader = false;
-      return of([]);
-    })).subscribe(response => {
-      this.loader = false;
-      this.companyList = response;
-    });
+    this.MasterReportService.getCompanyList()
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((err) => {
+          this.loader = false;
+          return of([]);
+        })
+      )
+      .subscribe((response) => {
+        this.loader = false;
+        this.companyList = response;
+      });
   }
 
   getSalesPersonsList() {
-    this.MasterReportService.getSalesPersonsList().pipe(map(response => {
-      return response;
-    }), catchError(err => {
-      this.loader = false;
-      return of([]);
-    })).subscribe(response => {
-      this.loader = false;
-      //console.log(response.data);
-      this.salesPersonList = response.data;
-    });
+    this.MasterReportService.getSalesPersonsList()
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((err) => {
+          this.loader = false;
+          return of([]);
+        })
+      )
+      .subscribe((response) => {
+        this.loader = false;
+        //console.log(response.data);
+        this.salesPersonList = response.data;
+      });
   }
 
   getSize(product) {
@@ -186,8 +229,15 @@ export class MasterPurchaseReportComponent implements OnInit {
     company$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      map(term => term.length < 2 ? []
-        : this.companyList.filter(name => name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+      map((term) =>
+        term.length < 2
+          ? []
+          : this.companyList
+              .filter(
+                (name) => name.toLowerCase().indexOf(term.toLowerCase()) > -1
+              )
+              .slice(0, 10)
+      )
     );
 
   search = (text$: Observable<string>) => {
@@ -198,7 +248,7 @@ export class MasterPurchaseReportComponent implements OnInit {
         this.searchData = [];
         this.loader_sub = true;
       }),
-      switchMap(term => {
+      switchMap((term) => {
         this.medicineSearch.search = term;
         if (this.medicineSearch.search.length > 1) {
           return this.getMedicineList(this.medicineSearch);
@@ -215,7 +265,7 @@ export class MasterPurchaseReportComponent implements OnInit {
     }
 
     return this.MasterReportService.searchMedicine(params).pipe(
-      map(res => {
+      map((res) => {
         this.medicineList = [];
         this.loader_sub = false;
         this.searchData = res;
@@ -232,7 +282,7 @@ export class MasterPurchaseReportComponent implements OnInit {
   }
 
   resetList() {
-    $('#filter-medicine-btn').attr("disabled", false);
+    $("#filter-medicine-btn").attr("disabled", false);
     this.getPurcheseList();
     this.filterItem = {
       company: "",
@@ -243,7 +293,6 @@ export class MasterPurchaseReportComponent implements OnInit {
       purchase_date: "",
       start_date: "",
       end_date: "",
-    }
+    };
   }
-
 }

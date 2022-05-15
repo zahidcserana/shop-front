@@ -3,15 +3,15 @@
     <!--begin::Form-->
     <form class="form-inline" #form="ngForm" (ngSubmit)="searchfilterData()">
       <div class="form-group mx-sm-3 mb-2">
-        <label for="inputPassword2" class="sr-only">Product / Medicine</label>
+        <label for="inputPassword2" class="sr-only">Product</label>
         <div id="scrollable-dropdown-menu">
-          <input placeholder="Medicine Name" #typeaheadInstance="ngbTypeahead" #cartMedicine id="typeahead-basic_1"
+          <input placeholder="Product Name" #typeaheadInstance="ngbTypeahead" #cartMedicine id="typeahead-basic_1"
             name="search" (keydown)="typeaheadKeydown($event)" [(ngModel)]="filterData.medicine" type="text"
             class="form-control form-input-width-100" [ngbTypeahead]="medicine_search" />
         </div>
       </div>
       <div class="form-group mx-sm-3 mb-2">
-        <label for="inputPassword2" class="sr-only">Company</label>
+        <label for="inputPassword2" class="sr-only">Brand</label>
           <select class="ace form-control" name="brand_id" [(ngModel)]="filterData.brand_id">
             <option value="">Select Brand</option>
             <option *ngFor="let brand of allBrandList" value="{{ brand.id }}">{{ brand.name }}</option>

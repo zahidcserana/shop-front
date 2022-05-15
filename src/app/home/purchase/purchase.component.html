@@ -20,7 +20,7 @@
                       <div class="position-relative form-group">
                         <label class="">Product Name</label>
                         <div id="scrollable-dropdown-menu">
-                          <input name="search" id="typeahead-basic" #typeaheadInstance="ngbTypeahead" (keydown)="typeaheadKeydown($event)" #medicineName [(ngModel)]="purchaseItem.medicine" placeholder="" [ngbTypeahead]="search" autofocus type="text" class="form-control">
+                          <input name="search" id="typeahead-basic" #typeaheadInstance="ngbTypeahead" (keydown)="typeaheadKeydown($event)" #medicineName [(ngModel)]="purchaseItem.medicine" placeholder="" [ngbTypeahead]="search" autofocus type="text" class="form-control" (keydown.enter)="getMedicinePreviousPurchaseDetails()">
                         </div>
                       </div>
                   </div>
@@ -45,7 +45,7 @@
                   <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="box_trade_price" class="">CPU</label>
-                        <input name="box_trade_price" #boxTradePrice [(ngModel)]="purchaseItem.box_trade_price" (keydown.enter)="gotoBoxMrp()" placeholder="" type="number" class="form-control">
+                        <input name="box_trade_price" #boxTradePrice [(ngModel)]="purchaseItem.box_trade_price" (keydown.enter)="gotoBoxMrp()" placeholder="" type="number" class="form-control" (focus)="getMedicinePreviousPurchaseDetails()">
                       </div>
                   </div>
                   <div class="col-md-1">
@@ -126,7 +126,7 @@
                       <td>{{ item.amount | number: "1.2-2" }}</td>
                       <td>
                         <button (click)="deleteRow(i)" class="mr-2 btn-icon btn-icon-only btn btn-outline-danger"><i class="pe-7s-trash btn-icon-wrapper"> </i></button>
-                        <button (click)="pickValue(item)" class="mr-2 btn-icon btn-icon-only btn btn-outline-info"><i class="pe-7s-next-2 btn-icon-wrapper"> </i></button>
+                        <!-- <button (click)="pickValue(item)" class="mr-2 btn-icon btn-icon-only btn btn-outline-info"><i class="pe-7s-next-2 btn-icon-wrapper"> </i></button> -->
                       </td>
                   </tr>
                 </tbody>
@@ -228,7 +228,7 @@
                         </div>
                         <div class="widget-content-right">
                             <select class="ace form-control" name="company" [(ngModel)]="purchaseDetails.company" required>
-                              <option value="0">--Select Supplier--</option>
+                              <option value="">--Select Supplier--</option>
                               <option *ngFor="let company of companyList" value="{{ company.id }}">{{ company.name }}</option>
                             </select>
                         </div>

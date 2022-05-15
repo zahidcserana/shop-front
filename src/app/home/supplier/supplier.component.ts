@@ -90,6 +90,7 @@ export class SupplierComponent implements OnInit {
       res => {
         if (res.success === true) {
           this.modalService.close('create-modal');
+          this.registerForm.reset();
           $('#myForm').trigger('reset');
           Swal.fire({
             position: "center",

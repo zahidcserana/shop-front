@@ -80,7 +80,7 @@ export class PurchaseComponent implements OnInit {
     advance: "",
     due: "",
     invoice: "",
-    company: 0,
+    company: '',
   };
 
   customLoader = true;
@@ -240,7 +240,7 @@ export class PurchaseComponent implements OnInit {
     );
   }
 
-  getMedicinePreviousPurchaseDetails(){
+  getMedicinePreviousPurchaseDetails() {
     let search_medicine_id = 0;
     for (let medicine of this.searchData) {
       if (medicine.name == this.purchaseItem.medicine) {
@@ -259,6 +259,7 @@ export class PurchaseComponent implements OnInit {
             this.purchaseItem.box_mrp = details.mrp;
             this.purchaseItem.low_stock_qty = details.low_stock_qty;
             this.purchaseItem.bar_code = details.barcode;
+            this.purchaseItem.percentage = details.percentage;
           }else{
             this.purchaseItem.piece_per_box = '';
             this.purchaseItem.box_trade_price = '';
@@ -266,6 +267,7 @@ export class PurchaseComponent implements OnInit {
             this.purchaseItem.box_mrp = '';
             this.purchaseItem.low_stock_qty = '';
             this.purchaseItem.bar_code = '';
+            this.purchaseItem.percentage = '';
           }
         })
         .catch(err => {
@@ -275,6 +277,7 @@ export class PurchaseComponent implements OnInit {
       this.purchaseItem.update_price = true;
       this.toastr.success('Box price taken!');
     }
+    this.gotoBoxTradePrice();
   }
 
   getMedicineUnitPriceDetails(){
@@ -441,14 +444,14 @@ export class PurchaseComponent implements OnInit {
     }
   }
 
-  submitPurchaseDetails(){
+  submitPurchaseDetails() {
     this.allPurchaseItems.reverse();
     const allParams = {
       details : this.purchaseDetails,
       items : this.allPurchaseItems
     };
 
-    $("#submitButtonForSave").attr("disabled", true);
+    // $("#submitButtonForSave").attr("disabled", true);
 
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -459,61 +462,69 @@ export class PurchaseComponent implements OnInit {
     });
 
     if (!this.allPurchaseItems.length) {
-      // swalWithBootstrapButtons.fire(
-      //   'Please add items!',
-      //   'Opps..!',
-      //   'warning'
-      // );
-    } else{
-      $(".purchase-confirm").focus();
-      swalWithBootstrapButtons.fire({
-        title: 'Do you want submit details?',
-        text: "Please check all the details!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Submit',
-        cancelButtonText: 'Cancel',
-        reverseButtons: true
-      }).then((result) => {
+      swalWithBootstrapButtons.fire(
+        'Please add items!',
+        'Opps..!',
+        'warning'
+      );
+    } else {
+      if (this.purchaseDetails.company === '') {
+        swalWithBootstrapButtons.fire(
+          'Please select supplier!',
+          'Opps..!',
+          'warning'
+        );
+      } else {
+        $(".purchase-confirm").focus();
+        swalWithBootstrapButtons.fire({
+          title: 'Do you want submit details?',
+          text: "Please check all the details!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Submit',
+          cancelButtonText: 'Cancel',
+          reverseButtons: true
+        }).then((result) => {
 
-        if (result.value) {
+          if (result.value) {
 
-          this.PurchaseService.submitItem(allParams)
-          .then(response => {
+            this.PurchaseService.submitItem(allParams)
+            .then(response => {
 
-            localStorage.removeItem("purchaseItems");
-            $("#typeahead-basic").focus();
-            this.resetAllItem();
-            this.allPurchaseItems = [];
+              localStorage.removeItem("purchaseItems");
+              $("#typeahead-basic").focus();
+              this.resetAllItem();
+              this.allPurchaseItems = [];
 
+              swalWithBootstrapButtons.fire(
+                'Purchase details submitted successful!',
+                'Successful!',
+                'success'
+              );
+              $("#submitButtonForSave").attr("disabled", false);
+              this.medicineName.nativeElement.focus();
+            })
+            .catch(err => {
+              swalWithBootstrapButtons.fire(
+                'Opps...',
+                err.error.message,
+                'error'
+              );
+              this.medicineName.nativeElement.focus();
+              $("#submitButtonForSave").attr("disabled", false);
+            });
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            this.allPurchaseItems.reverse();
             swalWithBootstrapButtons.fire(
-              'Purchase details submitted successful!',
-              'Successful!',
-              'success'
-            );
-            $("#submitButtonForSave").attr("disabled", false);
-            this.medicineName.nativeElement.focus();
-          })
-          .catch(err => {
-            swalWithBootstrapButtons.fire(
-              'Opps...',
-              err.error.message,
+              'Cancelled',
+              '',
               'error'
             );
             this.medicineName.nativeElement.focus();
             $("#submitButtonForSave").attr("disabled", false);
-          });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          this.allPurchaseItems.reverse();
-          swalWithBootstrapButtons.fire(
-            'Cancelled',
-            '',
-            'error'
-          );
-          this.medicineName.nativeElement.focus();
-          $("#submitButtonForSave").attr("disabled", false);
-        }
-      });
+          }
+        });
+      }
     }
   }
 

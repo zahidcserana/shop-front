@@ -36,11 +36,9 @@
   border: 1px solid #b3b3b3;
   margin-left: 10px;
 }
-
-.scrollbar-container {
-  height: 311px !important;
+.ul-list {
+  width: 100% !important;
 }
-
-.scroll-area-sm {
-  height: 311px !important;
+.form-row {
+  margin-left: 36px !important;
 }

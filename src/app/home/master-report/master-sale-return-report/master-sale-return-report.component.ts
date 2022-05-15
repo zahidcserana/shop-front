@@ -44,7 +44,16 @@ export class MasterSaleReturnReportComponent implements OnInit {
   showEmptyTable = false;
   medicineList = [];
   paymentTypes = [];
-  summary: any;
+  summary: any =
+  {
+    dateRangeData: '00-00-0000',
+    sum_grand_total: 0,
+    sum_quantity: 0,
+    sum_sale_amount: 0,
+    sum_sale_discount: 0,
+    sum_sale_due: 0,
+    sum_total_profit: 0
+  };
   customLoader = false;
   types: any;
   constructor(

@@ -14,7 +14,13 @@ import { DatePipe } from '@angular/common';
 })
 export class MasterSaleDueReportComponent implements OnInit {
   search: boolean;
-  summary: any;
+  summary: any =
+  {
+    dateRangeData: '00-00-0000',
+    sum_sale_amount: 0,
+    sum_sale_due: 0,
+    total_advance_amount: 0
+  };
 
   constructor(
     private MasterReportService: MasterReportService,
