@@ -90,7 +90,12 @@
                     {{ item.medicine_type | slice:0:3 }}. {{ item.medicine_name }}
                     <span class="small">{{ item.generic }}<br/>{{ item.brand }}</span>
                   </td>
-                  <td>{{ item.barcode }}</td>
+                  <td>
+                    <button #modalButton title="View" (click)="openModal(item, 'print-modal')"
+                      id="modal_button" class="mb-2 mr-2 btn-transition btn btn-outline-success">
+                      <i class="fa fa-eye icon-gradient bg-malibu-beach"></i>
+                    </button>
+                  </td>
                   <td>
                     <p *ngIf="item.quantity<'0'">0</p>
                     <p *ngIf="item.quantity>='0'">{{ item.quantity }}</p>
@@ -111,8 +116,33 @@
             (pageChange)="reloadTable($event)">
           </boot-pagination>
         </div>
-        
       </div>
     </div>
   </div>
 </div>
+
+<jw-modal id="print-modal" class="data-view-modal">
+  <div class="row" style="padding: 50px">
+    <div class="col-md-12" style="border: black solid 1px; width: 100%">
+      <header class="clearfix">
+        <div id="logo">
+          <span class="pharmacy">{{ itemDetails.medicine_name }}</span>
+          <h1 class="pdf-div" style="font-size: 1.5em">
+            Barcode# {{ itemDetails.barcode }}
+          </h1>
+        </div>
+      </header>
+      <main style="margin-bottom: 3%;text-align: center;">
+        <ngx-barcode [bc-value]="itemDetails.barcode" [bc-display-value]="true"></ngx-barcode>
+      </main>
+    </div>
+  </div>
+  <div id="print-div">
+    <button id="print-button" (click)="printInvoice('print-modal')" class="btn btn-success btn-xs">
+      Print
+    </button>
+    <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">
+      Close
+    </button>
+  </div>
+</jw-modal>

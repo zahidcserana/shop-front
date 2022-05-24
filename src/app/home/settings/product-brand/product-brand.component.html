@@ -48,6 +48,7 @@
               <th class="width25">Brand</th>
               <th class="width10">Type</th>
               <th class="width20">Specification</th>
+              <th class="width20">Barcode</th>
               <th class="width10">Action</th>
             </tr>
           </thead>
@@ -64,6 +65,7 @@
               <td>{{ item.brand }}</td>
               <td>{{ item.type }}</td>
               <td>{{ item.generic_name }}</td>
+              <td>{{ item.barcode }}</td>
               <td class="float-right">
                 <a style="cursor: pointer" class="btn btn-info fa fa-edit" (click)="editProduct(item.id)"></a> &nbsp;
                 <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="deleteProduct(item.id)"></a>

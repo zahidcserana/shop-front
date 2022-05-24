@@ -66,7 +66,7 @@ export class PurchaseComponent implements OnInit {
     remarks: "",
     low_stock_qty: "",
     bar_code: "",
-    update_price: true,
+    update_price: true
   };
 
   vatAmountInPercentage = 0;
@@ -247,31 +247,22 @@ export class PurchaseComponent implements OnInit {
         search_medicine_id = medicine.id;
       }
     }
-    if(search_medicine_id){
-      let data = { 'medicine_id' : search_medicine_id }
+    if (search_medicine_id) {
+      let data = { 'medicine_id' : search_medicine_id };
       this.PurchaseService.getPreviousPurchasedetails(data)
-        .then(response => {
-          let details = response.data;
-          if(details.pieces_per_box || details.trade_price || details.box_vat || details.mrp){
-            this.purchaseItem.piece_per_box = details.pieces_per_box;
-            this.purchaseItem.box_trade_price = details.trade_price;
-            this.purchaseItem.box_vat = details.box_vat;
-            this.purchaseItem.box_mrp = details.mrp;
-            this.purchaseItem.low_stock_qty = details.low_stock_qty;
-            this.purchaseItem.bar_code = details.barcode;
-            this.purchaseItem.percentage = details.percentage;
-          }else{
-            this.purchaseItem.piece_per_box = '';
-            this.purchaseItem.box_trade_price = '';
-            this.purchaseItem.box_vat = '';
-            this.purchaseItem.box_mrp = '';
-            this.purchaseItem.low_stock_qty = '';
-            this.purchaseItem.bar_code = '';
-            this.purchaseItem.percentage = '';
-          }
+        .then(details => {
+          // const details = response.data;
+          this.purchaseItem.piece_per_box = details.pieces_per_box;
+          this.purchaseItem.box_trade_price = details.trade_price;
+          this.purchaseItem.box_vat = details.box_vat;
+          this.purchaseItem.box_mrp = details.mrp;
+          this.purchaseItem.low_stock_qty = details.low_stock_qty;
+          this.purchaseItem.bar_code = details.barcode;
+          this.purchaseItem.percentage = details.percentage;
+          this.purchaseItem.quantity = '';
         })
         .catch(err => {
-          console.log(err)
+          console.log(err);
         });
       this.UnitVal = false;
       this.purchaseItem.update_price = true;
@@ -294,7 +285,7 @@ export class PurchaseComponent implements OnInit {
       this.PurchaseService.getUnitPriceDetails(data)
         .then(response => {
           let details = response.data;
-          if(details.pieces_per_box || details.trade_price || details.box_vat || details.mrp){
+          if(details.pieces_per_box || details.trade_price || details.mrp){
 
             this.UnitVal = true;
 
@@ -656,7 +647,8 @@ export class PurchaseComponent implements OnInit {
         //   let new_date = '25/' + date;
         //   this.purchaseItem.exp_date = new_date;
         // }
-        
+        console.log('data');
+        console.log(this.purchaseItem);
         localStorage.removeItem("purchaseItems");
         this.allPurchaseItems.unshift(this.purchaseItem);
   

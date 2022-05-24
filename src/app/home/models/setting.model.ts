@@ -4,6 +4,7 @@ export class MasterProductsModel {
     brand: string;
     type: number;
     generic_name: string;
+    barcode: string;
 }
 
 export class MasterProductsFilterModel {

@@ -6,22 +6,22 @@ import {
   tap,
   switchMap,
   map,
-  catchError
+  catchError,
 } from "rxjs/operators";
 import { SaleService } from "../services/sale.service";
 import * as $ from "jquery";
 import Swal from "sweetalert2";
-import { HomeService } from '../services/home.service';
-import { ModalService } from 'src/app/common/_modal/modal.service';
-import { ShortcutInput, ShortcutEventOutput } from 'ng-keyboard-shortcuts';
-import { Router } from '@angular/router';
-import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-declare var require: any
+import { HomeService } from "../services/home.service";
+import { ModalService } from "src/app/common/_modal/modal.service";
+import { ShortcutInput, ShortcutEventOutput } from "ng-keyboard-shortcuts";
+import { Router } from "@angular/router";
+import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
+declare var require: any;
 
 @Component({
   selector: "app-sale",
   templateUrl: "./sale.component.html",
-  styleUrls: ["./sale.component.css"]
+  styleUrls: ["./sale.component.css"],
 })
 export class SaleComponent implements OnInit {
   cartItem: any = {
@@ -30,7 +30,7 @@ export class SaleComponent implements OnInit {
     quantity: "",
     batch_no: "",
     token: "",
-    unit_type: "PCS"
+    unit_type: "PCS",
   };
   users = [];
   paymentTypes = [];
@@ -46,29 +46,29 @@ export class SaleComponent implements OnInit {
     total_payble_amount: 0,
     discount: 0,
     discount_type: "fixed",
-    discount_amount: '',
-    payment_type: 'CASH',
+    discount_amount: "",
+    payment_type: "CASH",
     customer_name: "",
     customer_mobile: "",
     prescription_image: "",
-    sendsms: false
+    sendsms: false,
   };
   searchData: any[] = [];
   loader_sub: boolean;
   medicineSearch: any = {
-    search: ""
+    search: "",
   };
   batchSearch = {
-    medicine_id: ""
+    medicine_id: "",
   };
   priceUpdate = {
     item_id: "",
-    item_price: ""
+    item_price: "",
   };
   availableQuantity = {
-    medicine_id: ""
+    medicine_id: "",
   };
-  priceInWord = '';
+  priceInWord = "";
   availability: number;
   searchList: any[];
   medicineList = [];
@@ -121,38 +121,38 @@ export class SaleComponent implements OnInit {
         label: "Help",
         description: "Report",
         command: (output: ShortcutEventOutput) =>
-          this.printPosInvoice('pos-invoice-print')
+          this.printPosInvoice("pos-invoice-print"),
       },
       {
         key: ["Shift + q"],
         label: "Help",
         description: "Report",
         command: (output: ShortcutEventOutput) =>
-          this.printPage('invoice-print')
+          this.printPage("invoice-print"),
       },
       {
         key: ["Shift + n"],
         label: "Help",
         description: "Report",
         command: (output: ShortcutEventOutput) =>
-          this.Medicine.nativeElement.focus()
-      },
+          this.Medicine.nativeElement.focus(),
+      }
     );
   }
   getPaymentTypes() {
-    this.homeService.allPaymentTypes().subscribe(res => {
+    this.homeService.allPaymentTypes().subscribe((res) => {
       this.paymentTypes = res;
-    })
+    });
   }
   getUsers() {
-    this.homeService.allUser().subscribe(res => {
+    this.homeService.allUser().subscribe((res) => {
       this.users = res;
-    })
+    });
   }
   checkToken(token) {
-    this.saleService.checkCart(this.cartItem.token).subscribe(res => {
+    this.saleService.checkCart(this.cartItem.token).subscribe((res) => {
       if (res.status === true) {
-        this.saleService.cartDetails(this.cartItem.token).subscribe(data => {
+        this.saleService.cartDetails(this.cartItem.token).subscribe((data) => {
           this.productList = data;
           this.fileName = data.file_name;
           // console.log(this.productList.file_name);
@@ -175,7 +175,7 @@ export class SaleComponent implements OnInit {
         this.searchData = [];
         this.loader_sub = true;
       }),
-      switchMap(term => {
+      switchMap((term) => {
         this.medicineSearch.search = term;
         if (this.medicineSearch.search.length > 1) {
           return this.getMedicineList(this.medicineSearch);
@@ -183,19 +183,19 @@ export class SaleComponent implements OnInit {
         return [];
       })
     );
-  }
+  };
 
-  @ViewChild('typeaheadInstance')
+  @ViewChild("typeaheadInstance")
   private typeaheadInstance: NgbTypeahead;
   typeaheadKeydown($event: KeyboardEvent) {
     if (this.typeaheadInstance.isPopupOpen()) {
       setTimeout(() => {
         const popup = document.getElementById(this.typeaheadInstance.popupId);
-        const activeElements = popup.getElementsByClassName('active');
+        const activeElements = popup.getElementsByClassName("active");
         if (activeElements.length === 1) {
           // activeElements[0].scrollIntoView();
-          const elem = (activeElements[0] as any);
-          if (typeof elem.scrollIntoViewIfNeeded === 'function') {
+          const elem = activeElements[0] as any;
+          if (typeof elem.scrollIntoViewIfNeeded === "function") {
             // non standard function, but works (in chrome)...
             elem.scrollIntoViewIfNeeded();
           } else {
@@ -206,29 +206,56 @@ export class SaleComponent implements OnInit {
       });
     }
   }
-  private scrollIntoViewIfNeededPolyfill(elem: HTMLElement, centerIfNeeded = true) {
+  private scrollIntoViewIfNeededPolyfill(
+    elem: HTMLElement,
+    centerIfNeeded = true
+  ) {
     let parent = elem.parentElement,
       parentComputedStyle = window.getComputedStyle(parent, null),
-      parentBorderTopWidth = parseInt(parentComputedStyle.getPropertyValue('border-top-width')),
-      parentBorderLeftWidth = parseInt(parentComputedStyle.getPropertyValue('border-left-width')),
+      parentBorderTopWidth = parseInt(
+        parentComputedStyle.getPropertyValue("border-top-width")
+      ),
+      parentBorderLeftWidth = parseInt(
+        parentComputedStyle.getPropertyValue("border-left-width")
+      ),
       overTop = elem.offsetTop - parent.offsetTop < parent.scrollTop,
-      overBottom = (elem.offsetTop - parent.offsetTop + elem.clientHeight - parentBorderTopWidth) > (parent.scrollTop + parent.clientHeight),
+      overBottom =
+        elem.offsetTop -
+        parent.offsetTop +
+        elem.clientHeight -
+        parentBorderTopWidth >
+        parent.scrollTop + parent.clientHeight,
       overLeft = elem.offsetLeft - parent.offsetLeft < parent.scrollLeft,
-      overRight = (elem.offsetLeft - parent.offsetLeft + elem.clientWidth - parentBorderLeftWidth) > (parent.scrollLeft + parent.clientWidth),
+      overRight =
+        elem.offsetLeft -
+        parent.offsetLeft +
+        elem.clientWidth -
+        parentBorderLeftWidth >
+        parent.scrollLeft + parent.clientWidth,
       alignWithTop = overTop && !overBottom;
 
     if ((overTop || overBottom) && centerIfNeeded) {
-      parent.scrollTop = elem.offsetTop - parent.offsetTop - parent.clientHeight / 2 - parentBorderTopWidth + elem.clientHeight / 2;
+      parent.scrollTop =
+        elem.offsetTop -
+        parent.offsetTop -
+        parent.clientHeight / 2 -
+        parentBorderTopWidth +
+        elem.clientHeight / 2;
     }
 
     if ((overLeft || overRight) && centerIfNeeded) {
-      parent.scrollLeft = elem.offsetLeft - parent.offsetLeft - parent.clientWidth / 2 - parentBorderLeftWidth + elem.clientWidth / 2;
+      parent.scrollLeft =
+        elem.offsetLeft -
+        parent.offsetLeft -
+        parent.clientWidth / 2 -
+        parentBorderLeftWidth +
+        elem.clientWidth / 2;
     }
 
     if ((overTop || overBottom || overLeft || overRight) && !centerIfNeeded) {
       elem.scrollIntoView(alignWithTop);
     }
-  };
+  }
   /** End Medicine search */
 
   getMedicineList(params): any {
@@ -237,7 +264,7 @@ export class SaleComponent implements OnInit {
       return [];
     }
     return this.saleService.searchMedicineByPharmacy(params).pipe(
-      map(res => {
+      map((res) => {
         this.medicineList = [];
         this.loader_sub = false;
         this.searchData = res;
@@ -263,7 +290,9 @@ export class SaleComponent implements OnInit {
   }
 
   getNet() {
-    this.order.total_payble_amount = this.order.sub_total ? this.order.sub_total - this.order.discount : 0;
+    this.order.total_payble_amount = this.order.sub_total
+      ? this.order.sub_total - this.order.discount
+      : 0;
     if (this.order.discount > this.order.total_payble_amount) {
       this.order.total_payble_amount = 0;
     }
@@ -287,8 +316,16 @@ export class SaleComponent implements OnInit {
   }
   getChange() {
     console.log(this.order.discount);
-    this.order.change = this.checkIsLessZero(this.order.tendered ? this.order.tendered - this.order.total_payble_amount : 0);
-    this.order.total_due_amount = this.checkIsLessZero(this.order.tendered ? this.order.total_payble_amount - this.order.tendered : 0);
+    this.order.change = this.checkIsLessZero(
+      this.order.tendered
+        ? this.order.tendered - this.order.total_payble_amount
+        : 0
+    );
+    this.order.total_due_amount = this.checkIsLessZero(
+      this.order.tendered
+        ? this.order.total_payble_amount - this.order.tendered
+        : 0
+    );
     if (this.order.total_due_amount == 0) {
       this.order.total_advance_amount = this.order.total_payble_amount;
       $(".tr-change").addClass("tdChange");
@@ -311,7 +348,9 @@ export class SaleComponent implements OnInit {
   }
   setValue() {
     this.order.sub_total = this.productList ? this.productList.sub_total : 0;
-    this.order.total_payble_amount = this.productList ? this.productList.sub_total - this.productList.discount : 0;
+    this.order.total_payble_amount = this.productList
+      ? this.productList.sub_total - this.productList.discount
+      : 0;
     this.order.tendered = this.order.total_payble_amount;
   }
   checkingAvailability() {
@@ -323,9 +362,9 @@ export class SaleComponent implements OnInit {
     }
   }
   getPriceInWord(value) {
-    var converter = require('number-to-words');
+    var converter = require("number-to-words");
     this.priceInWord = converter.toWords(value);
-    this.priceInWord += ' taka only';
+    this.priceInWord += " taka only";
   }
   addToCart() {
     this.orderId = 0;
@@ -336,7 +375,7 @@ export class SaleComponent implements OnInit {
         this.cartItem.token = token ? token : "";
         this.saleService
           .addtoCart(this.cartItem)
-          .then(res => {
+          .then((res) => {
             if (res.success === true) {
               this.isCartEmpty = false;
               this.Medicine.nativeElement.focus();
@@ -349,7 +388,7 @@ export class SaleComponent implements OnInit {
               this.availability = null;
               this.batchList = [];
               $("#myForm").trigger("reset");
-              this.orderId = 0
+              this.orderId = 0;
 
               if (this.isAntibiotic) {
                 Swal.fire({
@@ -358,7 +397,7 @@ export class SaleComponent implements OnInit {
                   title:
                     "Anti-Biotic Medicine Alart! Please Upload The Prescription Image.",
                   showConfirmButton: false,
-                  timer: 2000
+                  timer: 2000,
                 });
               }
             } else {
@@ -366,26 +405,26 @@ export class SaleComponent implements OnInit {
                 type: "warning",
                 title: "Oops...",
                 text: res.error,
-                showConfirmButton: false
+                showConfirmButton: false,
               });
             }
           })
-          .catch(err => {
+          .catch((err) => {
             this.cartLoad = false;
             Swal.fire({
               type: "warning",
               title: "Oops...",
               text: "Something went wrong!",
-              showConfirmButton: false
+              showConfirmButton: false,
             });
           });
       } else {
-        let str = 'Only ' + this.availability + ' Pcs is available';
+        let str = "Only " + this.availability + " Pcs is available";
         Swal.fire({
           type: "warning",
           title: "Oops...",
           text: str,
-          showConfirmButton: false
+          showConfirmButton: false,
         });
       }
     } else {
@@ -393,7 +432,7 @@ export class SaleComponent implements OnInit {
         type: "warning",
         title: "Oops...",
         text: "Please, select medicine and enter quantity!",
-        showConfirmButton: false
+        showConfirmButton: false,
       });
     }
   }
@@ -409,7 +448,7 @@ export class SaleComponent implements OnInit {
     this.batchSearch.medicine_id = this.cartItem.medicine_id;
     this.saleService
       .getBatchList(this.batchSearch)
-      .subscribe(data => (this.batchList = data));
+      .subscribe((data) => (this.batchList = data));
   }
   getAvailableQuantity() {
     this.getMedicineId();
@@ -417,7 +456,12 @@ export class SaleComponent implements OnInit {
       this.availableQuantity.medicine_id = this.cartItem.medicine_id;
       this.saleService
         .getAvailableQuantity(this.availableQuantity)
-        .subscribe(data => (this.availability = data.available_quantity ? data.available_quantity : null));
+        .subscribe(
+          (data) =>
+          (this.availability = data.available_quantity
+            ? data.available_quantity
+            : null)
+        );
     } else {
       this.availability = null;
     }
@@ -443,7 +487,7 @@ export class SaleComponent implements OnInit {
     this.priceUpdate.item_price = $("#unit_price_" + i).val();
     this.saleService
       .updateItemPrice(this.priceUpdate)
-      .then(res => {
+      .then((res) => {
         if (res.success === true) {
           this.productList = res.data;
           this.isAntibiotic = res.data.is_antibiotic;
@@ -456,7 +500,7 @@ export class SaleComponent implements OnInit {
         }
         this.increament = null;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         this.increament = null;
       });
@@ -470,7 +514,7 @@ export class SaleComponent implements OnInit {
         sales_tax: cart.sales_tax,
         increment: 0,
         price: cart.price,
-        rental_duration: cart.rental_duration
+        rental_duration: cart.rental_duration,
       };
       this.updateCartQunt(obj);
     }
@@ -478,7 +522,7 @@ export class SaleComponent implements OnInit {
   removeItem(itemId) {
     this.saleService
       .deleteCartItem(itemId, localStorage.getItem("token"))
-      .then(res => {
+      .then((res) => {
         if (res.success === true) {
           this.saleService.saveCartsInlocalStorage(res.data);
           localStorage.setItem("token", res.data.token);
@@ -487,21 +531,21 @@ export class SaleComponent implements OnInit {
           this.setValue();
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
   removeCart() {
     this.saleService
       .deleteCart(localStorage.getItem("token"))
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res.status === true) {
           Swal.fire({
             position: "center",
             type: "success",
             title: "Done",
             showConfirmButton: false,
-            timer: 1500
+            timer: 1500,
           });
           this.reset();
         }
@@ -530,7 +574,7 @@ export class SaleComponent implements OnInit {
     const obj = {
       id: cart.id,
       token: this.productList.token,
-      increment: 1
+      increment: 1,
     };
     this.updateCartQunt(obj);
   }
@@ -539,7 +583,7 @@ export class SaleComponent implements OnInit {
     console.log(data);
     this.saleService
       .updateCart(data)
-      .then(res => {
+      .then((res) => {
         if (res.success === true) {
           this.productList = res.data;
           this.isAntibiotic = res.data.is_antibiotic;
@@ -552,12 +596,12 @@ export class SaleComponent implements OnInit {
             type: "warning",
             title: "Oops...",
             text: res.error,
-            showConfirmButton: false
+            showConfirmButton: false,
           });
         }
         this.increament = null;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         this.increament = null;
       });
@@ -567,7 +611,8 @@ export class SaleComponent implements OnInit {
     if (type == "fixed") {
       this.order.discount = this.order.discount_amount;
     } else {
-      this.order.discount = (this.order.sub_total / 100) * this.order.discount_amount;
+      this.order.discount =
+        (this.order.sub_total / 100) * this.order.discount_amount;
     }
   }
   validationCheck() {
@@ -592,7 +637,7 @@ export class SaleComponent implements OnInit {
       console.log(this.order);
       this.saleService
         .makeSaleOrder(this.order)
-        .then(res => {
+        .then((res) => {
           if (res.success === true) {
             this.orderId = res.data.order_id;
             this.orderDetails = res.data;
@@ -605,21 +650,21 @@ export class SaleComponent implements OnInit {
               type: "success",
               title: "Orders successfully submitted.",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1500,
             });
             // setTimeout(() => { this.reset(); }, 3000);
-            this.reset();
             // this.Medicine.nativeElement.focus();
             // setTimeout(() => { this.modalButton.nativeElement.focus(); }, 1000);
           }
+          this.reset();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           Swal.fire({
             type: "warning",
             title: "Oops...",
             text: "Something went wrong!",
-            showConfirmButton: false
+            showConfirmButton: false,
           });
         });
     } else {
@@ -627,14 +672,14 @@ export class SaleComponent implements OnInit {
         type: "warning",
         title: "Oops...",
         text: "Please enter all required field!",
-        showConfirmButton: false
+        showConfirmButton: false,
       });
     }
   }
   /* modal */
   openModal(saleId: number, modal: string) {
-    $('#print-div').show();
-    $('#close-div').show();
+    $("#print-div").show();
+    $("#close-div").show();
     this.getSaleDetails(saleId);
     this.modalService.open(modal);
   }
@@ -642,14 +687,17 @@ export class SaleComponent implements OnInit {
     this.modalService.close(id);
   }
   printInvoice(printArea) {
-    $('#print-div').hide();
-    $('#close-div').hide();
+    $("#print-div").hide();
+    $("#close-div").hide();
 
     var divToPrint = document.getElementById(printArea);
     var strHead = "<html>\n<head><style>";
-    strHead += "#invoice-POS{box-shadow:0 0 1in -.25in rgba(0,0,0,.5);padding:2mm;margin:0 auto;width:44mm;background:#fff}::selection{background:#f31544;color:#fff}::moz-selection{background:#f31544;color:#fff}h1{font-size:1.5em;color:#222}h2{font-size:.9em}h3{font-size:1.2em;font-weight:300;line-height:2em}p{font-size:.7em;color:#666;line-height:1.2em}#bot,#mid,#top{border-bottom:1px solid #eee}#top{min-height:100px}#mid{min-height:80px}#bot{min-height:50px}#top .logo{float:left;height:60px;width:60px;background:url(http://michaeltruong.ca/images/logo1.png) no-repeat;background-size:60px 60px}.clientlogo{float:left;height:60px;width:60px;background:url(http://michaeltruong.ca/images/client.jpg) no-repeat;background-size:60px 60px;border-radius:50px}.info{display:block;float:left;margin-left:0}.title{float:right}.title p{text-align:right}table{width:100%;border-collapse:collapse}td{padding:5px 0 5px 15px;border:1px solid #eee}.tabletitle{padding:5px;font-size:.5em;background:#eee}.service{border-bottom:1px solid #eee}.item{width:24mm}.itemtext{font-size:.5em}#legalcopy{margin-top:5mm}";
-    strHead += "</style>\n <link rel=\"stylesheet\" type=\"text/css\"  href=\"/assets/css/bootstrap.min.css\">\n <link rel=\"stylesheet\" type=\"text/css\"  href=\"/css/agent_style.css\">\n <link rel=\"stylesheet\" type=\"text/css\"  href=\"/afcview/dist/css/AdminLTE.css\">\n<style>#invoice_modal_id{font-size: 10px;}#invoice_modal_id td{padding: 2px;}</style></head><body style=\"font-size: 10px;\"><div><center>\n"
-      + divToPrint.innerHTML + "\n</center></div>\n</body>\n</html>";
+    strHead +=
+      "#invoice-POS{box-shadow:0 0 1in -.25in rgba(0,0,0,.5);padding:2mm;margin:0 auto;width:44mm;background:#fff}::selection{background:#f31544;color:#fff}::moz-selection{background:#f31544;color:#fff}h1{font-size:1.5em;color:#222}h2{font-size:.9em}h3{font-size:1.2em;font-weight:300;line-height:2em}p{font-size:.7em;color:#666;line-height:1.2em}#bot,#mid,#top{border-bottom:1px solid #eee}#top{min-height:100px}#mid{min-height:80px}#bot{min-height:50px}#top .logo{float:left;height:60px;width:60px;background:url(http://michaeltruong.ca/images/logo1.png) no-repeat;background-size:60px 60px}.clientlogo{float:left;height:60px;width:60px;background:url(http://michaeltruong.ca/images/client.jpg) no-repeat;background-size:60px 60px;border-radius:50px}.info{display:block;float:left;margin-left:0}.title{float:right}.title p{text-align:right}table{width:100%;border-collapse:collapse}td{padding:5px 0 5px 15px;border:1px solid #eee}.tabletitle{padding:5px;font-size:.5em;background:#eee}.service{border-bottom:1px solid #eee}.item{width:24mm}.itemtext{font-size:.5em}#legalcopy{margin-top:5mm}";
+    strHead +=
+      '</style>\n <link rel="stylesheet" type="text/css"  href="/assets/css/bootstrap.min.css">\n <link rel="stylesheet" type="text/css"  href="/css/agent_style.css">\n <link rel="stylesheet" type="text/css"  href="/afcview/dist/css/AdminLTE.css">\n<style>#invoice_modal_id{font-size: 10px;}#invoice_modal_id td{padding: 2px;}</style></head><body style="font-size: 10px;"><div><center>\n' +
+      divToPrint.innerHTML +
+      "\n</center></div>\n</body>\n</html>";
 
     var w = window.open();
     $(w.document.body).html(strHead);
@@ -659,7 +707,8 @@ export class SaleComponent implements OnInit {
   printPosInvoice(printArea) {
     // this.modalService.close('print-modal-pos');
     var divToPrint = document.getElementById(printArea);
-    var strHead = "<html>\n<head><style>@page { size: 0in; }</style><body style='font-size: 8px!important;text-align: center;'>";
+    var strHead =
+      "<html>\n<head><style>@page { size: 0in; }</style><body style='font-size: 8px!important;text-align: center;'>";
     strHead += divToPrint.innerHTML + "\n</center></div>\n</body>\n</html>";
 
     // var originalContents = document.body.innerHTML;
@@ -683,7 +732,8 @@ export class SaleComponent implements OnInit {
     document.body.innerHTML = originalContents;
   }
   getSaleDetails(saleId) {
-    this.homeService.saleDetails(saleId)
-      .subscribe((data) => this.orderDetails = data);
+    this.homeService
+      .saleDetails(saleId)
+      .subscribe((data) => (this.orderDetails = data));
   }
 }

@@ -2,7 +2,8 @@
 
 ## TODO
 
-- http://localhost:4200/#/master-report/sale-due
+- http://localhost:4200/#/purchase 
+- Show barcode issue
 ## Module
 
 - Purchase

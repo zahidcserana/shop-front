@@ -63,15 +63,15 @@
                   <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="quantity" class="">QTY</label>
-                        <input name="quantity" #quantity [(ngModel)]="purchaseItem.quantity" min="1" (keydown.enter)="gotoBarcode()" placeholder="" type="number" class="form-control">
+                        <input name="quantity" #quantity [(ngModel)]="purchaseItem.quantity" min="1" (keydown.enter)="addMedicine()" placeholder="" type="number" class="form-control">
                       </div>
                   </div>
-                  <div class="col-md-1">
+                  <!-- <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="bar_code" class="">Barcode</label>
                         <input name="bar_code" #barCode [(ngModel)]="purchaseItem.bar_code"  (keydown.enter)="addMedicine()" placeholder="" type="text" class="form-control">
                       </div>
-                  </div>
+                  </div> -->
                   <!-- <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="low_stock_qty" class="">Low Stock QTY</label>
@@ -107,6 +107,7 @@
                 <tr>
                     <th>#</th>
                     <th class="td_text_align_left">Product Name</th>
+                    <th>Barcode</th>
                     <th>CPU</th>
                     <th>RPU</th>
                     <th>Percentage</th>
@@ -119,6 +120,7 @@
                   <tr *ngFor="let item of allPurchaseItems; let i='index';">
                       <th scope="row">{{ i+1 }}</th>
                       <td class="td_text_align_left">{{ item.medicine }}</td>
+                      <td>{{ item.bar_code }}</td>
                       <td>{{ item.box_trade_price | number: "1.2-2" }}</td>
                       <td>{{ item.box_mrp | number: "1.2-2" }}</td>
                       <td>{{ item.percentage | number: "1.2-2" }}</td>
