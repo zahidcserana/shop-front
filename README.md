@@ -35,3 +35,6 @@ npm run create-installer-win
 
 - ng g m home/supplier --routing=true
 - ng g c home/supplier
+
+
+export NODE_OPTIONS=--openssl-legacy-provider
