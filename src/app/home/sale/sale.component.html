@@ -25,7 +25,7 @@
                             <div class="form-group mb-0">
                                 <label for="medicine_name" class="sr-only">Medicine </label>
                                 <div id="scrollable-dropdown-menu">
-                                    <input placeholder="Medicine Name" #typeaheadInstance="ngbTypeahead"
+                                    <input placeholder="Product Name" #typeaheadInstance="ngbTypeahead"
                                     #cartMedicine id="typeahead-basic" name="search" (keydown)="typeaheadKeydown($event)"
                                     (keydown.enter)="$event.preventDefault()" [(ngModel)]="cartItem.medicine" type="text"
                                     class="form-control form-input-width-100" [ngbTypeahead]="search" (change)="getAvailableQuantity()"
