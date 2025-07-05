@@ -35,3 +35,15 @@ npm run create-installer-win
 
 - ng g m home/supplier --routing=true
 - ng g c home/supplier
+
+
+export NODE_OPTIONS=--openssl-legacy-provider
+
+rm -rf dist node_modules/.cache
+npm run build
+
+## Change request
+- Supplier: Make enter key navigation, optional email
+- Text change: medicine change to product
+- Stock report: Total in, Total out, Balance, Filter: only daterange
+- Printer paper not cut automatically
