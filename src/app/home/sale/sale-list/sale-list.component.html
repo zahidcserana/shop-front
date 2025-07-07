@@ -182,8 +182,8 @@
       <td align="center">
         <span style="font-size: 9px!important;text-align: center;">
           <strong> Sold items will be returned within 7 days with invoice. </strong>
-          <br>
-          বিঃ দ্রঃ পাতা কাঁটা ঔষধ, ইনসুলিন, ভ্যাক্সিন ও সুগার টেস্ট স্ট্রিপ ফেরত বা পরিবর্তন করা হয় না।
+          <!-- <br>
+          বিঃ দ্রঃ পাতা কাঁটা ঔষধ, ইনসুলিন, ভ্যাক্সিন ও সুগার টেস্ট স্ট্রিপ ফেরত বা পরিবর্তন করা হয় না। -->
           <br>
           <strong>***Thank you for your order***</strong>
           <br>
@@ -308,8 +308,8 @@
             <td>&nbsp;</td>
             <td align="center">
               <span style="font-size: 10px!important;text-align: center;">
-                বিঃ দ্রঃ পাতা কাঁটা ঔষধ, ইনসুলিন, ভ্যাক্সিন ও সুগার টেস্ট স্ট্রিপ ফেরত বা পরিবর্তন করা হয় না।
-                <br>
+                <!-- বিঃ দ্রঃ পাতা কাঁটা ঔষধ, ইনসুলিন, ভ্যাক্সিন ও সুগার টেস্ট স্ট্রিপ ফেরত বা পরিবর্তন করা হয় না।
+                <br> -->
                 <strong>***Thank you for your order***</strong>
                 <br>
                 <strong>Powered by AnalyticalJ</strong>
@@ -665,6 +665,18 @@
               <td style="text-align: right;padding-right: 2%">
                 &#x9f3;&nbsp;{{
                     orderDetails.total_payble_amount | number: "1.2-2"
+                  }}
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Net Profit
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                    orderDetails.total_profit | number: "1.2-2"
                   }}
               </td>
             </tr>

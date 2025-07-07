@@ -45,5 +45,8 @@ npm run build
 ## Change request
 - Supplier: Make enter key navigation, optional email
 - Text change: medicine change to product
-- Stock report: Total in, Total out, Balance, Filter: only daterange
 - Printer paper not cut automatically
+- New purchase report: brief, screenshoot
+
+- Stock report: Total in, Total out, Balance, Filter: only daterange
+- Profite in Sale modal

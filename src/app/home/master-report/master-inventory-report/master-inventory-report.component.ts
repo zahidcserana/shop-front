@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MasterReportService } from '../master-report.service'
 import { map, catchError, debounceTime, distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { of, Observable, Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import * as $ from "jquery";
+import { ActivatedRoute } from '@angular/router';
+import { FORMAT_SEARCH } from 'src/app/common/_classes/functions';
+import { StockFilterModel } from '../../models/report.model';
 
 @Component({
   selector: 'app-master-inventory-report',
@@ -11,11 +14,31 @@ import * as $ from "jquery";
   styleUrls: ['./master-inventory-report.component.css']
 })
 export class MasterInventoryReportComponent implements OnInit {
+  filterItem: StockFilterModel;
+  filter: string;
 
-  constructor(
-    private MasterReportService: MasterReportService,
-    private datePipe: DatePipe,
-  ) { }
+  dateRangeValue: Date[];
+  nextDate = new Date();
+  sub: Subscription;
+
+   constructor(
+      private route: ActivatedRoute,
+      private MasterReportService: MasterReportService,
+      private datePipe: DatePipe,
+   ) {
+    this.nextDate.setDate(this.nextDate.getDate());
+    this.dateRangeValue = [new Date(), this.nextDate];
+    this.filterItem = new StockFilterModel();
+    this.filterItem.date_range = [new Date(), this.nextDate];
+
+    this.sub = this.route.paramMap.subscribe(val => {
+      // this.reset();
+    });
+  }
+
+  // reset() {
+  //   this.filterItem.date_range = null;
+  // }
 
   ngOnInit() {
     this.getInventoryList();
@@ -39,16 +62,6 @@ export class MasterInventoryReportComponent implements OnInit {
     search: ""
   };
 
-  filterItem: any = {
-    medicine: '',
-    medicine_id: '',
-    company: '',
-    quantity: '',
-    type: '',
-    type_id: '',
-    low_stock_qty: false,
-  }
-
   summary: any = {
     company: 0,
     tp: 0,
@@ -60,22 +73,24 @@ export class MasterInventoryReportComponent implements OnInit {
   customLoader = true;
 
   filterList() {
+    if (this.filterItem.date_range) {
+      this.dateFormate();
+    }
+
     for (let medicine of this.searchData) {
       if (medicine.name == this.filterItem.medicine) {
         this.filterItem.medicine_id = medicine.id;
       }
     }
 
-    if (this.filterItem.medicine_id || this.filterItem.quantity || this.filterItem.type || this.filterItem.low_stock_qty){
+    if (this.filterItem.medicine_id || this.filterItem.date_range){
       this.loader = true;
-      for (let type of this.typeSearchData) {
-        if (type.name == this.filterItem.type) {
-          this.filterItem.type_id = type.id;
-        }
-      }
+     
+      this.filter = FORMAT_SEARCH(this.filterItem);
+     
       this.customLoader = true;
       $('#filter-medicine-btn').attr("disabled", true);	
-      this.MasterReportService.getInventoryFilterList(JSON.stringify(this.filterItem)).pipe(map(response => {
+      this.MasterReportService.getInventoryList(this.filter).pipe(map(response => {
         return response;
       }), catchError(err => {
         this.loader = false;
@@ -90,17 +105,17 @@ export class MasterInventoryReportComponent implements OnInit {
     }
   }
 
+  dateFormate() {
+    let dateRange = [];
+    for (let d of this.filterItem.date_range) {
+      dateRange.push(this.datePipe.transform(new Date(d), "yyyy-MM-dd"));
+    }
+    this.filterItem.date_range = dateRange;
+  }
+
   resetList(){
+    this.filterItem = new StockFilterModel();
     this.getInventoryList();
-    this.filterItem = {
-      medicine: '',
-      medicine_id: '',
-      company: '',
-      quantity: '',
-      type: '',
-      type_id: '',
-      low_stock_qty: false,
-    };
   }
 
   getCompanyList(){

@@ -9,8 +9,8 @@ export class MasterReportService {
     return this.http.get("medicines/search", { params: search });
   }
 
-  getInventoryList() {
-    return this.http.get(`inventory/list`).pipe(map(res => res));
+  getInventoryList(params = '') {
+    return this.http.get(`inventory/list?${params}`).pipe(map(response => response));
   }
 
   searchProductType(search) {
