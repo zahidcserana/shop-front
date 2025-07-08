@@ -597,8 +597,10 @@
             <tr>
               <th style="width:10%" class="unit">Sl.</th>
               <th style="width:30%;text-align: left">Product</th>
-              <th style="width:20%">Quantity(Pcs)</th>
-              <th style="width:20%;text-align: right">Unit Price(&#x9f3;)</th>
+              <th style="width:10%">Quantity(Pcs)</th>
+              <th style="width:10%;text-align: right">CPU(&#x9f3;)</th>
+              <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
+              <th style="width:10%;text-align: right">Profit(&#x9f3;)</th>
               <th style="width:20%;text-align: right;padding-right: 2%">
                 Amount(&#x9f3;)
               </th>
@@ -620,7 +622,9 @@
                   {{ item.medicine_type }})
                 </td>
                 <td class="qty">{{ item.quantity }}</td>
+                <td style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
+                <td style="text-align: right">{{ item.profit }}</td>
                 <td style="text-align: right;padding-right: 2%">
                   {{ item.sub_total }}
                 </td>
@@ -631,6 +635,8 @@
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
+              <td>{{ orderDetails.total_qty }}</td>
+              <td>&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
                 Total Amount
               </td>
@@ -639,6 +645,8 @@
               </td>
             </tr>
             <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td style="text-align: left;font-weight: bold;display: flex;">
@@ -659,6 +667,8 @@
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
                 Net Amount
               </td>
@@ -669,6 +679,8 @@
               </td>
             </tr>
             <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -683,6 +695,8 @@
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
               <td style="text-align: left;font-weight: bold">
                 Amount In Word
               </td>
@@ -694,7 +708,7 @@
           <ng-template #emptyItem>
             <tbody>
               <tr>
-                <td colspan="5">
+                <td colspan="7">
                   <h5 class="text-center">No Item Found</h5>
                 </td>
               </tr>
