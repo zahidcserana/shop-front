@@ -694,7 +694,7 @@ export class PurchaseComponent implements OnInit {
         });
         swalWithBootstrapButtons.fire(
           'Opps...',
-          'Medicine not found! Please check medicine details!',
+          'Product not found! Please check product details!',
           'error'
         );
       }

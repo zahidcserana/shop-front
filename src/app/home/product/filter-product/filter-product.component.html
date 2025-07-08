@@ -5,7 +5,7 @@
       <div class="form-group mx-sm-3 mb-2">
         <label for="inputPassword2" class="sr-only">Product / Medicine</label>
         <div id="scrollable-dropdown-menu">
-          <input placeholder="Medicine Name" #typeaheadInstance="ngbTypeahead" #cartMedicine id="typeahead-basic_1"
+          <input placeholder="Product Name" #typeaheadInstance="ngbTypeahead" #cartMedicine id="typeahead-basic_1"
             name="search" (keydown)="typeaheadKeydown($event)" [(ngModel)]="filterData.medicine" type="text"
             class="form-control form-input-width-100" [ngbTypeahead]="medicine_search" />
         </div>
