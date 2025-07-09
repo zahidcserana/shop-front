@@ -48,10 +48,10 @@ export class SupplierComponent implements OnInit {
 
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
-      contact_person: ['', Validators.required],
-      mobile: ['', Validators.required],
-      address: ['', Validators.required],
-      email: ['', Validators.required]
+      contact_person: [''],
+      mobile: [''],
+      address: [''],
+      email: ['']
     });
   }
 
