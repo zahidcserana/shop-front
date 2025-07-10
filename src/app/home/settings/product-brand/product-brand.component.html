@@ -102,25 +102,25 @@
         <form id="myForm" class="form-width-100" (ngSubmit)="AddProduct()" style="padding-top: 10px">
           <div class="form-group">
             <label>Name</label>
-            <input name="product_name" id="product_name" [(ngModel)]="productDetails.product_name" placeholder="Title" type="text" class="form-control">
+            <input (keydown.enter)="productType.focus()" name="product_name" id="product_name" [(ngModel)]="productDetails.product_name" placeholder="Title" type="text" class="form-control">
           </div>
           <div class="form-group">
             <label>Type</label>
-            <select class="ace form-control" required name="type" [(ngModel)]="productDetails.type">
+            <select #productType (keydown.enter)="productBrand.focus()" class="ace form-control" required name="type" [(ngModel)]="productDetails.type">
               <option value="">Select Type</option>
               <option *ngFor="let typeDetails of allTypeList" value="{{ typeDetails.id }}">{{ typeDetails.name }}</option>
             </select>
           </div>
           <div class="form-group">
             <label>Brand</label>
-            <select class="ace form-control" required name="brand_id" [(ngModel)]="productDetails.brand_id">
+            <select #productBrand (keydown.enter)="productSpecification.focus()" class="ace form-control" required name="brand_id" [(ngModel)]="productDetails.brand_id">
               <option value="">Select Brand</option>
               <option *ngFor="let brand of allBrandList" value="{{ brand.id }}">{{ brand.name }}</option>
             </select>
           </div>
           <div class="form-group">
             <label>Specification</label>
-            <input name="generic" [(ngModel)]="productDetails.generic" placeholder="Specification" type="text" class="form-control">
+            <input #productSpecification (keydown.enter)="AddProduct()" name="generic" [(ngModel)]="productDetails.generic" placeholder="Specification" type="text" class="form-control">
           </div>
           <div class="form-group">
             <button type="button" (click)="AddProduct()" class="btn btn-info">Save</button>
