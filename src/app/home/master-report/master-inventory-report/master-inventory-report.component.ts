@@ -68,6 +68,8 @@ export class MasterInventoryReportComponent implements OnInit {
     mrp: 0,
     profit: 0,
     total_medicine: 0,
+    quantity_in_total: 0,
+    quantity_out_total: 0,
   }
 
   customLoader = true;
@@ -189,6 +191,8 @@ export class MasterInventoryReportComponent implements OnInit {
     this.summary.mrp = summary.total_mrp;
     this.summary.profit = summary.total_profit;
     this.summary.total_medicine = summary.quantity;
+    this.summary.quantity_in_total = summary.quantity_in_total;
+    this.summary.quantity_out_total = summary.quantity_out_total;
     console.log(this.summary);
   }
 
