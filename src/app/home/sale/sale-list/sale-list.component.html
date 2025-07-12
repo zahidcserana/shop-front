@@ -600,7 +600,7 @@
               <th style="width:10%">Quantity(Pcs)</th>
               <th style="width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
-              <th style="width:10%;text-align: right">Profit(&#x9f3;)</th>
+              <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
               <th style="width:20%;text-align: right;padding-right: 2%">
                 Amount(&#x9f3;)
               </th>
@@ -624,7 +624,7 @@
                 <td class="qty">{{ item.quantity }}</td>
                 <td style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
-                <td style="text-align: right">{{ item.profit }}</td>
+                <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
                 <td style="text-align: right;padding-right: 2%">
                   {{ item.sub_total }}
                 </td>
@@ -678,7 +678,7 @@
                   }}
               </td>
             </tr>
-            <tr>
+            <tr *ngIf="profitShow">
               <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>

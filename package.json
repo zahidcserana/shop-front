@@ -6,7 +6,7 @@
   "main": "main.js",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider \n ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

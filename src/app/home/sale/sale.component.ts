@@ -87,6 +87,7 @@ export class SaleComponent implements OnInit {
   @ViewChild("cartBatch") cartBatch: ElementRef;
   company: any;
   salesmanShow = false;
+  profitShow = false;
   isCartEmpty = true;
 
   constructor(
@@ -99,6 +100,7 @@ export class SaleComponent implements OnInit {
   ngOnInit() {
     const user = JSON.parse(localStorage.getItem("currentUser"));
     this.salesmanShow = user.config.salesman_show;
+    this.profitShow = user.config.profit_show;
     this.getUsers();
     this.getPaymentTypes();
     this.homeService.navigationTo();
