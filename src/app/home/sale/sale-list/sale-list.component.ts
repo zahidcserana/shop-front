@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class SaleListComponent implements OnInit {
   profitShow = false;
+  tpShow = false;
   dataList: SaleModel[] = [];
   pagi: Pagi = new Pagi();
   filter: string;
@@ -96,6 +97,7 @@ export class SaleListComponent implements OnInit {
     this.getSaleList(this.pagi.page, this.pagi.limit, this.filter);
     const user = JSON.parse(localStorage.getItem("currentUser"));
     this.profitShow = user.config.profit_show;
+    this.tpShow = user.config.tp_show;
   }
 
   getPriceInWord(value) {

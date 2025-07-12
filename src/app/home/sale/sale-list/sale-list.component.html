@@ -598,7 +598,7 @@
               <th style="width:10%" class="unit">Sl.</th>
               <th style="width:30%;text-align: left">Product</th>
               <th style="width:10%">Quantity(Pcs)</th>
-              <th style="width:10%;text-align: right">CPU(&#x9f3;)</th>
+              <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
               <th style="width:20%;text-align: right;padding-right: 2%">
@@ -622,7 +622,7 @@
                   {{ item.medicine_type }})
                 </td>
                 <td class="qty">{{ item.quantity }}</td>
-                <td style="text-align: right">{{ item.tp }}</td>
+                <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
                 <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
                 <td style="text-align: right;padding-right: 2%">
