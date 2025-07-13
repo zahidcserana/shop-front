@@ -7,6 +7,8 @@ import * as $ from "jquery";
 import { ActivatedRoute } from '@angular/router';
 import { FORMAT_SEARCH } from 'src/app/common/_classes/functions';
 import { StockFilterModel } from '../../models/report.model';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-master-inventory-report',
@@ -73,6 +75,24 @@ export class MasterInventoryReportComponent implements OnInit {
   }
 
   customLoader = true;
+
+   exportStockReport(): void {
+    const table = document.getElementById('stock-table'); // we'll give the table an ID
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { 'Stock Report': worksheet },
+      SheetNames: ['Stock Report']
+    };
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array'
+    });
+
+    const data: Blob = new Blob([excelBuffer], {
+      type: 'application/octet-stream'
+    });
+    FileSaver.saveAs(data, 'Stock_Report.xlsx');
+  }
 
   filterList() {
     if (this.filterItem.date_range) {
