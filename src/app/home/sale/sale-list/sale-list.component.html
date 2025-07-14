@@ -586,7 +586,7 @@
           <div style="flex: 1;"></div>
           <div id="pharmacy-info">
             <div>{{ orderDetails.created_by }}</div>
-            <div>{{ orderDetails.pharmacy_address }}</div>
+            <div>{{ orderDetails.branch_name }}, {{ orderDetails.branch_city }}</div>
             <div>{{ orderDetails.branch_mobile }}</div>
           </div>
         </div>
@@ -615,7 +615,7 @@
                 ">
               <tr>
                 <td class="unit">{{ i + 1 }}</td>
-                <td class="service" style="text-align: left">
+                <td class="text-left">
                   {{ item.medicine }} ({{ item.brand }}
                   {{ item.medicine_type }})
                 </td>
@@ -722,7 +722,7 @@
       </main>
     </div>
   </div>
-  <div id="print-div">
+  <div id="print-div" class="print-div">
     <button id="print-button" (click)="printInvoice('print-modal')" class="btn btn-success btn-xs">
       Print
     </button>
