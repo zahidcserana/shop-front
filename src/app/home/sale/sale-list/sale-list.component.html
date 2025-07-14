@@ -586,7 +586,7 @@
           <div style="flex: 1;"></div>
           <div id="pharmacy-info">
             <div>{{ orderDetails.created_by }}</div>
-            <div>{{ orderDetails.pharmacy_address }}</div>
+            <div>{{ orderDetails.branch_name }}, {{ orderDetails.branch_city }}</div>
             <div>{{ orderDetails.branch_mobile }}</div>
           </div>
         </div>
@@ -601,9 +601,7 @@
               <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
-              <th style="width:20%;text-align: right;padding-right: 2%">
-                Amount(&#x9f3;)
-              </th>
+              <th style="width:20%;text-align: right;padding-right: 2%">Amount(&#x9f3;)</th>
             </tr>
           </thead>
           <tbody *ngIf="
@@ -617,7 +615,7 @@
                 ">
               <tr>
                 <td class="unit">{{ i + 1 }}</td>
-                <td class="service" style="text-align: left">
+                <td class="text-left">
                   {{ item.medicine }} ({{ item.brand }}
                   {{ item.medicine_type }})
                 </td>
@@ -625,18 +623,24 @@
                 <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
                 <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
-                <td style="text-align: right;padding-right: 2%">
-                  {{ item.sub_total }}
-                </td>
+                <td style="text-align: right;padding-right: 2%">{{ item.sub_total }}</td>
               </tr>
             </ng-container>
+            <tr>
+              <td colspan="2"><strong>Total</strong></td>
+              <td><strong>{{ orderDetails.total_qty }}</strong></td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
           </tbody>
           <tfoot style="border-top: solid darkgray 1px">
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>{{ orderDetails.total_qty }}</td>
-              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
                 Total Amount
               </td>
@@ -647,8 +651,8 @@
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: left;font-weight: bold;display: flex;">
                 <span> Discount &nbsp;</span>
                 <span style="display: none" id="dicountValue">
@@ -667,8 +671,8 @@
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
                 Net Amount
               </td>
@@ -681,8 +685,8 @@
             <tr *ngIf="profitShow">
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
                 Net Profit
               </td>
@@ -695,8 +699,8 @@
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: left;font-weight: bold">
                 Amount In Word
               </td>
@@ -718,7 +722,7 @@
       </main>
     </div>
   </div>
-  <div id="print-div">
+  <div id="print-div" class="print-div">
     <button id="print-button" (click)="printInvoice('print-modal')" class="btn btn-success btn-xs">
       Print
     </button>

@@ -413,7 +413,7 @@
           <div style="flex: 1;"></div>
           <div id="pharmacy-info">
             <div>{{ orderDetails.created_by }}</div>
-            <div>{{ orderDetails.pharmacy_address }}</div>
+            <div>{{ orderDetails.branch_name }}, {{ orderDetails.branch_city }}</div>
             <div>{{ orderDetails.branch_mobile }}</div>
           </div>
         </div>
@@ -457,13 +457,21 @@
                 </td>
               </tr>
             </ng-container>
+            <tr>
+              <td colspan="2"><strong>Total</strong></td>
+              <td><strong>{{ orderDetails.total_qty }}</strong></td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
           </tbody>
           <tfoot style="border-top: solid darkgray 1px">
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>{{ orderDetails.total_qty }}</td>
-              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
                 Total Amount
               </td>
@@ -474,8 +482,8 @@
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
                 Discount Amount
               </td>
@@ -486,8 +494,8 @@
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
                 Net Amount
               </td>
@@ -500,8 +508,8 @@
             <tr *ngIf="profitShow">
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
                 Net Profit
               </td>
@@ -514,8 +522,8 @@
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: left;font-weight: bold">
                 Amount In Word
               </td>

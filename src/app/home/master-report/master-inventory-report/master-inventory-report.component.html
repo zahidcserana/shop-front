@@ -3,11 +3,11 @@
     <div class="card-header card-header-top">
       <span class="margin-align-title card-header-title">
         <div class="font-icon-wrapper font-icon-lg">
-          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Inventory Report
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Stock Report
         </div>
       </span>
       <div class="btn-actions-pane-right">
-        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Inventory Report
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Stock Report
       </div>
     </div>
     <div class="card-body">
@@ -17,11 +17,6 @@
               <div class="position-relative form-group search-div">
                 <input name="company" [(ngModel)]="filterItem.company" [ngbTypeahead]="company_search" placeholder="Supplier" type="text" class="form-control">
               </div>
-              <!-- <div class="position-relative form-group search-div">
-                <div id="scrollable-dropdown-menu">
-                  <input id="typeahead-basic" name="search" [(ngModel)]="filterItem.medicine" placeholder="Product Name" type="text" [ngbTypeahead]="search" class="form-control">
-                </div>
-              </div> -->
               <div class="position-relative form-group search-div">
                 <input
                   autocomplete="off"
@@ -39,6 +34,9 @@
               </button> &nbsp;
               <button type="button" (click)="resetList()" class="btn btn-warning">
                 Reset
+              </button> &nbsp;
+              <button type="button" (click)="exportStockReport()" class="btn btn-success">
+                <i class="fa fa-download"></i> Download Excel
               </button>
             </form>
         </div>
@@ -64,7 +62,7 @@
         </div>
         <div class="col-lg-12">
             <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
-            <table class="mb-0 table table-bordered" *ngIf="!customLoader" style="font-size: 12px;">
+              <table id="stock-table" class="mb-0 table table-bordered" *ngIf="!customLoader" style="font-size: 12px;">
                 <thead>
                   <tr>
                       <th>#</th>
