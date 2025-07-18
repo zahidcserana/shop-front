@@ -28,7 +28,7 @@
             <tr>
               <th>#</th>
               <th>Date</th>
-              <th >Amount (&#2547;)</th>
+              <th >Amount (৳)</th>
             </tr>
           </thead>
           <tbody *ngIf="dataList.length > 0; else emptyData">
@@ -41,11 +41,11 @@
               " [ngClass]="{ odd: o, even: e }">
               <td>{{ i + 1 }}</td>
               <td>{{ item.date }}</td>
-              <td>{{ item.amount }}</td>
+              <td>{{ item.amount | bdCurrencyFormat }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center"><strong>Total</strong></td>
-              <td><strong>{{ sammary.total_sale_amount }} &#2547;</strong></td>
+              <td><strong>{{ sammary.total_sale_amount | bdCurrencyFormat: true }}</strong></td>
             </tr>
           </tbody>
           <ng-template #emptyData>
