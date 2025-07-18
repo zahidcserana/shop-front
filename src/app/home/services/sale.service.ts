@@ -53,6 +53,12 @@ export class SaleService {
       .get(`sales/report?page_no=${p ? p : 1}&limit=${l ? l : 20}${params}`)
       .pipe(map(res => res));
   }
+  dayWiseReport(query?) {
+    const params = query ? query : '';
+    return this.http
+      .get(`sales/report-days?${params}`)
+      .pipe(map(res => res));
+  }
   saleDueList(p, l, query?) {
     const params = query ? query : '';
     return this.http

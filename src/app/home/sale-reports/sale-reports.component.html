@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div class="row sale-filter-form-background">
+          <div class="sale-filter-form-background form-inline ml-3">
+              <div class="position-relative form-group search-div">
+                <input
+                  type="text"
+                  placeholder="Select Month"
+                  class="form-control"
+                  bsDatepicker
+                  [bsConfig]="bsConfig"
+                  [(ngModel)]="selectedMonth"
+                  (bsValueChange)="onMonthChange($event)"
+                  name="selected_month"
+                  readonly
+                />
+              </div>
+              <button type="button" (click)="exportSaleReport()" class="ml-2 btn btn-success">
+                <i class="fa fa-download"></i> Download Excel
+              </button>
+          </div>
+        </div>
+        <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+        <table id="sale-days-report" class="mb-0 table table-bordered" *ngIf="!customLoader">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th >Amount (&#2547;)</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="dataList.length > 0; else emptyData">
+            <tr *ngFor="
+                let item of dataList;
+                trackBy: trackList;
+                let i = index;
+                let e = even;
+                let o = odd
+              " [ngClass]="{ odd: o, even: e }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.date }}</td>
+              <td>{{ item.amount }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center"><strong>Total</strong></td>
+              <td><strong>{{ sammary.total_sale_amount }} &#2547;</strong></td>
+            </tr>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="6">Empty data</td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

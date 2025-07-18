@@ -12,6 +12,10 @@ export class SaleModel {
   created_at: string;
   invoice: string;
 }
+export class SaleDayWiseReportModel {
+  date: string;
+  amount: number;
+}
 export class SaleFilterModel {
   medicine: string;
   medicine_id: number;
