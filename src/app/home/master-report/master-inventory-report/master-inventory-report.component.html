@@ -52,10 +52,10 @@
               </thead>
               <tbody>
                   <tr>
-                      <td><span style="font-weight: bold;"> {{ summary.total_medicine }}</span></td>
-                      <td><span style="font-weight: bold;"> &#2547; {{ summary.tp | number: "1.2-2" }}</span></td>
-                      <td><span style="font-weight: bold;"> &#2547; {{ summary.mrp | number: "1.2-2" }}</span></td>
-                      <td><span style="font-weight: bold;"> &#2547; {{ summary.profit | number: "1.2-2" }}</span></td>
+                      <td><span style="font-weight: bold;">{{ summary.total_medicine }}</span></td>
+                      <td><span style="font-weight: bold;">{{ summary.tp | bdCurrencyFormat: true }}</span></td>
+                      <td><span style="font-weight: bold;">{{ summary.mrp | bdCurrencyFormat: true }}</span></td>
+                      <td><span style="font-weight: bold;">{{ summary.profit | bdCurrencyFormat: true }}</span></td>
                   </tr>
               </tbody>
           </table>
@@ -70,8 +70,8 @@
                       <th>Stock Qty</th>
                       <th>Qty In</th>
                       <th>Qty Out</th>
-                      <th>CPU</th>
-                      <th>RPU</th>
+                      <th>CPU (৳)</th>
+                      <th>RPU (৳)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -93,8 +93,8 @@
                         <p *ngIf="item.quantity_out<'0'">0</p>
                         <p *ngIf="item.quantity_out>='0'">{{ item.quantity_out }}</p>
                       </td>
-                      <td>{{ item.tp }}</td>
-                      <td>{{ item.mrp }}</td>
+                      <td>{{ item.tp | bdCurrencyFormat }}</td>
+                      <td>{{ item.mrp | bdCurrencyFormat }}</td>
                   </tr>
                   <tr>
                     <td>&nbsp;</td>

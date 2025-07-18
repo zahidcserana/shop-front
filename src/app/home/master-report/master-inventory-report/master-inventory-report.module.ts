@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { MasterReportService } from '../master-report.service';
+import { SharedPipeModule } from '../../pipes/shared-pipe.module';
 
 @NgModule({
   declarations: [MasterInventoryReportComponent],
@@ -16,6 +17,7 @@ import { MasterReportService } from '../master-report.service';
     FormsModule,
     NgbModule,
     BsDatepickerModule.forRoot(),
+    SharedPipeModule
   ],
   providers: [MasterReportService, DatePipe]
 })
