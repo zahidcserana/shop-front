@@ -146,7 +146,7 @@ export class SaleComponent implements OnInit {
   getPaymentTypes() {
     this.homeService.allPaymentTypes().subscribe((res) => {
       this.paymentTypes = res;
-      this.order.payment_type = res[0]?.name
+      this.order.payment_type = res[0].name
     });
   }
   getUsers() {
