@@ -208,8 +208,7 @@
                                 <td class="availableQty">Payment Type</td>
                                 <td>
                                     <select name="payment_type" id="payment_type" [(ngModel)]="order.payment_type" class="form-control">
-                                    <option value=""> - Select -</option>
-                                    <option *ngFor="let item of paymentTypes" value="{{ item.name }}">{{ item.name }}</option>
+                                      <option *ngFor="let item of paymentTypes" value="{{ item.name }}">{{ item.name }}</option>
                                     </select>
                                 </td>
                             </tr>
@@ -369,7 +368,7 @@
         <span style="font-size: 9px!important;text-align: center;">
           <strong> Sold items will be returned within 7 days with invoice. </strong>
           <br>
-          বিঃ দ্রঃ পাতা কাঁটা ঔষধ, ইনসুলিন, ভ্যাক্সিন ও সুগার টেস্ট স্ট্রিপ ফেরত বা পরিবর্তন করা হয় না।
+          <!-- বিঃ দ্রঃ পাতা কাঁটা ঔষধ, ইনসুলিন, ভ্যাক্সিন ও সুগার টেস্ট স্ট্রিপ ফেরত বা পরিবর্তন করা হয় না। -->
           <br>
           <strong>***Thank you for your order***</strong>
           <br>

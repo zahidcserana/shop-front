@@ -69,7 +69,7 @@ export class SupplierComponent implements OnInit {
       .deleteSupplier(id)
       .subscribe(res => {
         if (res.success === true) {
-          this.supplierList = res.data;
+          this.getCompanyList()
           Swal.fire({
             position: "center",
             type: "success",
@@ -78,6 +78,13 @@ export class SupplierComponent implements OnInit {
             timer: 1500
           });
         }
+      });
+  }
+
+  getCompanyList() {
+    this.service.getCompanyList()
+      .subscribe((res) => {
+        this.supplierList = res;
       });
   }
 
@@ -99,8 +106,7 @@ export class SupplierComponent implements OnInit {
             showConfirmButton: false,
             timer: 1500
           });
-
-          this.supplierList = res.data;
+          this.getCompanyList()
         } else {
           Swal.fire({
             type: "warning",
@@ -157,7 +163,7 @@ export class SupplierComponent implements OnInit {
             timer: 1500
           });
 
-          this.supplierList = res.data;
+          this.getCompanyList()
         } else {
           Swal.fire({
             type: "warning",

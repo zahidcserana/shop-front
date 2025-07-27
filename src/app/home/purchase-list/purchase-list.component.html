@@ -49,10 +49,10 @@
                     <span class="small" style="color:RED;" *ngIf="item.total_due_amount<0">Receivable</span>
                   </td>
                   <td>
-                      <button (click)="openModal(item.id, 'print-modal')" id="order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-info">
+                      <button title="Purchase Return" (click)="openModal(item.id, 'print-modal')" id="order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-info">
                       <i class="pe-7s-note2 btn-icon-wrapper"></i>
                       </button>
-                      <button (click)="deletePurchaseDetails(item.id)" id="purchase_order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-danger">
+                      <button title="Delete Invoice" (click)="deletePurchaseDetails(item.id)" id="purchase_order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-danger">
                       <i class="pe-7s-trash btn-icon-wrapper"></i>
                       </button>
                   </td>
@@ -73,7 +73,7 @@
       <div *ngIf="purchaseDetails" class="col-md-12">
         <header class="clearfix" style="margin-bottom: 0;">
           <div id="logo">
-            <span class="pharmacy">Purchase Details</span>
+            <span class="pharmacy">Purchase Return</span>
           </div>
         </header>
         <main>

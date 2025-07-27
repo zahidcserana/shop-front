@@ -102,6 +102,8 @@
                     <td><span style="font-weight: bold;"> {{ summary.total_medicine }}</span></td>
                     <td><span style="font-weight: bold;"> {{ summary.quantity_in_total }}</span></td>
                     <td><span style="font-weight: bold;"> {{ summary.quantity_out_total }}</span></td>
+                    <td><span style="font-weight: bold;">{{ summary.tp | bdCurrencyFormat }}</span></td>
+                    <td><span style="font-weight: bold;">{{ summary.mrp | bdCurrencyFormat }}</span></td>
                   </tr>
               </tbody>
           </table>
