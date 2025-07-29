@@ -266,7 +266,7 @@ export class PurchaseComponent implements OnInit {
         });
       this.UnitVal = false;
       this.purchaseItem.update_price = true;
-      this.toastr.success('Box price taken!');
+      // this.toastr.success('Box price taken!');
     }
     this.gotoBoxTradePrice();
   }
@@ -326,7 +326,7 @@ export class PurchaseComponent implements OnInit {
             this.purchaseItem.bar_code = '';
             this.UnitVal = false;
             this.purchaseItem.update_price = true;
-            this.toastr.success('Box price taken!');
+            // this.toastr.success('Box price taken!');
           }
         })
         .catch(err => {
