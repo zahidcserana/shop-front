@@ -264,7 +264,7 @@ export class MasterPurchaseReportComponent implements OnInit {
       return [];
     }
 
-    return this.MasterReportService.searchMedicine(params).pipe(
+    return this.MasterReportService.searchMedicineByPharmacy(params).pipe(
       map((res) => {
         this.medicineList = [];
         this.loader_sub = false;

@@ -9,6 +9,10 @@ export class MasterReportService {
     return this.http.get("medicines/search", { params: search });
   }
 
+  searchMedicineByPharmacy(search) {
+    return this.http.get("medicines/search/sale", { params: search });
+  }
+
   getInventoryList(params = '') {
     return this.http.get(`inventory/list?${params}`).pipe(map(response => response));
   }
