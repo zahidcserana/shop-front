@@ -6,6 +6,8 @@ import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { FORMAT_SEARCH } from 'src/app/common/_classes/functions';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-sale-reports',
@@ -88,5 +90,76 @@ export class SaleReportsComponent implements OnInit {
       type: 'application/octet-stream'
     });
     FileSaver.saveAs(data, 'Sale_Days_Report.xlsx');
+  }
+
+  exportSaleReportPDF(): void {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    const title = `Sale Days Report - ${this.filter.year_month || 'All'}`;
+    const logoImg = new Image();
+    logoImg.src = 'assets/images/analyticalj.png'; // Ensure this is a small logo for best fit
+
+    logoImg.onload = () => {
+      const logoWidth = 20;
+      const logoHeight = 10;
+      const marginTop = 10;
+
+      // Positioning
+      const logoX = 14;
+      const logoY = marginTop;
+
+      const titleFontSize = 12;
+      doc.setFontSize(titleFontSize);
+      doc.setFont('helvetica', 'bold');
+
+      const textWidth = doc.getTextWidth(title);
+      const titleX = (pageWidth - textWidth) / 2;
+      const titleY = logoY + 7; // vertically center text with logo
+
+      // Add logo and title in same row
+      doc.addImage(logoImg, 'PNG', logoX, logoY, logoWidth, logoHeight);
+      doc.text(title, titleX, titleY);
+
+      // Prepare table data
+      const head = [['#', 'Date', 'Amount (৳)']];
+      const body: any[] = this.dataList.map((item, index) => [
+        index + 1,
+        item.date,
+        item.amount.toLocaleString('en-BD', { minimumFractionDigits: 2 }),
+      ]);
+
+      // Total row
+      body.push([
+        { content: 'Total', colSpan: 2, styles: { halign: 'center', fontStyle: 'bold' } },
+        {
+          content: this.sammary.total_sale_amount.toLocaleString('en-BD', { minimumFractionDigits: 2 }),
+          styles: { fontStyle: 'bold' }
+        }
+      ]);
+
+      // Draw table just below the header
+      autoTable(doc, {
+        startY: logoY + logoHeight + 5, // compact top spacing
+        head: head,
+        body: body,
+        theme: 'grid',
+        styles: {
+          fontSize: 9,
+          cellPadding: 2
+        },
+        headStyles: {
+          fillColor: [220, 220, 220],
+          textColor: 20,
+          fontStyle: 'bold'
+        },
+        margin: { left: 14, right: 14 },
+        didDrawPage: () => {
+          // optional footer or watermark here
+        }
+      });
+
+      doc.save('Sale_Days_Report.pdf');
+    };
   }
 }
