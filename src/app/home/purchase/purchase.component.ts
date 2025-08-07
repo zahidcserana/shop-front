@@ -640,7 +640,8 @@ export class PurchaseComponent implements OnInit {
         }
       }
       if (exist) {
-        this.purchaseItem.amount = Number(this.purchaseItem.quantity) * (Number(this.purchaseItem.box_trade_price) + Number(this.purchaseItem.box_vat));
+        this.purchaseItem.amount = Number(this.purchaseItem.quantity) * Number(this.purchaseItem.box_trade_price);
+        // this.purchaseItem.amount = Number(this.purchaseItem.quantity) * (Number(this.purchaseItem.box_trade_price) + Number(this.purchaseItem.box_vat));
         
         // let date = this.purchaseItem.exp_date;
         // if(date){

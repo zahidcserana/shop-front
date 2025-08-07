@@ -9,6 +9,8 @@ import { FORMAT_SEARCH } from 'src/app/common/_classes/functions';
 import { StockFilterModel } from '../../models/report.model';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-master-inventory-report',
@@ -76,7 +78,7 @@ export class MasterInventoryReportComponent implements OnInit {
 
   customLoader = true;
 
-   exportStockReport(): void {
+  exportStockReport(): void {
     const table = document.getElementById('stock-table'); // we'll give the table an ID
     const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
     const workbook: XLSX.WorkBook = {
@@ -92,6 +94,81 @@ export class MasterInventoryReportComponent implements OnInit {
       type: 'application/octet-stream'
     });
     FileSaver.saveAs(data, 'Stock_Report.xlsx');
+  }
+
+  exportStockReportPDF(): void {
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const title = 'Stock Report';
+    const logoImg = new Image();
+    logoImg.src = 'assets/images/analyticalj.png'; // Make sure this path is correct and image exists
+
+    logoImg.onload = () => {
+      const logoWidth = 20;
+      const logoHeight = 10;
+      const marginTop = 10;
+
+      const logoX = 14;
+      const logoY = marginTop;
+
+      const titleFontSize = 12;
+      doc.setFontSize(titleFontSize);
+      doc.setFont('helvetica', 'bold');
+
+      const textWidth = doc.getTextWidth(title);
+      const titleX = (pageWidth - textWidth) / 2;
+      const titleY = logoY + 7;
+
+      // Header: logo + title
+      doc.addImage(logoImg, 'PNG', logoX, logoY, logoWidth, logoHeight);
+      doc.text(title, titleX, titleY);
+
+      // Table data
+      const head = [['#', 'Product Details', 'Stock Qty', 'Qty In', 'Qty Out', 'CPU (৳)', 'RPU (৳)']];
+      const body: any[] = this.inventoryList.map((item, index) => [
+        index + 1,
+        `${item.medicine_type.slice(0, 3)}. ${item.medicine_name} (${item.brand}) ${item.generic}`,
+        Math.max(0, item.quantity),
+        Math.max(0, item.quantity_in),
+        Math.max(0, item.quantity_out),
+        item.tp.toLocaleString('en-BD', { minimumFractionDigits: 2 }),
+        item.mrp.toLocaleString('en-BD', { minimumFractionDigits: 2 })
+      ]);
+
+      // Add summary as normal row (not object-based)
+      body.push([
+        '', 'Total',
+        this.summary.total_medicine,
+        this.summary.quantity_in_total,
+        this.summary.quantity_out_total,
+        this.summary.tp.toLocaleString('en-BD', { minimumFractionDigits: 2 }),
+        this.summary.mrp.toLocaleString('en-BD', { minimumFractionDigits: 2 })
+      ]);
+
+      autoTable(doc, {
+        startY: logoY + logoHeight + 5,
+        head,
+        body,
+        theme: 'grid',
+        styles: {
+          fontSize: 9,
+          cellPadding: 2
+        },
+        headStyles: {
+          fillColor: [220, 220, 220],
+          textColor: 20,
+          fontStyle: 'bold'
+        },
+        margin: { left: 14, right: 14 },
+        didParseCell: (data) => {
+          if (data.row.index === body.length - 1) {
+            data.cell.styles.fontStyle = 'bold';
+          }
+        }
+      });
+
+      doc.save('Stock_Report.pdf');
+    };
   }
 
   filterList() {
