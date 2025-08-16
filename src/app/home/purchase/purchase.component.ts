@@ -57,7 +57,7 @@ export class PurchaseComponent implements OnInit {
     quantity: "",
     batch_no: "",
     exp_date: "",
-    piece_per_box: "",
+    piece_per_box: 1,
     box_trade_price: "",
     box_vat: "",
     percentage: '',
@@ -318,7 +318,7 @@ export class PurchaseComponent implements OnInit {
             this.toastr.warning('Single unit price taken!');
             this.quantity.nativeElement.focus();
           }else{
-            this.purchaseItem.piece_per_box = '';
+            this.purchaseItem.piece_per_box = 1;
             this.purchaseItem.box_trade_price = '';
             this.purchaseItem.box_vat = '';
             this.purchaseItem.box_mrp = '';
@@ -674,7 +674,7 @@ export class PurchaseComponent implements OnInit {
           quantity: "",
           batch_no: "",
           exp_date: "",
-          piece_per_box: "",
+          piece_per_box: 1,
           box_trade_price: "",
           box_vat: "",
           box_mrp: "",
