@@ -42,11 +42,6 @@ export NODE_OPTIONS=--openssl-legacy-provider
 rm -rf dist node_modules/.cache
 npm run build
 
-## Change request
-- Supplier: Make enter key navigation, optional email
-- Text change: medicine change to product
-- Printer paper not cut automatically
-- New purchase report: brief, screenshoot
-
-- Stock report: Total in, Total out, Balance, Filter: only daterange
-- Profite in Sale modal
+## Command to create new module
+ng g m home/master-report/sale-report-supplier --routing --module
+ng g c home/master-report/sale-report-supplier --routing --module

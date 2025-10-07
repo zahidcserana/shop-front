@@ -17,6 +17,10 @@ export class MasterReportService {
     return this.http.get(`inventory/list?${params}`).pipe(map(response => response));
   }
 
+  supplierSaleReport(params = '') {
+    return this.http.get(`supplier-sale-report?${params}`).pipe(map(response => response));
+  }
+
   searchProductType(search) {
     return this.http.get("type/search", { params: search });
   }
