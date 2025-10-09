@@ -71,6 +71,9 @@
                         <th style="width: 20%" class="text-center qty-width">
                             QTY(Pcs)
                         </th>
+                        <th style="width: 20%" class="text-center qty-width">
+                            Free QTY(Pcs)
+                        </th>
                         <th style="width: 10%" class="text-center">Amount(Tk.)</th>
                         <th style="width: 15%" class="text-center"></th>
                         </tr>
@@ -108,17 +111,39 @@
                                 (change)="updateItemPrice(cart, i)" /> <small>(TP+VAT {{ cart.tp }})</small>
                             </td>
                             <td class="text-center">
-                            <div class="quantity clearfix">
-                                <span style="background: black !important;" [ngClass]="{ 'block-cursor': increament == i }"
-                                class="btn btn-sm btn-dark no-m" (click)="decreaseQuant(cart, i)">-</span>
-                                <span class="cart-qunt btn btn-sm no-m"
-                                style="position: relative;background: #ffffff!important;color: black!important;">{{ cart.quantity }}
-                                <div *ngIf="increament == i" class="m-loader m-loader--brand"
-                                    style="position: absolute;width: 30px;top:15px; left:10px;"></div>
-                                </span>
-                                <span style="background: black !important;" [ngClass]="{ 'block-cursor': increament == i }"
-                                class="btn btn-sm btn-dark  no-m" (click)="increaseQuant(cart, i)">+</span>
-                            </div>
+                              <div class="quantity clearfix">
+                                  <span style="background: black !important;" [ngClass]="{ 'block-cursor': increament == i }"
+                                  class="btn btn-sm btn-dark no-m" (click)="decreaseQuant(cart, i)">-</span>
+                                  <span class="cart-qunt btn btn-sm no-m"
+                                  style="position: relative;background: #ffffff!important;color: black!important;">{{ cart.quantity }}
+                                  <div *ngIf="increament == i" class="m-loader m-loader--brand"
+                                      style="position: absolute;width: 30px;top:15px; left:10px;"></div>
+                                  </span>
+                                  <span style="background: black !important;" [ngClass]="{ 'block-cursor': increament == i }"
+                                  class="btn btn-sm btn-dark  no-m" (click)="increaseQuant(cart, i)">+</span>
+                              </div>
+                            </td>
+                            <td class="text-center">
+                              <div class="quantity clearfix">
+                                  <span 
+                                    style="background: black !important;" 
+                                    [ngClass]="{ 'block-cursor': incrementFreeQty == i }"
+                                    class="btn btn-sm btn-dark no-m" 
+                                    (click)="decreaseFreeQty(cart, i)"
+                                  >-</span>
+                                  <span 
+                                    class="cart-qunt btn btn-sm no-m"
+                                    style="position: relative;background: #ffffff!important;color: black!important;"
+                                    >{{ cart.free_quantity }}
+                                    <div *ngIf="incrementFreeQty == i" class="m-loader m-loader--brand" style="position: absolute;width: 30px;top:15px; left:10px;"></div>
+                                  </span>
+                                  <span 
+                                    style="background: black !important;" 
+                                    [ngClass]="{ 'block-cursor': incrementFreeQty == i }"
+                                    class="btn btn-sm btn-dark  no-m" 
+                                    (click)="increaseFreeQty(cart, i)"
+                                  >+</span>
+                              </div>
                             </td>
                             <td class="text-center">{{ cart.sub_total }}</td>
                             <td class="text-center">
@@ -296,6 +321,9 @@
             <td style="text-align: left;">
               Qty
             </td>
+            <td style="text-align: left;">
+              Free(Qty)
+            </td>
             <td style="text-align: right;">
               Unit Price (&#2547;)
             </td>
@@ -311,6 +339,9 @@
               </td>
               <td>
                 {{ item.quantity }}
+              </td>
+              <td>
+                {{ item.free_quantity }}
               </td>
               <td style="text-align: right;">
                 {{ item.unit_price }}
@@ -424,6 +455,7 @@
               <th style="width:10%" class="unit">Sl.</th>
               <th style="width:30%;text-align: left">Product</th>
               <th style="width:10%">Quantity(Pcs)</th>
+              <th style="width:10%">Free(Qty)</th>
               <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
@@ -448,6 +480,7 @@
                   {{ item.medicine_type }})
                 </td>
                 <td class="qty">{{ item.quantity }}</td>
+                <td class="qty">{{ item.free_quantity }}</td>
                 <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
                 <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>

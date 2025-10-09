@@ -77,6 +77,7 @@ export class SaleComponent implements OnInit {
   cartLoad: boolean;
   orderId: number;
   increament: any;
+  incrementFreeQty: any;
   fileName: any;
   orderDetails: any;
   validationStatus: boolean;
@@ -524,6 +525,21 @@ export class SaleComponent implements OnInit {
       this.updateCartQunt(obj);
     }
   }
+
+  decreaseFreeQty(cart, i) {
+    if (cart.free_quantity > 1) {
+      this.incrementFreeQty = i;
+      const obj = {
+        id: cart.id,
+        token: this.productList.token,
+        sales_tax: cart.sales_tax,
+        increment_free: 0,
+        price: cart.price,
+        rental_duration: cart.rental_duration,
+      };
+      this.updateCartFreeQty(obj);
+    }
+  }
   removeItem(itemId) {
     this.saleService
       .deleteCartItem(itemId, localStorage.getItem("token"))
@@ -584,6 +600,17 @@ export class SaleComponent implements OnInit {
     this.updateCartQunt(obj);
   }
 
+  increaseFreeQty(cart, i) {
+    console.log('i', i)
+    this.incrementFreeQty = i;
+    const obj = {
+      id: cart.id,
+      token: this.productList.token,
+      increment_free: 1,
+    };
+    this.updateCartFreeQty(obj);
+  }
+
   updateCartQunt(data) {
     console.log(data);
     this.saleService
@@ -605,10 +632,42 @@ export class SaleComponent implements OnInit {
           });
         }
         this.increament = null;
+        this.incrementFreeQty = null;
       })
       .catch((err) => {
         console.log(err);
         this.increament = null;
+        this.incrementFreeQty = null;
+      });
+  }
+
+  updateCartFreeQty(data) {
+    console.log(data);
+    this.saleService
+      .updateFreeQty(data)
+      .then((res) => {
+        if (res.success === true) {
+          this.productList = res.data;
+          // this.isAntibiotic = res.data.is_antibiotic;
+          // // this.order.sub_total = this.productList ? this.productList.sub_total : 0;
+          // this.setValue();
+          // this.calculation();
+          this.saleService.saveCartsInlocalStorage(res.data);
+        } else {
+          Swal.fire({
+            type: "warning",
+            title: "Oops...",
+            text: res.error,
+            showConfirmButton: false,
+          });
+        }
+        this.increament = null;
+        this.incrementFreeQty = null;
+      })
+      .catch((err) => {
+        console.log(err);
+        this.increament = null;
+        this.incrementFreeQty = null;
       });
   }
 
