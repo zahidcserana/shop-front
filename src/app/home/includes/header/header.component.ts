@@ -48,6 +48,8 @@ export class HeaderComponent implements OnInit {
     return this.authService.checkAcl(page);
   }
   logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user_cart");
     localStorage.removeItem("currentUser");
     sessionStorage.removeItem("currentUser");
     this.router.navigate(["/login"]);

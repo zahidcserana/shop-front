@@ -91,6 +91,7 @@ export class SaleComponent implements OnInit {
   profitShow = false;
   tpShow = false;
   isCartEmpty = true;
+  isSubmitting = false;
 
   constructor(
     private homeService: HomeService,
@@ -695,10 +696,15 @@ export class SaleComponent implements OnInit {
 
     return this.validationStatus;
   }
+
   submitOrder() {
+    if (this.isSubmitting) return; // Prevent double click
+    this.isSubmitting = true;
+
     if (this.validationCheck()) {
       this.order.token = localStorage.getItem("token");
       console.log(this.order);
+      this.reset();
       this.saleService
         .makeSaleOrder(this.order)
         .then((res) => {
@@ -720,7 +726,7 @@ export class SaleComponent implements OnInit {
             // this.Medicine.nativeElement.focus();
             // setTimeout(() => { this.modalButton.nativeElement.focus(); }, 1000);
           }
-          this.reset();
+          this.isSubmitting = false;
         })
         .catch((err) => {
           console.log(err);
@@ -729,17 +735,32 @@ export class SaleComponent implements OnInit {
             title: "Oops...",
             text: "Something went wrong!",
             showConfirmButton: false,
+          })
+          .finally(() => {
+            // ✅ Re-enable the button only after everything completes
+            this.isSubmitting = false;
           });
         });
     } else {
-      Swal.fire({
-        type: "warning",
-        title: "Oops...",
-        text: "Please enter all required field!",
-        showConfirmButton: false,
-      });
+       if (!this.productList || !this.productList.cart_items || this.productList.cart_items.length < 1) {
+        Swal.fire({
+          type: "warning",
+          title: "Oops...",
+          text: "Empty cart!",
+          showConfirmButton: false,
+        });
+      } else {
+        Swal.fire({
+          type: "warning",
+          title: "Oops...",
+          text: "Please enter all required field!",
+          showConfirmButton: false,
+        });
+      }
+      this.isSubmitting = false;
     }
   }
+
   /* modal */
   openModal(saleId: number, modal: string) {
     $("#print-div").show();

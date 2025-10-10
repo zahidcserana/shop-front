@@ -273,10 +273,15 @@
                                     </button>
                                 </td>
                                 <td>
-                                    <button (click)="submitOrder()" class="mb-2 mr-2 btn btn-success btn-lg btn-block">
+                                  <button
+                                    [disabled]="isSubmitting"
+                                    (click)="submitOrder()"
+                                    class="mb-2 mr-2 btn btn-success btn-lg btn-block"
+                                  >
                                     <i class="ace-icon fa fa-archive bigger-110"></i>
-                                    <span>&nbsp;Confirm</span>
-                                    </button>
+                                    <span *ngIf="!isSubmitting">&nbsp;Confirm</span>
+                                    <span *ngIf="isSubmitting">&nbsp;Processing...</span>
+                                  </button>
                                 </td>
                             </tr>
                         </table>
