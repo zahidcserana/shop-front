@@ -585,6 +585,9 @@ export class SaleComponent implements OnInit {
   reset() {
     this.isCartEmpty = true;
 
+    localStorage.removeItem("user_cart");
+    localStorage.removeItem("token");
+
     this.productList = [];
     this.order.sub_total = 0;
     this.order.tendered = 0;
