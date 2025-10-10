@@ -585,8 +585,6 @@ export class SaleComponent implements OnInit {
   reset() {
     this.isCartEmpty = true;
 
-    localStorage.removeItem("user_cart");
-    localStorage.removeItem("token");
     this.productList = [];
     this.order.sub_total = 0;
     this.order.tendered = 0;
@@ -712,8 +710,10 @@ export class SaleComponent implements OnInit {
 
     if (this.validationCheck()) {
       this.order.token = localStorage.getItem("token");
-      console.log(this.order);
-      this.reset();
+      
+      localStorage.removeItem("user_cart");
+      localStorage.removeItem("token");
+
       this.saleService
         .makeSaleOrder(this.order)
         .then((res) => {
@@ -736,6 +736,7 @@ export class SaleComponent implements OnInit {
             // setTimeout(() => { this.modalButton.nativeElement.focus(); }, 1000);
           }
           this.isSubmitting = false;
+          this.reset();
         })
         .catch((err) => {
           console.log(err);
@@ -748,6 +749,7 @@ export class SaleComponent implements OnInit {
           .finally(() => {
             // ✅ Re-enable the button only after everything completes
             this.isSubmitting = false;
+            this.reset();
           });
         });
     } else {
@@ -767,6 +769,7 @@ export class SaleComponent implements OnInit {
         });
       }
       this.isSubmitting = false;
+      this.reset();
     }
   }
 
