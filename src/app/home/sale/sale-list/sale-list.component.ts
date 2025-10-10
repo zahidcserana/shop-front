@@ -100,10 +100,17 @@ export class SaleListComponent implements OnInit {
     this.tpShow = user.config.tp_show;
   }
 
-  getPriceInWord(value) {
-    var converter = require('number-to-words');
-    this.priceInWord = converter.toWords(value);
-    this.priceInWord += ' taka only';
+  getPriceInWord(value: number) {
+    const converter = require("number-to-words");
+    let words = converter.toWords(value);
+
+    // Capitalize each word
+    words = words
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    this.priceInWord = `${words} Taka Only`;
   }
 
   getSaleList(p, l, q) {

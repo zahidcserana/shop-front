@@ -368,11 +368,20 @@ export class SaleComponent implements OnInit {
       return true;
     }
   }
-  getPriceInWord(value) {
-    var converter = require("number-to-words");
-    this.priceInWord = converter.toWords(value);
-    this.priceInWord += " taka only";
+
+  getPriceInWord(value: number) {
+    const converter = require("number-to-words");
+    let words = converter.toWords(value);
+
+    // Capitalize each word
+    words = words
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    this.priceInWord = `${words} Taka Only`;
   }
+
   addToCart() {
     this.orderId = 0;
     if (this.cartItem.medicine && this.cartItem.quantity) {
@@ -528,7 +537,7 @@ export class SaleComponent implements OnInit {
   }
 
   decreaseFreeQty(cart, i) {
-    if (cart.free_quantity > 1) {
+    if (cart.free_quantity > 0) {
       this.incrementFreeQty = i;
       const obj = {
         id: cart.id,

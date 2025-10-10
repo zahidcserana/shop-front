@@ -127,3 +127,15 @@
   padding: 8px 8px 0px 8px;
   margin-bottom: 10px;
 }
+
+.total-quantity h2 {
+  background-color: #794c8a; /* success green */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.8rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: inline-block;
+  margin: 0;
+}
