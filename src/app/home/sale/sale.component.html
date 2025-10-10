@@ -61,7 +61,7 @@
                         <div class="col-md-3"></div>
 
                         <div class="col-md-1 mt-1 text-right total-quantity">
-                          <h2><strong>{{ productList?.total_quantity }}</strong></h2>
+                          <h2><strong>{{ productList?.total_quantity ? productList?.total_quantity : 0 }}</strong></h2>
                         </div>
                     </div>
                 </form>
