@@ -720,7 +720,7 @@ export class SaleComponent implements OnInit {
       this.saleService
         .makeSaleOrder(this.order)
         .then((res) => {
-          if (res.success === true) {
+          if (res.success) {
             this.orderId = res.data.order_id;
             this.orderDetails = res.data;
             this.getPriceInWord(this.orderDetails.total_payble_amount);
@@ -737,6 +737,13 @@ export class SaleComponent implements OnInit {
             // setTimeout(() => { this.reset(); }, 3000);
             // this.Medicine.nativeElement.focus();
             // setTimeout(() => { this.modalButton.nativeElement.focus(); }, 1000);
+          } else {
+              Swal.fire({
+              type: "warning",
+              title: "Oops...",
+              text: "Something went wrong!",
+              showConfirmButton: false,
+            })
           }
           this.isSubmitting = false;
           this.reset();

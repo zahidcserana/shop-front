@@ -83,3 +83,20 @@
   min-height: 83px;
   max-width: 90px;
 }
+
+#print-div {
+  display: flex;            /* Use flexbox */
+  justify-content: center;  /* Center horizontally */
+  gap: 10px;                /* Space between buttons */
+  padding: 10px 0;          /* Vertical padding */
+}
+
+#print-div button {
+  width: 9%;
+  left: 0;
+  min-width: 90px;          /* Optional: make buttons uniform width */
+  text-align: center;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
