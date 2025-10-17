@@ -17,6 +17,7 @@ import { ShortcutInput, ShortcutEventOutput } from 'ng-keyboard-shortcuts';
   styleUrls: ['./purchase.component.css']
 })
 export class PurchaseComponent implements OnInit {
+  isSubmitting = false;
 
   constructor(private PurchaseService: PurchaseService, private homeService: HomeService, private toastr: ToastrService) { }
 
@@ -436,14 +437,6 @@ export class PurchaseComponent implements OnInit {
   }
 
   submitPurchaseDetails() {
-    this.allPurchaseItems.reverse();
-    const allParams = {
-      details : this.purchaseDetails,
-      items : this.allPurchaseItems
-    };
-
-    // $("#submitButtonForSave").attr("disabled", true);
-
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: 'btn btn-success modal-button purchase-confirm',
@@ -452,72 +445,66 @@ export class PurchaseComponent implements OnInit {
       buttonsStyling: false
     });
 
+    // Validation: no items
     if (!this.allPurchaseItems.length) {
-      swalWithBootstrapButtons.fire(
-        'Please add items!',
-        'Opps..!',
-        'warning'
-      );
-    } else {
-      if (this.purchaseDetails.company === '') {
-        swalWithBootstrapButtons.fire(
-          'Please select supplier!',
-          'Opps..!',
-          'warning'
-        );
-      } else {
-        $(".purchase-confirm").focus();
-        swalWithBootstrapButtons.fire({
-          title: 'Do you want submit details?',
-          text: "Please check all the details!",
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Submit',
-          cancelButtonText: 'Cancel',
-          reverseButtons: true
-        }).then((result) => {
-
-          if (result.value) {
-
-            this.PurchaseService.submitItem(allParams)
-            .then(response => {
-
-              localStorage.removeItem("purchaseItems");
-              $("#typeahead-basic").focus();
-              this.resetAllItem();
-              this.allPurchaseItems = [];
-
-              swalWithBootstrapButtons.fire(
-                'Purchase details submitted successful!',
-                'Successful!',
-                'success'
-              );
-              $("#submitButtonForSave").attr("disabled", false);
-              this.medicineName.nativeElement.focus();
-            })
-            .catch(err => {
-              swalWithBootstrapButtons.fire(
-                'Opps...',
-                err.error.message,
-                'error'
-              );
-              this.medicineName.nativeElement.focus();
-              $("#submitButtonForSave").attr("disabled", false);
-            });
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            this.allPurchaseItems.reverse();
-            swalWithBootstrapButtons.fire(
-              'Cancelled',
-              '',
-              'error'
-            );
-            this.medicineName.nativeElement.focus();
-            $("#submitButtonForSave").attr("disabled", false);
-          }
-        });
-      }
+      swalWithBootstrapButtons.fire('Please add items!', 'Opps..!', 'warning');
+      return;
     }
+
+    // Validation: supplier
+    if (!this.purchaseDetails.company) {
+      swalWithBootstrapButtons.fire('Please select supplier!', 'Opps..!', 'warning');
+      return;
+    }
+
+    const allParams = {
+      details: this.purchaseDetails,
+      items: [...this.allPurchaseItems].reverse() // safe copy
+    };
+
+    this.isSubmitting = true; // Angular property for disabling button
+
+    swalWithBootstrapButtons.fire({
+      title: 'Do you want to submit details?',
+      text: 'Please check all the details!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true
+    }).then(result => {
+      if (result.value) {
+        this.PurchaseService.submitItem(allParams)
+          .then(response => {
+            localStorage.removeItem('purchaseItems');
+            this.resetAllItem();
+            this.allPurchaseItems = [];
+
+            swalWithBootstrapButtons.fire(
+              'Purchase details submitted successfully!',
+              'Successful!',
+              'success'
+            );
+
+            this.medicineName.nativeElement.focus();
+          })
+          .catch(err => {
+            const message =
+              err.error.message || 'Something went wrong. Please try again.';
+            swalWithBootstrapButtons.fire('Opps...', message, 'error');
+            this.medicineName.nativeElement.focus();
+          })
+          .finally(() => {
+            this.isSubmitting = false;
+          });
+      } else {
+        swalWithBootstrapButtons.fire('Cancelled', '', 'error');
+        this.medicineName.nativeElement.focus();
+        this.isSubmitting = false;
+      }
+    });
   }
+
 
   calculateVat(){
     var grand_total = this.purchaseDetails.total;

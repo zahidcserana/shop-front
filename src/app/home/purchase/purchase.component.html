@@ -251,8 +251,15 @@
               </div>
               <div class="col-lg-12">
                 <div class="position-relative form-group">
-                  <button type="button" (click)="submitPurchaseDetails()" id="submitButtonForSave" class="btn btn-primary mb-0 save-btn">
-                    Save
+                  <button
+                    type="button"
+                    id="submitButtonForSave"
+                    class="btn btn-primary mb-0 save-btn"
+                    (click)="submitPurchaseDetails()"
+                    [disabled]="isSubmitting"
+                  >
+                    <ng-container *ngIf="!isSubmitting">Save</ng-container>
+                    <ng-container *ngIf="isSubmitting">Saving...</ng-container>
                   </button>
                 </div>
               </div>
