@@ -364,6 +364,37 @@ export class PurchaseComponent implements OnInit {
     });
   }
 
+  confirmReset() {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success modal-button',
+        cancelButton: 'btn btn-danger modal-button'
+      },
+      buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+      title: 'Are you sure?',
+      text: 'All current purchase details will be cleared!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, reset it!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true
+    }).then(result => {
+      if (result.value) {
+        this.reset();
+      }
+    });
+  }
+
+  reset() {
+    localStorage.removeItem('purchaseItems');
+    this.resetAllItem();
+    this.allPurchaseItems = [];
+    this.medicineName.nativeElement.focus();
+  }
+
   resetAllItem(){
     this.purchaseDetails = {
       total: "",

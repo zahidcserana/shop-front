@@ -128,3 +128,10 @@ label {
 .checkbox-label-purchase{
   padding-left: 16px !important;
 }
+
+.reset-po {
+  background-color: #794c8a;
+  color: white;
+  border-radius: 8px;
+  margin: 25%;
+}
