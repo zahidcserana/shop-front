@@ -18,10 +18,12 @@ import { ShortcutInput, ShortcutEventOutput } from 'ng-keyboard-shortcuts';
 })
 export class PurchaseComponent implements OnInit {
   isSubmitting = false;
+  showResetButton: boolean = false;
 
   constructor(private PurchaseService: PurchaseService, private homeService: HomeService, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.checkLocalStorage();
     this.homeService.navigationTo();
     var local_item = JSON.parse(localStorage.getItem('purchaseItems'));
     if(local_item){
@@ -98,6 +100,11 @@ export class PurchaseComponent implements OnInit {
   @ViewChild("remarks") remarks: ElementRef;
   @ViewChild("barCode") barCode: ElementRef;
   @ViewChild("lowStockQty") lowStockQty: ElementRef;
+
+  checkLocalStorage() {
+    const items = JSON.parse(localStorage.getItem('purchaseItems'))
+    this.showResetButton = !!(items && items.length > 0);
+  }
 
   gotoBatchNo() {
     this.getMedicinePreviousPurchaseDetails();
@@ -384,6 +391,7 @@ export class PurchaseComponent implements OnInit {
     }).then(result => {
       if (result.value) {
         this.reset();
+        this.showResetButton = false;
       }
     });
   }

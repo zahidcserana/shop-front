@@ -85,7 +85,7 @@
 
                   <div class="col-md-4"></div>
 
-                  <div>
+                  <div *ngIf="showResetButton">
                     <button type="button" class="btn btn-primary reset-po" (click)="confirmReset()">Reset</button>
                   </div>
               </div>
