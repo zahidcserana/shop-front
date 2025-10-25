@@ -190,14 +190,14 @@ export class SaleListComponent implements OnInit {
       <style>
         body {
           font-family: Arial, sans-serif;
-          font-size: 10px;
+          font-size: 15px;
           margin: 0;
-          padding: 10px;
+          padding: 0px;
           background: #fff;
         }
 
         table {
-          width: 100%;
+          width: 100% !important;
           border-collapse: collapse;
         }
 
@@ -220,7 +220,7 @@ export class SaleListComponent implements OnInit {
 
         #invoice_modal_id td {
           padding: 2px;
-          font-size: 10px;
+          font-size: 15px;
         }
       </style>
 
@@ -390,17 +390,20 @@ export class SaleListComponent implements OnInit {
 
         html, body {
           font-family: Arial, sans-serif;
-          font-size: 8px;
-          line-height: 1.05;
+          font-size: 15px; /* ✅ Increased font size */
+          line-height: 1.2;
           margin: 0;
           padding: 0;
           color: #000;
+          background: #fff;
+          width: 100%;
         }
 
+        /* ✅ Full-width invoice layout */
         .invoice-box {
           width: 100%;
-          max-width: 210mm;
-          padding: 2mm 4mm;
+          max-width: 100%;
+          padding: 0 8mm; /* safe edge spacing */
           box-sizing: border-box;
         }
 
@@ -409,6 +412,7 @@ export class SaleListComponent implements OnInit {
           border-collapse: collapse;
           border: 1px solid #000;
           table-layout: fixed;
+          font-size: 15px; /* match global font size */
         }
 
         thead {
@@ -423,7 +427,7 @@ export class SaleListComponent implements OnInit {
 
         th, td {
           border: 1px solid #000;
-          padding: 2px 3px;
+          padding: 4px 6px; /* slightly larger padding for readability */
           vertical-align: middle;
           word-wrap: break-word;
         }
@@ -434,30 +438,25 @@ export class SaleListComponent implements OnInit {
           text-align: center;
         }
 
-        tbody tr {
-          border: 1px solid #000;
-        }
-
         tbody tr:nth-child(even) {
           background: #fafafa;
         }
 
-        /* Clean footer section */
         tfoot td {
           border: none !important;
-          padding: 3px;
-          font-size: 8px;
+          padding: 4px 6px;
+          font-size: 15px;
         }
 
         tfoot tr:first-child td {
           border-top: 1px solid #000 !important;
-          padding-top: 4px;
+          padding-top: 6px;
         }
 
         .total-label {
           text-align: right;
           font-weight: bold;
-          padding-right: 6px;
+          padding-right: 8px;
         }
 
         .total-value {
@@ -466,50 +465,49 @@ export class SaleListComponent implements OnInit {
         }
 
         .grand-total {
-          font-size: 9px;
+          font-size: 15px;
           font-weight: bold;
           background: #f2f2f2;
           border-top: 1px solid #000 !important;
-          padding: 4px 3px;
-        }
-
-        .text-right {
-          text-align: right;
+          padding: 6px 4px;
         }
 
         .invoice-header,
         .invoice-footer {
-          padding: 4px;
-          margin-bottom: 3px;
+          padding: 6px;
+          margin-bottom: 4px;
+          font-size: 15px;
         }
 
         .invoice-header h2,
         .invoice-header p {
           margin: 0;
-          font-size: 9px;
-          line-height: 1.1;
-        }
-
-        /* 🧩 Compact layout adjustments */
-        table, th, td {
-          font-size: 8px;
+          font-size: 15px;
+          line-height: 1.2;
         }
 
         .shop-info {
           text-align: right;
         }
 
-        /* 🖨 Ensure one-page print */
+        /* 🖨 Print optimization */
         @media print {
           html, body {
             width: 210mm;
             height: 297mm;
+            margin: 0;
+            padding: 0;
             -webkit-print-color-adjust: exact;
             overflow: hidden;
           }
 
-          body {
-            transform: scale(0.97); /* Slight shrink to fit in one A4 */
+          .invoice-box {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0 8mm;
+            box-sizing: border-box;
+            transform: scale(1);
             transform-origin: top left;
           }
 
@@ -519,7 +517,6 @@ export class SaleListComponent implements OnInit {
         }
       </style>
     `;
-
 
 
     const appliedStyles = baseStyles + (mode === 'pos' ? posStyles : a4Styles);

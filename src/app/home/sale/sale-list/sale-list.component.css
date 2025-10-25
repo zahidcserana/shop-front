@@ -100,3 +100,6 @@
   padding: 5px 10px;
 }
 
+#invoice-print-div {
+  display: none;
+}

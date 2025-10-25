@@ -779,11 +779,11 @@
               <th style="width:5%" class="unit">#</th>
               <th style="width:30%;text-align: left">Product</th>
               <th style="width:10%">Qty</th>
-              <th style="width:5%">Free(Qty)</th>
+              <th style="width:10%">Free(Qty)</th>
               <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
-              <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
+              <th style="width:10%;text-align: right">Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
-              <th style="width:20%;text-align: right;padding-right: 2%">Amount(&#x9f3;)</th>
+              <th style="width:15%;text-align: right;padding-right: 2%">Amount(&#x9f3;)</th>
             </tr>
           </thead>
           <tbody *ngIf="
@@ -798,8 +798,7 @@
               <tr>
                 <td class="unit">{{ i + 1 }}</td>
                 <td class="text-left">
-                  {{ item.medicine }} ({{ item.brand }}
-                  {{ item.medicine_type }})
+                  {{ item.medicine }}
                 </td>
                 <td class="text-center">{{ item.quantity }}</td>
                 <td class="text-center">{{ item.free_quantity }}</td>
