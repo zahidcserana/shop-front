@@ -810,6 +810,8 @@ export class SaleComponent implements OnInit {
       return;
     }
 
+    const baseHref = document.getElementsByTagName('base')[0].getAttribute('href') || './';
+
     // 🔹 Common base styles (shared)
     const baseStyles = `
       <style>
@@ -849,9 +851,7 @@ export class SaleComponent implements OnInit {
         }
       </style>
 
-      <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-      <link rel="stylesheet" href="/css/agent_style.css">
-      <link rel="stylesheet" href="/afcview/dist/css/AdminLTE.css">
+      <link rel="stylesheet" href="${baseHref}assets/css/bootstrap.min.css">
     `;
 
     // 🧾 POS mode
@@ -1143,7 +1143,6 @@ export class SaleComponent implements OnInit {
       </style>
     `;
 
-
     const appliedStyles = baseStyles + (mode === 'pos' ? posStyles : a4Styles);
 
     const html = `
@@ -1165,6 +1164,7 @@ export class SaleComponent implements OnInit {
       printWindow.close();
     };
   }
+
 
   printInvoiceOld(printArea) {
     $('.print-div').hide();
