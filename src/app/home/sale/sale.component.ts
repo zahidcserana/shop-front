@@ -1014,6 +1014,156 @@ export class SaleComponent implements OnInit {
         }
 
         html, body {
+          font-family: "Arial", sans-serif;
+          font-size: 15px;
+          line-height: 1.2;
+          margin: 0;
+          padding: 0;
+          color: #000;
+          text-align: center;
+          width: 100%;
+        }
+
+        .invoice-box {
+          width: 100%;
+          max-width: 100%;
+          margin: 0 auto;
+          padding: 0 8mm;
+          box-sizing: border-box;
+          text-align: center;
+        }
+
+        h1, h2, h3, h4, h5, p {
+          margin: 0;
+          padding: 0;
+          line-height: 1.3;
+        }
+
+        h1 {
+          font-size: 15px;
+          font-weight: bold;
+          text-align: center;
+          margin-bottom: 2px;
+        }
+
+        h2 {
+          font-size: 15px;
+          text-align: center;
+          font-weight: normal;
+          margin-bottom: 2px;
+        }
+
+        .invoice-header p,
+        .invoice-footer p {
+          font-size: 15px;
+          margin: 0;
+          text-align: center;
+        }
+
+        .customer-info {
+          text-align: left;
+        }
+
+        .shop-info {
+          text-align: right;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #000;
+          margin-top: 3px;
+        }
+
+        th, td {
+          border: 1px solid #000;
+          padding: 2px 3px;
+          font-size: 15px;
+          vertical-align: middle;
+          word-wrap: break-word;
+          text-align: center;
+        }
+
+        th {
+          background: #f2f2f2;
+          font-weight: bold;
+        }
+
+        tbody tr:nth-child(even) {
+          background: #fafafa;
+        }
+
+        /* 🧾 Clean footer section */
+        tfoot td {
+          border: none !important;
+          padding: 3px;
+          font-size: 15px;
+        }
+
+        /* Subtle top border before totals */
+        tfoot tr:first-child td {
+          border-top: 1px solid #000 !important;
+          padding-top: 4px;
+        }
+
+        .total-label {
+          text-align: right;
+          font-weight: bold;
+          padding-right: 5px;
+        }
+
+        .total-value {
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .grand-total {
+          font-size: 15px;
+          font-weight: bold;
+          background: #f2f2f2;
+          border-top: 1px solid #000 !important;
+          padding: 4px 3px;
+        }
+
+        .invoice-header,
+        .invoice-footer {
+          text-align: center;
+          margin-bottom: 3px;
+        }
+
+        /* 🖨 Fit neatly on one receipt page */
+        @media print {
+          html, body {
+            width: 80mm;
+            -webkit-print-color-adjust: exact;
+            overflow: hidden;
+            text-align: center;
+          }
+
+          .invoice-box {
+            margin: 0 auto;
+          }
+
+          body {
+            transform: scale(0.98);
+            transform-origin: top center;
+          }
+
+          tfoot {
+            position: static;
+          }
+        }
+      </style>
+    `;
+
+    const a4Styles2 = `
+      <style>
+        @page {
+          size: A4;
+          margin: 8mm;
+        }
+
+        html, body {
           font-family: Arial, sans-serif;
           font-size: 15px; /* ✅ Increased font size */
           line-height: 1.2;
