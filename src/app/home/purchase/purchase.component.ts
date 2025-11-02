@@ -275,8 +275,10 @@ export class PurchaseComponent implements OnInit {
       this.UnitVal = false;
       this.purchaseItem.update_price = true;
       // this.toastr.success('Box price taken!');
+      this.gotoBoxTradePrice();
+    } else {
+      this.medicineName.nativeElement.focus()
     }
-    this.gotoBoxTradePrice();
   }
 
   getMedicineUnitPriceDetails(){
