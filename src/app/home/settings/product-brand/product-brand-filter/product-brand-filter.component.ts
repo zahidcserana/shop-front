@@ -232,10 +232,15 @@ export class ProductBrandFilterComponent implements OnInit {
     );
   }
   getMedicineId() {
+    let isMedicineFound = false 
     for (let s of this.searchData) {
       if (s.name == this.filterData.medicine) {
+        isMedicineFound = true
         this.filterData.medicine_id = s.id;
       }
+    }
+    if (!isMedicineFound) {
+      this.filterData.medicine = ''
     }
   }
   /** End Medicine search */
