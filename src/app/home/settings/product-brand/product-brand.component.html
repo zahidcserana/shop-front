@@ -142,10 +142,14 @@
   <div class="row" style="padding: 25px">
     <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
       <main style="margin-bottom: 5%">
-        <form id="myForm" class="form-width-100" (ngSubmit)="AddProduct()" style="padding-top: 10px">
+        <form id="myForm" class="form-width-100" (ngSubmit)="AddProduct()" style="padding-top: 10px" #editForm="ngForm">
           <div class="form-group">
             <label>Name</label>
             <input name="product_name" id="product_name" [(ngModel)]="productDetails.product_name" placeholder="Title" type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Barcode</label>
+            <input #barcode name="barcode" [(ngModel)]="productDetails.barcode" placeholder="barcode" type="text" class="form-control">
           </div>
           <div class="form-group">
             <label>Type</label>
@@ -166,7 +170,7 @@
             <input name="generic" [(ngModel)]="productDetails.generic" placeholder="Specification" type="text" class="form-control">
           </div>
           <div class="form-group">
-            <button type="button" (click)="AddProduct()" class="btn btn-info">Save</button>
+            <button type="submit" class="btn btn-info">Save</button>
             &nbsp;
             <button type="button" (click)="resetList()" class="btn btn-warning">Reset</button>
             &nbsp;
