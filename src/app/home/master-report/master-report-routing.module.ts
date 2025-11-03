@@ -20,6 +20,10 @@ const routes: Routes = [
         loadChildren: './master-inventory-report/master-inventory-report.module#MasterInventoryReportModule'
       },
       {
+        path: 'sale-report-supplier',
+        loadChildren: './sale-report-supplier/sale-report-supplier.module#SaleReportSupplierModule'
+      },
+      {
         path: 'purchase',
         loadChildren: './master-purchase-report/master-purchase-report.module#MasterPurchaseReportModule'
       },

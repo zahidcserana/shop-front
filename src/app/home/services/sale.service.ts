@@ -23,6 +23,9 @@ export class SaleService {
   updateCart(data) {
     return this.http.post("carts/quantity-update", data).toPromise();
   }
+  updateFreeQty(data) {
+    return this.http.post("carts/free-quantity-update", data).toPromise();
+  }
   updateItemPrice(data) {
     return this.http.post("carts/price-update", data).toPromise();
   }

@@ -10,5 +10,6 @@ export class ExpiryFilterModel {
 export class StockFilterModel {
   medicine_id: number;
   medicine: string;
+  company: string;
   date_range: Date[];
 }

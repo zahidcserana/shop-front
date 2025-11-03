@@ -1,0 +1,83 @@
+<div class="col-md-12">
+  <div class="main-card mb-3 card">
+    <div class="card-header card-header-top">
+      <span class="margin-align-title card-header-title">
+        <div class="font-icon-wrapper font-icon-lg">
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Stock Report
+        </div>
+      </span>
+      <div class="btn-actions-pane-right">
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Stock Report
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12 sale-filter-form-background">
+            <form id="myForm" class="form-inline form-width-100" (ngSubmit)="filterList()">
+              <button type="button" (click)="exportStockReport()" class="btn btn-success">
+                <i class="fa fa-download"></i> Download Excel
+              </button>
+              <button type="button" (click)="exportStockReportPDF()" class="btn btn-danger search-div">
+                <i class="fa fa-file-pdf"></i> Download PDF
+              </button>
+
+              <div class="position-relative form-group search-div d-none">
+                <input name="company" [(ngModel)]="filterItem.company" [ngbTypeahead]="company_search" placeholder="Supplier" type="text" class="form-control">
+              </div>
+              <div class="position-relative form-group search-div">
+                <input
+                  autocomplete="off"
+                  type="text"
+                  placeholder="Date Range"
+                  class="form-control"
+                  bsDaterangepicker
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                  [(ngModel)]="filterItem.date_range"
+                  name="date_range"
+                />
+              </div>
+              <button type="button" (click)="filterList()" id="filter-medicine-btn" class="btn btn-info search-div"> 
+                Filter
+              </button> &nbsp;
+              <button type="button" (click)="resetList()" class="btn btn-warning">
+                Reset
+              </button> &nbsp;
+            </form>
+        </div>
+        
+        <div class="col-lg-12">
+            <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+              <table id="stock-table" class="mb-0 table table-bordered" *ngIf="!customLoader" style="font-size: 12px;">
+                <thead>
+                  <tr>
+                      <th>#</th>
+                      <th>Supplier name</th>
+                      <th>Sold Qty</th>
+                      <th>Sold TP(৳)</th>
+                      <th>Sold amount(৳)</th>
+                      <th>Profit(৳)</th>
+                      <th>GP(%)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of inventoryList; let i='index';">
+                      <td>{{ i+1 }}</td>
+                      <td>
+                        {{ item.company_name }}
+                      </td>
+                      <td>
+                        <p *ngIf="item.sold_qty<'0'">0</p>
+                        <p *ngIf="item.sold_qty>='0'">{{ item.sold_qty }}</p>
+                      </td>
+                      <td>{{ item.sold_tp | bdCurrencyFormat }}</td>
+                      <td>{{ item.sold_amount | bdCurrencyFormat }}</td>
+                      <td>{{ item.profit_amount | bdCurrencyFormat }}</td>
+                      <td>{{ item.gp_percent }}</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

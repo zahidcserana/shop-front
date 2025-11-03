@@ -24,6 +24,8 @@ declare var require: any;
   styleUrls: ["./sale.component.css"],
 })
 export class SaleComponent implements OnInit {
+  @ViewChild('invoiceSection') invoiceSection!: ElementRef;
+
   cartItem: any = {
     medicine: "",
     medicine_id: "",
@@ -77,6 +79,7 @@ export class SaleComponent implements OnInit {
   cartLoad: boolean;
   orderId: number;
   increament: any;
+  incrementFreeQty: any;
   fileName: any;
   orderDetails: any;
   validationStatus: boolean;
@@ -90,6 +93,7 @@ export class SaleComponent implements OnInit {
   profitShow = false;
   tpShow = false;
   isCartEmpty = true;
+  isSubmitting = false;
 
   constructor(
     private homeService: HomeService,
@@ -366,11 +370,20 @@ export class SaleComponent implements OnInit {
       return true;
     }
   }
-  getPriceInWord(value) {
-    var converter = require("number-to-words");
-    this.priceInWord = converter.toWords(value);
-    this.priceInWord += " taka only";
+
+  getPriceInWord(value: number) {
+    const converter = require("number-to-words");
+    let words = converter.toWords(value);
+
+    // Capitalize each word
+    words = words
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    this.priceInWord = `${words} Taka Only`;
   }
+
   addToCart() {
     this.orderId = 0;
     if (this.cartItem.medicine && this.cartItem.quantity) {
@@ -524,6 +537,21 @@ export class SaleComponent implements OnInit {
       this.updateCartQunt(obj);
     }
   }
+
+  decreaseFreeQty(cart, i) {
+    if (cart.free_quantity > 0) {
+      this.incrementFreeQty = i;
+      const obj = {
+        id: cart.id,
+        token: this.productList.token,
+        sales_tax: cart.sales_tax,
+        increment_free: 0,
+        price: cart.price,
+        rental_duration: cart.rental_duration,
+      };
+      this.updateCartFreeQty(obj);
+    }
+  }
   removeItem(itemId) {
     this.saleService
       .deleteCartItem(itemId, localStorage.getItem("token"))
@@ -561,6 +589,7 @@ export class SaleComponent implements OnInit {
 
     localStorage.removeItem("user_cart");
     localStorage.removeItem("token");
+
     this.productList = [];
     this.order.sub_total = 0;
     this.order.tendered = 0;
@@ -584,6 +613,17 @@ export class SaleComponent implements OnInit {
     this.updateCartQunt(obj);
   }
 
+  increaseFreeQty(cart, i) {
+    console.log('i', i)
+    this.incrementFreeQty = i;
+    const obj = {
+      id: cart.id,
+      token: this.productList.token,
+      increment_free: 1,
+    };
+    this.updateCartFreeQty(obj);
+  }
+
   updateCartQunt(data) {
     console.log(data);
     this.saleService
@@ -605,10 +645,42 @@ export class SaleComponent implements OnInit {
           });
         }
         this.increament = null;
+        this.incrementFreeQty = null;
       })
       .catch((err) => {
         console.log(err);
         this.increament = null;
+        this.incrementFreeQty = null;
+      });
+  }
+
+  updateCartFreeQty(data) {
+    console.log(data);
+    this.saleService
+      .updateFreeQty(data)
+      .then((res) => {
+        if (res.success === true) {
+          this.productList = res.data;
+          // this.isAntibiotic = res.data.is_antibiotic;
+          // // this.order.sub_total = this.productList ? this.productList.sub_total : 0;
+          // this.setValue();
+          // this.calculation();
+          this.saleService.saveCartsInlocalStorage(res.data);
+        } else {
+          Swal.fire({
+            type: "warning",
+            title: "Oops...",
+            text: res.error,
+            showConfirmButton: false,
+          });
+        }
+        this.increament = null;
+        this.incrementFreeQty = null;
+      })
+      .catch((err) => {
+        console.log(err);
+        this.increament = null;
+        this.incrementFreeQty = null;
       });
   }
 
@@ -636,14 +708,23 @@ export class SaleComponent implements OnInit {
 
     return this.validationStatus;
   }
+
   submitOrder() {
+    if (this.isSubmitting) return; // Prevent double click
+    this.isSubmitting = true;
+
     if (this.validationCheck()) {
       this.order.token = localStorage.getItem("token");
-      console.log(this.order);
+      
+      // localStorage.removeItem("user_cart");
+      // localStorage.removeItem("token");
+
       this.saleService
         .makeSaleOrder(this.order)
         .then((res) => {
-          if (res.success === true) {
+          if (res.success) {
+            this.reset();
+
             this.orderId = res.data.order_id;
             this.orderDetails = res.data;
             this.getPriceInWord(this.orderDetails.total_payble_amount);
@@ -660,7 +741,15 @@ export class SaleComponent implements OnInit {
             // setTimeout(() => { this.reset(); }, 3000);
             // this.Medicine.nativeElement.focus();
             // setTimeout(() => { this.modalButton.nativeElement.focus(); }, 1000);
+          } else {
+              Swal.fire({
+              type: "warning",
+              title: "Oops...",
+              text: "Something went wrong!",
+              showConfirmButton: false,
+            })
           }
+          this.isSubmitting = false;
           this.reset();
         })
         .catch((err) => {
@@ -670,17 +759,33 @@ export class SaleComponent implements OnInit {
             title: "Oops...",
             text: "Something went wrong!",
             showConfirmButton: false,
+          })
+          .finally(() => {
+            // ✅ Re-enable the button only after everything completes
+            this.isSubmitting = false;
           });
         });
     } else {
-      Swal.fire({
-        type: "warning",
-        title: "Oops...",
-        text: "Please enter all required field!",
-        showConfirmButton: false,
-      });
+       if (!this.productList || !this.productList.cart_items || this.productList.cart_items.length < 1) {
+        Swal.fire({
+          type: "warning",
+          title: "Oops...",
+          text: "Empty cart!",
+          showConfirmButton: false,
+        });
+      } else {
+        Swal.fire({
+          type: "warning",
+          title: "Oops...",
+          text: "Please enter all required field!",
+          showConfirmButton: false,
+        });
+      }
+      this.isSubmitting = false;
+      this.reset();
     }
   }
+
   /* modal */
   openModal(saleId: number, modal: string) {
     $("#print-div").show();
@@ -691,7 +796,527 @@ export class SaleComponent implements OnInit {
   closeModal(id: string) {
     this.modalService.close(id);
   }
-  printInvoice(printArea) {
+
+  printInvoice(mode: 'a4' | 'pos'): void {
+    const invoiceContent = this.invoiceSection.nativeElement;
+    if (!invoiceContent) {
+      console.error('Invoice section not found.');
+      return;
+    }
+
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    if (!printWindow) {
+      console.error('Unable to open print window.');
+      return;
+    }
+
+    const baseHref = document.getElementsByTagName('base')[0].getAttribute('href') || './';
+
+    // 🔹 Common base styles (shared)
+    const baseStyles = `
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          font-size: 15px;
+          margin: 0;
+          padding: 0px;
+          background: #fff;
+        }
+
+        table {
+          width: 100% !important;
+          border-collapse: collapse;
+        }
+
+        th, td {
+          padding: 6px 8px;
+          text-align: left;
+          vertical-align: middle;
+        }
+
+        th {
+          background: #f5f5f5;
+          font-weight: bold;
+          border: 1px solid #000 !important;
+          text-align: center;
+        }
+
+        .text-right { text-align: right; }
+        .text-left { text-align: left; }
+        .text-center { text-align: center; }
+
+        #invoice_modal_id td {
+          padding: 2px;
+          font-size: 15px;
+        }
+      </style>
+
+      <link rel="stylesheet" href="${baseHref}assets/css/bootstrap.min.css">
+    `;
+
+    // 🧾 POS mode
+    const posStyles = `
+      <style>
+        @page {
+          size: 80mm auto;
+          margin: 3mm;
+        }
+
+        html, body {
+          font-family: "Arial", sans-serif;
+          font-size: 8px;
+          line-height: 1.2;
+          margin: 0;
+          padding: 0;
+          color: #000;
+          text-align: center;
+        }
+
+        .invoice-box {
+          width: 100%;
+          max-width: 80mm;
+          margin: 0 auto;
+          padding: 2mm;
+          box-sizing: border-box;
+          text-align: center;
+        }
+
+        h1, h2, h3, h4, h5, p {
+          margin: 0;
+          padding: 0;
+          line-height: 1.3;
+        }
+
+        h1 {
+          font-size: 11px;
+          font-weight: bold;
+          text-align: center;
+          margin-bottom: 2px;
+        }
+
+        h2 {
+          font-size: 9px;
+          text-align: center;
+          font-weight: normal;
+          margin-bottom: 2px;
+        }
+
+        .invoice-header p,
+        .invoice-footer p {
+          font-size: 8px;
+          margin: 0;
+          text-align: center;
+        }
+
+        .customer-info {
+          text-align: left;
+        }
+
+        .shop-info {
+          text-align: right;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #000;
+          margin-top: 3px;
+        }
+
+        th, td {
+          border: 1px solid #000;
+          padding: 2px 3px;
+          font-size: 8px;
+          vertical-align: middle;
+          word-wrap: break-word;
+          text-align: center;
+        }
+
+        th {
+          background: #f2f2f2;
+          font-weight: bold;
+        }
+
+        tbody tr:nth-child(even) {
+          background: #fafafa;
+        }
+
+        /* 🧾 Clean footer section */
+        tfoot td {
+          border: none !important;
+          padding: 3px;
+          font-size: 8px;
+        }
+
+        /* Subtle top border before totals */
+        tfoot tr:first-child td {
+          border-top: 1px solid #000 !important;
+          padding-top: 4px;
+        }
+
+        .total-label {
+          text-align: right;
+          font-weight: bold;
+          padding-right: 5px;
+        }
+
+        .total-value {
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .grand-total {
+          font-size: 9px;
+          font-weight: bold;
+          background: #f2f2f2;
+          border-top: 1px solid #000 !important;
+          padding: 4px 3px;
+        }
+
+        .invoice-header,
+        .invoice-footer {
+          text-align: center;
+          margin-bottom: 3px;
+        }
+
+        /* 🖨 Fit neatly on one receipt page */
+        @media print {
+          html, body {
+            width: 80mm;
+            -webkit-print-color-adjust: exact;
+            overflow: hidden;
+            text-align: center;
+          }
+
+          .invoice-box {
+            margin: 0 auto;
+          }
+
+          body {
+            transform: scale(0.98);
+            transform-origin: top center;
+          }
+
+          tfoot {
+            position: static;
+          }
+        }
+      </style>
+    `;
+
+
+    // 📄 A4 mode (each row fully boxed)
+    const a4Styles = `
+      <style>
+        @page {
+          size: A4;
+          margin: 8mm;
+        }
+
+        html, body {
+          font-family: "Arial", sans-serif;
+          font-size: 15px;
+          line-height: 1.2;
+          margin: 0;
+          padding: 0;
+          color: #000;
+          text-align: center;
+          width: 100%;
+        }
+
+        .invoice-box {
+          width: 100%;
+          max-width: 100%;
+          margin: 0 auto;
+          padding: 0 8mm;
+          box-sizing: border-box;
+          text-align: center;
+        }
+
+        h1, h2, h3, h4, h5, p {
+          margin: 0;
+          padding: 0;
+          line-height: 1.3;
+        }
+
+        h1 {
+          font-size: 15px;
+          font-weight: bold;
+          text-align: center;
+          margin-bottom: 2px;
+        }
+
+        h2 {
+          font-size: 15px;
+          text-align: center;
+          font-weight: normal;
+          margin-bottom: 2px;
+        }
+
+        .invoice-header p,
+        .invoice-footer p {
+          font-size: 15px;
+          margin: 0;
+          text-align: center;
+        }
+
+        .customer-info {
+          text-align: left;
+        }
+
+        .shop-info {
+          text-align: right;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #000;
+          margin-top: 3px;
+        }
+
+        th, td {
+          border: 1px solid #000;
+          padding: 2px 3px;
+          font-size: 15px;
+          vertical-align: middle;
+          word-wrap: break-word;
+          text-align: center;
+        }
+
+        th {
+          background: #f2f2f2;
+          font-weight: bold;
+        }
+
+        tbody tr:nth-child(even) {
+          background: #fafafa;
+        }
+
+        /* 🧾 Clean footer section */
+        tfoot td {
+          border: none !important;
+          padding: 3px;
+          font-size: 15px;
+        }
+
+        /* Subtle top border before totals */
+        tfoot tr:first-child td {
+          border-top: 1px solid #000 !important;
+          padding-top: 4px;
+        }
+
+        .total-label {
+          text-align: right;
+          font-weight: bold;
+          padding-right: 5px;
+        }
+
+        .total-value {
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .grand-total {
+          font-size: 15px;
+          font-weight: bold;
+          background: #f2f2f2;
+          border-top: 1px solid #000 !important;
+          padding: 4px 3px;
+        }
+
+        .invoice-header,
+        .invoice-footer {
+          text-align: center;
+          margin-bottom: 3px;
+        }
+
+        /* 🖨 Fit neatly on one receipt page */
+        @media print {
+          html, body {
+            width: 80mm;
+            -webkit-print-color-adjust: exact;
+            overflow: hidden;
+            text-align: center;
+          }
+
+          .invoice-box {
+            margin: 0 auto;
+          }
+
+          body {
+            transform: scale(0.98);
+            transform-origin: top center;
+          }
+
+          tfoot {
+            position: static;
+          }
+        }
+      </style>
+    `;
+
+    const a4Styles2 = `
+      <style>
+        @page {
+          size: A4;
+          margin: 8mm;
+        }
+
+        html, body {
+          font-family: Arial, sans-serif;
+          font-size: 15px; /* ✅ Increased font size */
+          line-height: 1.2;
+          margin: 0;
+          padding: 0;
+          color: #000;
+          background: #fff;
+          width: 100%;
+        }
+
+        /* ✅ Full-width invoice layout */
+        .invoice-box {
+          width: 100%;
+          max-width: 100%;
+          padding: 0 8mm; /* safe edge spacing */
+          box-sizing: border-box;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #000;
+          table-layout: fixed;
+          font-size: 15px; /* match global font size */
+        }
+
+        thead {
+          display: table-header-group;
+        }
+
+        tfoot {
+          display: table-footer-group;
+          page-break-inside: avoid;
+          border: none !important;
+        }
+
+        th, td {
+          border: 1px solid #000;
+          padding: 4px 6px; /* slightly larger padding for readability */
+          vertical-align: middle;
+          word-wrap: break-word;
+        }
+
+        th {
+          background: #f2f2f2;
+          font-weight: bold;
+          text-align: center;
+        }
+
+        tbody tr:nth-child(even) {
+          background: #fafafa;
+        }
+
+        tfoot td {
+          border: none !important;
+          padding: 4px 6px;
+          font-size: 15px;
+        }
+
+        tfoot tr:first-child td {
+          border-top: 1px solid #000 !important;
+          padding-top: 6px;
+        }
+
+        .total-label {
+          text-align: right;
+          font-weight: bold;
+          padding-right: 8px;
+        }
+
+        .total-value {
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .grand-total {
+          font-size: 15px;
+          font-weight: bold;
+          background: #f2f2f2;
+          border-top: 1px solid #000 !important;
+          padding: 6px 4px;
+        }
+
+        .invoice-header,
+        .invoice-footer {
+          padding: 6px;
+          margin-bottom: 4px;
+          font-size: 15px;
+        }
+
+        .invoice-header h2,
+        .invoice-header p {
+          margin: 0;
+          font-size: 15px;
+          line-height: 1.2;
+        }
+
+        .shop-info {
+          text-align: right;
+        }
+
+        /* 🖨 Print optimization */
+        @media print {
+          html, body {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            overflow: hidden;
+          }
+
+          .invoice-box {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0 8mm;
+            box-sizing: border-box;
+            transform: scale(1);
+            transform-origin: top left;
+          }
+
+          tfoot {
+            position: static;
+          }
+        }
+      </style>
+    `;
+
+    const appliedStyles = baseStyles + (mode === 'pos' ? posStyles : a4Styles);
+
+    const html = `
+      <html>
+        <head>${appliedStyles}</head>
+        <body>
+          <div class="invoice-box">${invoiceContent.innerHTML}</div>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.open();
+    printWindow.document.write(html);
+    printWindow.document.close();
+
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    };
+  }
+
+
+  printInvoiceOld(printArea) {
     $('.print-div').hide();
     $("#print-div").hide();
     $("#close-div").hide();

@@ -1,5 +1,5 @@
 import { SaleService } from './../../services/sale.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { SaleModel } from '../../models/sale.model';
 import { Pagi } from 'src/app/common/modules/pagination/pagi.model';
 import { HomeService } from '../../services/home.service';
@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./sale-list.component.css']
 })
 export class SaleListComponent implements OnInit {
+  @ViewChild('invoiceSection') invoiceSection!: ElementRef;
+
   profitShow = false;
   tpShow = false;
   dataList: SaleModel[] = [];
@@ -43,6 +45,7 @@ export class SaleListComponent implements OnInit {
     private saleService: SaleService,
     private homeService: HomeService,
     private modalService: ModalService,
+    private renderer: Renderer2
   ) {
     this.filter = this.filter ? this.filter : '';
     this.pagi.limit = this.pagi.limit ? this.pagi.limit : 500;
@@ -100,10 +103,17 @@ export class SaleListComponent implements OnInit {
     this.tpShow = user.config.tp_show;
   }
 
-  getPriceInWord(value) {
-    var converter = require('number-to-words');
-    this.priceInWord = converter.toWords(value);
-    this.priceInWord += ' taka only';
+  getPriceInWord(value: number) {
+    const converter = require("number-to-words");
+    let words = converter.toWords(value);
+
+    // Capitalize each word
+    words = words
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    this.priceInWord = `${words} Taka Only`;
   }
 
   getSaleList(p, l, q) {
@@ -161,11 +171,525 @@ export class SaleListComponent implements OnInit {
     this.modalService.close(id);
   }
 
-  printInvoice(printArea) {
-    $('.print-div').hide();
-    $('#print-div').hide();
-    $('#close-div').hide();
+  
+  printInvoice(mode: 'a4' | 'pos'): void {
+    const invoiceContent = this.invoiceSection.nativeElement;
+    if (!invoiceContent) {
+      console.error('Invoice section not found.');
+      return;
+    }
 
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    if (!printWindow) {
+      console.error('Unable to open print window.');
+      return;
+    }
+
+    const baseHref = document.getElementsByTagName('base')[0].getAttribute('href') || './';
+
+    // 🔹 Common base styles (shared)
+    const baseStyles = `
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          font-size: 15px;
+          margin: 0;
+          padding: 0px;
+          background: #fff;
+        }
+
+        table {
+          width: 100% !important;
+          border-collapse: collapse;
+        }
+
+        th, td {
+          padding: 6px 8px;
+          text-align: left;
+          vertical-align: middle;
+        }
+
+        th {
+          background: #f5f5f5;
+          font-weight: bold;
+          border: 1px solid #000 !important;
+          text-align: center;
+        }
+
+        .text-right { text-align: right; }
+        .text-left { text-align: left; }
+        .text-center { text-align: center; }
+
+        #invoice_modal_id td {
+          padding: 2px;
+          font-size: 15px;
+        }
+      </style>
+
+      <link rel="stylesheet" href="${baseHref}assets/css/bootstrap.min.css">
+    `;
+
+    // 🧾 POS mode
+    const posStyles = `
+      <style>
+        @page {
+          size: 80mm auto;
+          margin: 3mm;
+        }
+
+        html, body {
+          font-family: "Arial", sans-serif;
+          font-size: 8px;
+          line-height: 1.2;
+          margin: 0;
+          padding: 0;
+          color: #000;
+          text-align: center;
+        }
+
+        .invoice-box {
+          width: 100%;
+          max-width: 80mm;
+          margin: 0 auto;
+          padding: 2mm;
+          box-sizing: border-box;
+          text-align: center;
+        }
+
+        h1, h2, h3, h4, h5, p {
+          margin: 0;
+          padding: 0;
+          line-height: 1.3;
+        }
+
+        h1 {
+          font-size: 11px;
+          font-weight: bold;
+          text-align: center;
+          margin-bottom: 2px;
+        }
+
+        h2 {
+          font-size: 9px;
+          text-align: center;
+          font-weight: normal;
+          margin-bottom: 2px;
+        }
+
+        .invoice-header p,
+        .invoice-footer p {
+          font-size: 8px;
+          margin: 0;
+          text-align: center;
+        }
+
+        .customer-info {
+          text-align: left;
+        }
+
+        .shop-info {
+          text-align: right;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #000;
+          margin-top: 3px;
+        }
+
+        th, td {
+          border: 1px solid #000;
+          padding: 2px 3px;
+          font-size: 8px;
+          vertical-align: middle;
+          word-wrap: break-word;
+          text-align: center;
+        }
+
+        th {
+          background: #f2f2f2;
+          font-weight: bold;
+        }
+
+        tbody tr:nth-child(even) {
+          background: #fafafa;
+        }
+
+        /* 🧾 Clean footer section */
+        tfoot td {
+          border: none !important;
+          padding: 3px;
+          font-size: 8px;
+        }
+
+        /* Subtle top border before totals */
+        tfoot tr:first-child td {
+          border-top: 1px solid #000 !important;
+          padding-top: 4px;
+        }
+
+        .total-label {
+          text-align: right;
+          font-weight: bold;
+          padding-right: 5px;
+        }
+
+        .total-value {
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .grand-total {
+          font-size: 9px;
+          font-weight: bold;
+          background: #f2f2f2;
+          border-top: 1px solid #000 !important;
+          padding: 4px 3px;
+        }
+
+        .invoice-header,
+        .invoice-footer {
+          text-align: center;
+          margin-bottom: 3px;
+        }
+
+        /* 🖨 Fit neatly on one receipt page */
+        @media print {
+          html, body {
+            width: 80mm;
+            -webkit-print-color-adjust: exact;
+            overflow: hidden;
+            text-align: center;
+          }
+
+          .invoice-box {
+            margin: 0 auto;
+          }
+
+          body {
+            transform: scale(0.98);
+            transform-origin: top center;
+          }
+
+          tfoot {
+            position: static;
+          }
+        }
+      </style>
+    `;
+
+    // 📄 A4 mode (each row fully boxed)
+    const a4Styles = `
+      <style>
+        @page {
+          size: A4;
+          margin: 8mm;
+        }
+
+        html, body {
+          font-family: "Arial", sans-serif;
+          font-size: 15px;
+          line-height: 1.2;
+          margin: 0;
+          padding: 0;
+          color: #000;
+          text-align: center;
+          width: 100%;
+        }
+
+        .invoice-box {
+          width: 100%;
+          max-width: 100%;
+          margin: 0 auto;
+          padding: 0 8mm;
+          box-sizing: border-box;
+          text-align: center;
+        }
+
+        h1, h2, h3, h4, h5, p {
+          margin: 0;
+          padding: 0;
+          line-height: 1.3;
+        }
+
+        h1 {
+          font-size: 15px;
+          font-weight: bold;
+          text-align: center;
+          margin-bottom: 2px;
+        }
+
+        h2 {
+          font-size: 15px;
+          text-align: center;
+          font-weight: normal;
+          margin-bottom: 2px;
+        }
+
+        .invoice-header p,
+        .invoice-footer p {
+          font-size: 15px;
+          margin: 0;
+          text-align: center;
+        }
+
+        .customer-info {
+          text-align: left;
+        }
+
+        .shop-info {
+          text-align: right;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #000;
+          margin-top: 3px;
+        }
+
+        th, td {
+          border: 1px solid #000;
+          padding: 2px 3px;
+          font-size: 15px;
+          vertical-align: middle;
+          word-wrap: break-word;
+          text-align: center;
+        }
+
+        th {
+          background: #f2f2f2;
+          font-weight: bold;
+        }
+
+        tbody tr:nth-child(even) {
+          background: #fafafa;
+        }
+
+        /* 🧾 Clean footer section */
+        tfoot td {
+          border: none !important;
+          padding: 3px;
+          font-size: 15px;
+        }
+
+        /* Subtle top border before totals */
+        tfoot tr:first-child td {
+          border-top: 1px solid #000 !important;
+          padding-top: 4px;
+        }
+
+        .total-label {
+          text-align: right;
+          font-weight: bold;
+          padding-right: 5px;
+        }
+
+        .total-value {
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .grand-total {
+          font-size: 15px;
+          font-weight: bold;
+          background: #f2f2f2;
+          border-top: 1px solid #000 !important;
+          padding: 4px 3px;
+        }
+
+        .invoice-header,
+        .invoice-footer {
+          text-align: center;
+          margin-bottom: 3px;
+        }
+
+        /* 🖨 Fit neatly on one receipt page */
+        @media print {
+          html, body {
+            width: 80mm;
+            -webkit-print-color-adjust: exact;
+            overflow: hidden;
+            text-align: center;
+          }
+
+          .invoice-box {
+            margin: 0 auto;
+          }
+
+          body {
+            transform: scale(0.98);
+            transform-origin: top center;
+          }
+
+          tfoot {
+            position: static;
+          }
+        }
+      </style>
+    `;
+
+    const a4Styles2 = `
+      <style>
+        @page {
+          size: A4;
+          margin: 8mm;
+        }
+
+        html, body {
+          font-family: Arial, sans-serif;
+          font-size: 15px; /* ✅ Increased font size */
+          line-height: 1.2;
+          margin: 0;
+          padding: 0;
+          color: #000;
+          background: #fff;
+          width: 100%;
+        }
+
+        /* ✅ Full-width invoice layout */
+        .invoice-box {
+          width: 100%;
+          max-width: 100%;
+          padding: 0 8mm; /* safe edge spacing */
+          box-sizing: border-box;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #000;
+          table-layout: fixed;
+          font-size: 15px; /* match global font size */
+        }
+
+        thead {
+          display: table-header-group;
+        }
+
+        tfoot {
+          display: table-footer-group;
+          page-break-inside: avoid;
+          border: none !important;
+        }
+
+        th, td {
+          border: 1px solid #000;
+          padding: 4px 6px; /* slightly larger padding for readability */
+          vertical-align: middle;
+          word-wrap: break-word;
+        }
+
+        th {
+          background: #f2f2f2;
+          font-weight: bold;
+          text-align: center;
+        }
+
+        tbody tr:nth-child(even) {
+          background: #fafafa;
+        }
+
+        tfoot td {
+          border: none !important;
+          padding: 4px 6px;
+          font-size: 15px;
+        }
+
+        tfoot tr:first-child td {
+          border-top: 1px solid #000 !important;
+          padding-top: 6px;
+        }
+
+        .total-label {
+          text-align: right;
+          font-weight: bold;
+          padding-right: 8px;
+        }
+
+        .total-value {
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .grand-total {
+          font-size: 15px;
+          font-weight: bold;
+          background: #f2f2f2;
+          border-top: 1px solid #000 !important;
+          padding: 6px 4px;
+        }
+
+        .invoice-header,
+        .invoice-footer {
+          padding: 6px;
+          margin-bottom: 4px;
+          font-size: 15px;
+        }
+
+        .invoice-header h2,
+        .invoice-header p {
+          margin: 0;
+          font-size: 15px;
+          line-height: 1.2;
+        }
+
+        .shop-info {
+          text-align: right;
+        }
+
+        /* 🖨 Print optimization */
+        @media print {
+          html, body {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            overflow: hidden;
+          }
+
+          .invoice-box {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0 8mm;
+            box-sizing: border-box;
+            transform: scale(1);
+            transform-origin: top left;
+          }
+
+          tfoot {
+            position: static;
+          }
+        }
+      </style>
+    `;
+
+    const appliedStyles = baseStyles + (mode === 'pos' ? posStyles : a4Styles);
+
+    const html = `
+      <html>
+        <head>${appliedStyles}</head>
+        <body>
+          <div class="invoice-box">${invoiceContent.innerHTML}</div>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.open();
+    printWindow.document.write(html);
+    printWindow.document.close();
+
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    };
+  }
+
+  printInvoiceBackup(printArea) {
     var divToPrint = document.getElementById(printArea);
     var strHead = "<html>\n<head><style>";
     strHead += "#invoice-POS{box-shadow:0 0 1in -.25in rgba(0,0,0,.5);padding:2mm;margin:0 auto;width:44mm;background:#fff}::selection{background:#f31544;color:#fff}::moz-selection{background:#f31544;color:#fff}h1{font-size:1.5em;color:#222}h2{font-size:.9em}h3{font-size:1.2em;font-weight:300;line-height:2em}p{font-size:.7em;color:#666;line-height:1.2em}#bot,#mid,#top{border-bottom:1px solid #eee}#top{min-height:100px}#mid{min-height:80px}#bot{min-height:50px}#top .logo{float:left;height:60px;width:60px;background:url(http://michaeltruong.ca/images/logo1.png) no-repeat;background-size:60px 60px}.clientlogo{float:left;height:60px;width:60px;background:url(http://michaeltruong.ca/images/client.jpg) no-repeat;background-size:60px 60px;border-radius:50px}.info{display:block;float:left;margin-left:0}.title{float:right}.title p{text-align:right}table{width:100%;border-collapse:collapse}table, table th, table td {border: 1px solid black !important; border-collapse: collapse !important;}table th, table td {padding: 5px !important;}tfoot td, tfoot th {border: none !important;}.tabletitle{padding:5px;font-size:.5em;background:#eee}.service{border-bottom:1px solid #eee}.item{width:24mm}.itemtext{font-size:.5em}#legalcopy{margin-top:5mm}";
@@ -177,6 +701,7 @@ export class SaleListComponent implements OnInit {
     w.print();
     window.location.reload();
   }
+
   printPosInvoice(printArea) {
     const user = JSON.parse(localStorage.getItem("currentUser"));
     if (user.pos_version == 2) {

@@ -1,7 +1,7 @@
 import { HomeService } from 'src/app/home/services/home.service';
 import { MasterProductsModel } from './../../models/setting.model';
 import { SettingService } from './../../services/setting.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Pagi } from 'src/app/common/modules/pagination/pagi.model';
 import { catchError, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
@@ -16,6 +16,8 @@ import { ModalService } from 'src/app/common/_modal';
   styleUrls: ['./product-brand.component.css']
 })
 export class ProductBrandComponent implements OnInit {
+  @ViewChild("barcode") barcode: ElementRef;
+
   pagi: Pagi = new Pagi();
   filter: string;
   dataList: MasterProductsModel[] = [];
@@ -32,6 +34,7 @@ export class ProductBrandComponent implements OnInit {
     id: undefined,
     company: '',
     product_name: '',
+    barcode: undefined,
     generic: '',
     power: '',
     type: '',
@@ -90,15 +93,18 @@ export class ProductBrandComponent implements OnInit {
     this.modalService.close(id);
   }
 
-  editProduct(id) {
-    console.log(id);
+  editProduct(id: number) {
     const product = this.productList.find(element => element.id === id);
-    console.log(product);
-    this.productDetails.id = product.id;
-    this.productDetails.product_name = product.brand_name;
-    this.productDetails.brand_id = product.brand_id;
-    this.productDetails.type = product.medicine_type_id;
-    this.productDetails.generic = product.generic_name;
+    if (!product) return;
+
+    this.productDetails = {
+      id: product.id,
+      product_name: product.brand_name,
+      barcode: product.barcode,
+      brand_id: product.brand_id,
+      type: product.medicine_type_id,
+      generic: product.generic_name
+    };
 
     this.modalService.open('edit-modal');
   }
@@ -281,8 +287,10 @@ export class ProductBrandComponent implements OnInit {
 
   resetList(){
     this.productDetails = {
+      id: null,
       company: '',
       product_name: '',
+      barcode: null,
       generic: '',
       brand_id: '',
       type: '',
@@ -303,6 +311,9 @@ export class ProductBrandComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         if (this.productDetails.id) {
+          if (this.productDetails.barcode === '') {
+            return  this.barcode.nativeElement.focus()
+          }
           this.productService.updateProduct(this.productDetails)
           .then(response => {
             this.modalService.close('edit-modal');
@@ -314,10 +325,10 @@ export class ProductBrandComponent implements OnInit {
                 'success'
               );
               this.getProductList(this.pagi.page, this.pagi.limit, this.filter);
-            }else{
+            } else {
               this.swalWithBootstrapButtons.fire(
                 'Opps..',
-                'The Product information already exist!',
+                response.data ? response.data: 'The Product information already exist!',
                 'error'
               );
             }
@@ -342,7 +353,7 @@ export class ProductBrandComponent implements OnInit {
             }else{
               this.swalWithBootstrapButtons.fire(
                 'Opps..',
-                'The Product information already exist!',
+                response.data ? response.data: 'The Product information already exist!',
                 'error'
               );
             }
