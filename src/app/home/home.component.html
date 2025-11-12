@@ -283,13 +283,18 @@
       <!-- <app-sidebar></app-sidebar> -->
       <div class="app-main__outer">
          <div class="app-main__inner" style="padding-top: 2%!important;">
-            <div *ngIf="subscriptionOff" class="alert">
-               <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-               <strong>Attention!</strong> Your Subscription period is over! Please update your Subscription Plan.
+            <!-- Subscription Alert -->
+            <div *ngIf="subscriptionOff" class="alert alert-warning">
+            <span class="closebtn" (click)="subscriptionOff = false">&times;</span>
+            <strong>{{ 'ATTENTION' | translate }}!</strong> {{ 'ATTENTION_TEXT' | translate }}
             </div>
+
+            <!-- Router Content -->
             <router-outlet></router-outlet>
          </div>
+
          <app-footer></app-footer>
       </div>
    </div>
+
 </div>

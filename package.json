@@ -32,6 +32,8 @@
     "@angular/router": "~7.2.0",
     "@angular/service-worker": "~7.2.0",
     "@ng-bootstrap/ng-bootstrap": "^4.2.1",
+    "@ngx-translate/core": "^11.0.1",
+    "@ngx-translate/http-loader": "^4.0.0",
     "@sweetalert2/ngx-sweetalert2": "^5.1.0",
     "angular-highcharts": "^8.0.3",
     "bootstrap": "4.1.1",

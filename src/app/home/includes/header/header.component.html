@@ -11,193 +11,144 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <div *ngIf="checkAcl('dashboard') && subscriptionPeriod"
-          class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
+
+        <!-- Sync -->
+        <div *ngIf="checkAcl('dashboard') && subscriptionPeriod" class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="nav-item">
             <a (click)="dataSync()" class="nav-link single-menu">
               <i class="fa fa-cloud menu-with-icon"> </i>
-              Sync
+              {{ 'HEADER.SYNC' | translate }}
             </a>
           </li>
         </div>
-        <div *ngIf="checkAcl('dashboard') && subscriptionPeriod"
-          class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
+
+        <!-- Dashboard -->
+        <div *ngIf="checkAcl('dashboard') && subscriptionPeriod" class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="nav-item">
-            <a routerLink="/" class="nav-link single-menu"> <i
-                class="fa fa-home icon-gradient bg-success menu-with-icon"> </i> Dashboard </a>
+            <a routerLink="/" class="nav-link single-menu">
+              <i class="fa fa-home icon-gradient bg-success menu-with-icon"> </i>
+              {{ 'HEADER.DASHBOARD' | translate }}
+            </a>
           </li>
         </div>
-        <div *ngIf="checkAcl('purchase') && subscriptionPeriod"
-          class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
+
+        <!-- Purchase -->
+        <div *ngIf="checkAcl('purchase') && subscriptionPeriod" class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="dropdown">
             <button class="nav-link btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-              <i class="fa fa-cart-plus menu-with-icon"> </i> Purchase
+              <i class="fa fa-cart-plus menu-with-icon"> </i> {{ 'HEADER.PURCHASE' | translate }}
             </button>
             <ul class="dropdown-menu">
-              <li class="nav-item">
-                <a routerLink="/purchase" class="nav-link"><i class="fa fa-caret-right"></i> New Purchase </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/purchase-list" class="nav-link"><i class="fa fa-caret-right"></i> Purchase List </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/purchase-due" class="nav-link"><i class="fa fa-caret-right"></i> Purchase Due </a>
-              </li>
+              <li class="nav-item"><a routerLink="/purchase" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.NEW_PURCHASE' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/purchase-list" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.PURCHASE_LIST' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/purchase-due" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.PURCHASE_DUE' | translate }}</a></li>
             </ul>
           </li>
         </div>
-        <div *ngIf="checkAcl('sale') && subscriptionPeriod"
-          class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
+
+        <!-- Sale -->
+        <div *ngIf="checkAcl('sale') && subscriptionPeriod" class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="dropdown">
             <button class="nav-link btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-              <i class="fa fa-file-invoice-dollar icon-gradient bg-success menu-with-icon"> </i> Sale
+              <i class="fa fa-file-invoice-dollar icon-gradient bg-success menu-with-icon"> </i> {{ 'HEADER.SALE' | translate }}
             </button>
             <ul class="dropdown-menu">
-              <li class="nav-item">
-                <a routerLink="/sale" class="nav-link"><i class="fa fa-caret-right"></i> New Sale </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/sale/list" class="nav-link"><i class="fa fa-caret-right"></i> Sale List </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/sale-reports" class="nav-link"><i class="fa fa-caret-right"></i> Sale Days Report </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/master-report/sale-report-supplier" class="nav-link"><i class="fa fa-caret-right"></i> Supplier Report </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/sale-due" class="nav-link"><i class="fa fa-caret-right"></i> Sale Due </a>
-              </li>
+              <li class="nav-item"><a routerLink="/sale" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.NEW_SALE' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/sale/list" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SALE_LIST' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/sale-reports" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SALE_DAYS_REPORT' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/master-report/sale-report-supplier" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SUPPLIER_REPORT' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/sale-due" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SALE_DUE' | translate }}</a></li>
             </ul>
           </li>
         </div>
-        <div *ngIf="checkAcl('stock') && subscriptionPeriod"
-          class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
+
+        <!-- Stock -->
+        <div *ngIf="checkAcl('stock') && subscriptionPeriod" class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="dropdown">
             <button class="nav-link btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-              <i class="fa fa-chart-line menu-with-icon"> </i> Stock
+              <i class="fa fa-chart-line menu-with-icon"> </i> {{ 'HEADER.STOCK' | translate }}
             </button>
             <ul class="dropdown-menu">
-              <li class="nav-item">
-                <a routerLink="/inventory" class="nav-link"><i class="fa fa-caret-right"></i> Inventory </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/master-report/inventory" class="nav-link"><i class="fa fa-caret-right"></i>
-                  Report </a>
-              </li>
-              <!-- <li class="nav-item">
-                <a routerLink="/stock-balances" class="nav-link"><i class="fa fa-caret-right"></i> Stock Balance Report </a>
-              </li> -->
+              <li class="nav-item"><a routerLink="/inventory" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.INVENTORY' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/master-report/inventory" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.REPORT' | translate }}</a></li>
             </ul>
           </li>
         </div>
-        <div *ngIf="checkAcl('report') && subscriptionPeriod"
-          class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
+
+        <!-- Report -->
+        <div *ngIf="checkAcl('report') && subscriptionPeriod" class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="dropdown">
             <button class="nav-link btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-              <i class="fa fa-file-medical-alt icon-gradient bg-success menu-with-icon"> </i> Report
+              <i class="fa fa-file-medical-alt icon-gradient bg-success menu-with-icon"> </i> {{ 'HEADER.REPORT' | translate }}
             </button>
             <ul class="dropdown-menu dropdown-menu-area">
-              <!-- <li class="nav-item">
-                <a routerLink="/report/sale" class="nav-link"><i class="fa fa-caret-right"></i> Sale </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/report/purchase" class="nav-link"><i class="fa fa-caret-right"></i> Purchase </a>
-              </li> -->
-              <!-- <li class="nav-item">
-                <a routerLink="/master-report/expiry" class="nav-link"><i class="fa fa-caret-right"></i> Expiry Report </a>
-              </li> -->
-              
-              <li class="nav-item">
-                <a routerLink="/master-report/sale" class="nav-link"><i class="fa fa-caret-right"></i> Sale Report </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/master-report/sale-due" class="nav-link"><i class="fa fa-caret-right"></i> Sale Due
-                  Report </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/master-report/sale-return" class="nav-link"><i class="fa fa-caret-right"></i> Sale return Report </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/master-report/purchase" class="nav-link"><i class="fa fa-caret-right"></i> Purchase
-                  Report </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/master-report/purchase-due" class="nav-link"><i class="fa fa-caret-right"></i> Purchase
-                  Due Report </a>
-              </li>
-              <!-- <li class="nav-item">
-                <a routerLink="/master-report/expiry-medicine" class="nav-link"><i class="fa fa-caret-right"></i> Expiry
-                  Medicine </a>
-              </li> -->
-              <!-- <li class="nav-item">
-                <a routerLink="/master-report/purchase-return" class="nav-link"><i class="fa fa-caret-right"></i> Purchase Return Report </a>
-              </li> -->
+              <li class="nav-item"><a routerLink="/master-report/sale" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SALE_REPORT' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/master-report/sale-due" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SALE_DUE_REPORT' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/master-report/sale-return" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SALE_RETURN_REPORT' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/master-report/purchase" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.PURCHASE_REPORT' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/master-report/purchase-due" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.PURCHASE_DUE_REPORT' | translate }}</a></li>
             </ul>
           </li>
         </div>
-        <div *ngIf="checkAcl('user') && subscriptionPeriod"
-          class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
+
+        <!-- User -->
+        <div *ngIf="checkAcl('user') && subscriptionPeriod" class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="nav-item">
-            <a routerLink="/user" class="nav-link single-menu"> <i class="fa fa-user-cog menu-with-icon"> </i> User </a>
+            <a routerLink="/user" class="nav-link single-menu"><i class="fa fa-user-cog menu-with-icon"> </i> {{ 'HEADER.USER' | translate }}</a>
           </li>
         </div>
-        <div *ngIf="checkAcl('report') && subscriptionPeriod"
-          class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
+
+        <!-- Settings -->
+        <div *ngIf="checkAcl('report') && subscriptionPeriod" class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="dropdown">
             <button class="nav-link btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-              <i class="fa fa-file-medical-alt icon-gradient bg-success menu-with-icon"> </i> Settings
+              <i class="fa fa-file-medical-alt icon-gradient bg-success menu-with-icon"> </i> {{ 'HEADER.SETTINGS' | translate }}
             </button>
             <ul class="dropdown-menu dropdown-menu-area">
-              <!-- <li class="nav-item">
-                <a routerLink="/products" class="nav-link"><i class="fa fa-caret-right"></i> Product Add </a>
-              </li> -->
-              <li class="nav-item">
-                <a routerLink="/settings/products" class="nav-link"><i class="fa fa-caret-right"></i> Products
-                </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/products/settings" class="nav-link"><i class="fa fa-caret-right"></i> Brands & Types
-                </a>
-              </li>
-              <li class="nav-item">
-                <a routerLink="/supplier" class="nav-link"><i class="fa fa-caret-right"></i> Suppliers
-                </a>
-              </li>
+              <li class="nav-item"><a routerLink="/settings/products" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.PRODUCTS' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/products/settings" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.BRANDS_TYPES' | translate }}</a></li>
+              <li class="nav-item"><a routerLink="/supplier" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SUPPLIERS' | translate }}</a></li>
             </ul>
           </li>
         </div>
-        <div *ngIf="checkAcl('subscription')"
-          class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
+
+        <!-- Subscription -->
+        <div *ngIf="checkAcl('subscription')" class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="nav-item">
-            <a routerLink="/subscription" class="nav-link single-menu"> <i class="fa fa-money-bill-wave menu-with-icon">
-              </i> Subscription </a>
+            <a routerLink="/subscription" class="nav-link single-menu"><i class="fa fa-money-bill-wave menu-with-icon"></i> {{ 'HEADER.SUBSCRIPTION' | translate }}</a>
           </li>
         </div>
-        <div *ngIf="checkAcl('shortkey') && subscriptionPeriod"
-          class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
+
+        <!-- Hotkey -->
+        <div *ngIf="checkAcl('shortkey') && subscriptionPeriod" class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="nav-item">
-            <a routerLink="/cheat-sheet" class="nav-link single-menu"> <i
-                class="fa fa-keyboard icon-gradient bg-success menu-with-icon"> </i> Hot-Key </a>
+            <a routerLink="/cheat-sheet" class="nav-link single-menu"><i class="fa fa-keyboard icon-gradient bg-success menu-with-icon"> </i> {{ 'HEADER.HOTKEY' | translate }}</a>
           </li>
         </div>
+
+        <!-- User Email / Logout -->
         <div class="font-icon-wrapper font-icon-lg menu-icon-header menu-dropdown-header shadow">
           <li class="nav-item menu-dropdown-header">
-            <a (click)="logout()" class="nav-link single-menu"> <i
-                class="fa fa-power-off icon-gradient bg-danger menu-with-icon"> </i> {{ this.user.email }} </a>
+            <a (click)="logout()" class="nav-link single-menu"><i class="fa fa-power-off icon-gradient bg-danger menu-with-icon"> </i> {{ this.user.email }}</a>
           </li>
+        </div>
+
+        <!-- Language Toggle -->
+        <div class="language-toggle ml-auto mr-3">
+          <button class="btn btn-sm btn-outline-primary" (click)="toggleLanguage()">
+            <span *ngIf="langService.currentLang === 'en'">🇧🇩 বাংলা</span>
+            <span *ngIf="langService.currentLang === 'bn'">🇬🇧 English</span>
+          </button>
         </div>
       </ul>
       <div class="page-title-actions">
         <div class="d-inline-block dropdown">
-          <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-            class="btn-shadow dropdown-toggle notification-button">
+          <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle notification-button">
             <span class="btn-icon-wrapper pr-2 opacity-7">
               <i class="fa fa-bell fa-w-20"></i>
             </span>
           </button>
-          <div tabindex="-1" *ngIf="allNotificationList.length" role="menu" aria-hidden="true"
-            class="dropdown-menu dropdown-menu-right notification-area">
+          <div tabindex="-1" *ngIf="allNotificationList.length" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right notification-area">
             <ul class="nav flex-column">
               <li class="nav-item" *ngFor="let item of allNotificationList; let i='index';">
                 <a routerLink="/notifications" class="nav-link">

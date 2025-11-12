@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import Swal from 'sweetalert2';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { LanguageService } from 'src/app/services/language.service';
 
 @Component({
   selector: "app-header",
@@ -19,9 +20,15 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private homeService: HomeService
+    private homeService: HomeService,
+    public langService: LanguageService
   ) {
-   }
+  }
+
+  toggleLanguage() {
+    const newLang = this.langService.currentLang === 'en' ? 'bn' : 'en';
+    this.langService.switchLang(newLang);
+  }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem("currentUser"));
