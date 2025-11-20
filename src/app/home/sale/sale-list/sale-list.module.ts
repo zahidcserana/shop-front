@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SaleFilterComponent } from './sale-filter/sale-filter.component';
 import { BsDatepickerModule} from 'ngx-bootstrap';
 import { SharedPipeModule } from '../../pipes/shared-pipe.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 const routes: Routes = [
   {
@@ -29,7 +30,8 @@ const routes: Routes = [
     NgbModule,
     FormsModule,
     BsDatepickerModule.forRoot(),
-    SharedPipeModule
+    SharedPipeModule,
+    TranslateModule
   ],
   providers: [SaleService, DatePipe]
 })

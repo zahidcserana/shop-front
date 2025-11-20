@@ -20,6 +20,7 @@ export class SaleListComponent implements OnInit {
 
   colorCode = '#82929A'; //728088, 92A2AC
   colorCodeText = '#ffff';
+  currency = '৳';
   profitShow = false;
   freeQtyShow = true;
   invoiceVersion = 1;

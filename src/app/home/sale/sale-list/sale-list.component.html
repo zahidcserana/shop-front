@@ -601,14 +601,14 @@
         <table class="preview">
           <thead>
             <tr>
-              <th style="width:10%" class="unit">Sl.</th>
-              <th style="width:30%;text-align: left">Product</th>
-              <th style="width:10%">Quantity(Pcs)</th>
-              <th *ngIf="freeQtyShow" style="width:10%">Free(Qty)</th>
-              <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
-              <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
-              <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
-              <th style="width:20%;text-align: right;padding-right: 2%">Amount(&#x9f3;)</th>
+              <th style="width:10%" class="unit">{{ 'Sl' | translate }}.</th>
+              <th style="width:30%;text-align: left">{{ 'Product' | translate }}</th>
+              <th style="width:10%">{{ 'Quantity(Pcs)' | translate }}</th>
+              <th *ngIf="freeQtyShow" style="width:10%">{{ 'Free(Qty)' | translate }}</th>
+              <th *ngIf="tpShow" style="width:10%;text-align: right">{{ 'CPU' | translate }}({{ currency }})</th>
+              <th style="width:10%;text-align: right">{{ 'Unit Price' | translate }}({{ currency }})</th>
+              <th *ngIf="profitShow" style="width:10%;text-align: right">{{ 'Profit' | translate }}({{ currency }})</th>
+              <th style="width:20%;text-align: right;padding-right: 2%">{{ 'Amount' | translate }}({{ currency }})</th>
             </tr>
           </thead>
           <tbody *ngIf="
@@ -635,7 +635,7 @@
               </tr>
             </ng-container>
             <tr>
-              <td colspan="2"><strong>Total</strong></td>
+              <td colspan="2"><strong>{{ 'Total' | translate }}</strong></td>
               <td><strong>{{ orderDetails.total_qty }}</strong></td>
               <td *ngIf="freeQtyShow"><strong>{{ orderDetails.total_free_qty }}</strong></td>
               <td *ngIf="tpShow">&nbsp;</td>
@@ -651,10 +651,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
-                Total Amount
+                {{ 'Total Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
@@ -663,7 +663,7 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: left;font-weight: bold;display: flex;">
-                <span> Discount &nbsp;</span>
+                <span> {{ 'Discount' | translate }} ({{ currency }})</span>
                 <span style="display: none" id="dicountValue">
                   ({{ discount_amount ? (discount_amount | number: "1.2-2") : '' }})
                 </span>
@@ -683,10 +683,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Net Amount
+                {{ 'Net Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                     orderDetails.total_payble_amount | number: "1.2-2"
                   }}
               </td>
@@ -697,10 +697,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Net Profit
+                {{ 'Net Profit' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                     orderDetails.total_profit | number: "1.2-2"
                   }}
               </td>
@@ -711,7 +711,7 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: left;font-weight: bold">
-                Amount In Word
+                {{ 'Amount In Word' | translate }}
               </td>
               <td colspan="2" style="text-align: right;padding-right: 2%">
                 {{ priceInWord }}
@@ -754,8 +754,8 @@
         </h4>
         <div style="display: flex;">
           <div id="customer-info" class="customer-info">
-            <div>Customer: {{ orderDetails.customer_name }}</div>
-            <div>Mobile: {{ orderDetails.customer_mobile }}</div>
+            <div>{{ 'Customer' | translate }}: {{ orderDetails.customer_name }}</div>
+            <div>{{ 'Mobile'| translate }}: {{ orderDetails.customer_mobile }}</div>
             <div>{{ orderDetails.created_at }}</div>
           </div>
           <div style="flex: 1;"></div>
@@ -771,13 +771,13 @@
           <thead>
             <tr>
               <th style="width:5%" class="unit">#</th>
-              <th style="width:30%;text-align: left">Product</th>
-              <th style="width:10%">Qty</th>
-              <th *ngIf="freeQtyShow" style="width:10%">Free(Qty)</th>
-              <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
-              <th style="width:10%;text-align: right">Price(&#x9f3;)</th>
-              <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
-              <th style="width:15%;text-align: right;padding-right: 2%">Amount(&#x9f3;)</th>
+              <th style="width:30%;text-align: left">{{ 'Product' | translate }}</th>
+              <th style="width:10%">{{ 'Qty' | translate }}</th>
+              <th *ngIf="freeQtyShow" style="width:10%">{{ 'Free(Qty)' | translate }}</th>
+              <th *ngIf="tpShow" style="width:10%;text-align: right">{{ 'CPU' | translate }}({{ currency }})</th>
+              <th style="width:10%;text-align: right">{{ 'Price' | translate }}({{ currency }})</th>
+              <th *ngIf="profitShow" style="width:10%;text-align: right">{{ 'Profit' | translate }}({{ currency }})</th>
+              <th style="width:15%;text-align: right;padding-right: 2%">{{ 'Amount' | translate }}({{ currency }})</th>
             </tr>
           </thead>
           <tbody *ngIf="
@@ -819,10 +819,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
-                Total Amount
+                {{ 'Total Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
@@ -831,10 +831,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
-                Total Discount
+                {{ 'Total Discount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
@@ -843,10 +843,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Net Amount
+                {{ 'Net Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                     orderDetails.total_payble_amount | number: "1.2-2"
                   }}
               </td>
@@ -857,10 +857,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Net Profit
+                {{ 'Net Profit' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                     orderDetails.total_profit | number: "1.2-2"
                   }}
               </td>
@@ -875,7 +875,7 @@
             <tbody>
               <tr>
                 <td colspan="8">
-                  <h5 class="text-center">No Item Found</h5>
+                  <h5 class="text-center">{{ 'No Item Found' | translate }}</h5>
                 </td>
               </tr>
             </tbody>
