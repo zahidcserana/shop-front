@@ -581,12 +581,12 @@
         </div>
 
         <h1 class="pdf-div" style="font-size: 1.5em">
-          Invoice# {{ orderDetails.invoice }}
+          {{ 'Invoice' | translate }}# {{ orderDetails.invoice }}
         </h1>
         <div style="display: flex;">
           <div id="customer-info">
-            <div>Customer: {{ orderDetails.customer_name }}</div>
-            <div>Mobile: {{ orderDetails.customer_mobile }}</div>
+            <div>{{ 'Customer' | translate }}: {{ orderDetails.customer_name }}</div>
+            <div>{{ 'Mobile' | translate }}: {{ orderDetails.customer_mobile }}</div>
             <div>{{ orderDetails.created_at }}</div>
           </div>
           <div style="flex: 1;"></div>
