@@ -28,6 +28,8 @@ export class SaleComponent implements OnInit {
 
   colorCode = '#82929A';
   colorCodeText = '#ffff';
+  currency = '৳';
+
   cartItem: any = {
     medicine: "",
     medicine_id: "",
