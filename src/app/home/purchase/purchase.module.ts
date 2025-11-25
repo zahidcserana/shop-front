@@ -9,10 +9,11 @@ import { PurchaseService } from './services/purchase.service'
 
 import { ToastrModule } from 'ngx-toastr';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
+import { EnterFocusDirective } from 'src/app/common/enter-focus.directive';
 
 
 @NgModule({
-  declarations: [PurchaseComponent],
+  declarations: [PurchaseComponent, EnterFocusDirective],
   imports: [
     CommonModule,
     FormsModule,

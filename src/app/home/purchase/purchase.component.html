@@ -187,7 +187,7 @@
                             <div class="widget-heading">Discount</div>
                         </div>
                         <div class="widget-content-right">
-                            <input name="discount" id="discount" [(ngModel)]="purchaseDetails.discount" (input)="calculateVat()" placeholder="0" type="number" class="form-control">
+                            <input enterFocus name="discount" id="discount" [(ngModel)]="purchaseDetails.discount" (input)="calculateVat()" placeholder="0" type="number" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
                             <div class="widget-heading">Advance</div>
                         </div>
                         <div class="widget-content-right">
-                            <input name="total_advance" id="total_advance" [(ngModel)]="purchaseDetails.advance" (input)="claculateDue()" placeholder="Advance" type="number" class="form-control">
+                            <input (keydown.enter)="goSupplier()" name="total_advance" id="total_advance" [(ngModel)]="purchaseDetails.advance" (input)="claculateDue()" placeholder="Advance" type="number" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -235,7 +235,7 @@
                             <div class="widget-heading">Supplier</div>
                         </div>
                         <div class="widget-content-right">
-                            <select class="ace form-control" name="company" [(ngModel)]="purchaseDetails.company" required>
+                            <select #supplier class="ace form-control" name="company" [(ngModel)]="purchaseDetails.company" required>
                               <option value="">--Select Supplier--</option>
                               <option *ngFor="let company of companyList" value="{{ company.id }}">{{ company.name }}</option>
                             </select>
@@ -250,7 +250,7 @@
                             <div class="widget-heading">Invoice</div>
                         </div>
                         <div class="widget-content-right">
-                            <input name="invoice" id="invoice" placeholder="Invoice" [(ngModel)]="purchaseDetails.invoice" type="text" class="form-control">
+                            <input (keydown.enter)="goButtonPO()" name="invoice" id="invoice" placeholder="Invoice" [(ngModel)]="purchaseDetails.invoice" type="text" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -258,6 +258,7 @@
               <div class="col-lg-12">
                 <div class="position-relative form-group">
                   <button
+                    #buttonPO
                     type="button"
                     id="submitButtonForSave"
                     class="btn btn-primary mb-0 save-btn"
