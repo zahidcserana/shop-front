@@ -11,10 +11,9 @@ import { SaleListModule } from './sale-list/sale-list.module';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { ModalModule } from 'src/app/common/_modal/modal.module';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
-import { EnterFocusDirective } from 'src/app/common/enter-focus.directive';
 
 @NgModule({
-  declarations: [SaleComponent, EnterFocusDirective],
+  declarations: [SaleComponent],
   imports: [
     CommonModule,
     FormsModule,

@@ -9,11 +9,11 @@ import { PurchaseService } from './services/purchase.service'
 
 import { ToastrModule } from 'ngx-toastr';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
-import { EnterFocusDirective } from 'src/app/common/enter-focus.directive';
+import { SharedPipeModule } from '../pipes/shared-pipe.module';
 
 
 @NgModule({
-  declarations: [PurchaseComponent, EnterFocusDirective],
+  declarations: [PurchaseComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -21,6 +21,7 @@ import { EnterFocusDirective } from 'src/app/common/enter-focus.directive';
     NgbModule,
     ToastrModule.forRoot(),
     KeyboardShortcutsModule.forRoot(),
+    SharedPipeModule
   ],
   providers: [PurchaseService],
 })
