@@ -113,7 +113,7 @@
                             <td class="text-center">
                             <input type="number" class="form-control form-input-width-100" aria-describedby="AvailableQty"
                                 id="unit_price_{{ i }}" name="unit_price" value="{{ cart.unit_price }}" placeholder="Unit Price"
-                                (change)="updateItemPrice(cart, i)" /> <small>(TP+VAT {{ cart.tp }})</small>
+                                (change)="updateItemPrice(cart, i)" /> <small class="d-none">(TP+VAT {{ cart.tp }})</small>
                             </td>
                             <td class="text-center">
                               <div class="quantity clearfix">

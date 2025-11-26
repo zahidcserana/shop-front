@@ -48,7 +48,7 @@ export class SaleComponent implements OnInit {
     total_payble_amount: 0,
     discount: 0,
     discount_type: "fixed",
-    discount_amount: "",
+    discount_amount: 0,
     payment_type: "CASH",
     customer_name: "",
     customer_mobile: "",
@@ -600,7 +600,7 @@ export class SaleComponent implements OnInit {
     this.order.discount = 0;
     this.order.customer_name = "";
     this.order.customer_mobile = "";
-    this.order.discount_amount = "";
+    this.order.discount_amount = 0;
   }
 
   increaseQuant(cart, i) {
