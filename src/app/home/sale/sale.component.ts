@@ -88,6 +88,7 @@ export class SaleComponent implements OnInit {
   @ViewChild("modalButton") modalButton: ElementRef;
   @ViewChild("tendered") tendered: ElementRef;
   @ViewChild("cartBatch") cartBatch: ElementRef;
+  @ViewChild("customerName") customerName: ElementRef;
   company: any;
   salesmanShow = false;
   profitShow = false;
@@ -296,6 +297,25 @@ export class SaleComponent implements OnInit {
         return [];
       })
     );
+  }
+
+  getCustomerByCode(): void {
+    const mobile = this.order.customer_mobile;
+
+    if (!mobile || mobile.trim() === '') {
+      return;
+    }
+
+    this.saleService.getCustomerByCode({ customer_code: mobile })
+      .subscribe({
+        next: (response) => {
+          this.order.customer_name = response.name;
+          this.customerName.nativeElement.focus();
+        },
+        error: (err) => {
+          console.error("Error fetching customer", err);
+        }
+      });
   }
 
   getNet() {

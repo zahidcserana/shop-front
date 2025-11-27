@@ -177,17 +177,32 @@
                     <div class="col-lg-12">
                         <table class="align-middle mb-0 table table-borderless table-striped table-hover table-bordar">
                             <tr class="sub-discount border-table-tr">
-                                <td class="availableQty">Mobile</td>
+                                <td class="availableQty">Customer Mobile</td>
                                 <td>
-                                    <input enterFocus autocomplete="off" id="customer_mobile" [(ngModel)]="order.customer_mobile"
-                                    name="customer_mobile" type="text" class="form-control validation-input" />
+                                    <input 
+                                      autocomplete="off" 
+                                      id="customer_mobile" 
+                                      [(ngModel)]="order.customer_mobile" 
+                                      name="customer_mobile" 
+                                      type="text" 
+                                      class="form-control validation-input" 
+                                      (keydown.enter)="getCustomerByCode()" 
+                                    />
                                 </td>
                             </tr>
                             <tr class="sub-discount border-table-tr">
-                                <td class="availableQty">Customer Name</td>
+                                <td class="availableQty">Name</td>
                                 <td>
-                                    <input enterFocus autocomplete="off" id="customer_name" [(ngModel)]="order.customer_name" name="customer_name"
-                                    type="text" class="form-control validation-input" />
+                                    <input 
+                                      enterFocus 
+                                      #customerName 
+                                      autocomplete="off" 
+                                      id="customer_name" 
+                                      [(ngModel)]="order.customer_name" 
+                                      name="customer_name"
+                                      type="text" 
+                                      class="form-control validation-input" 
+                                    />
                                 </td>
                             </tr>
                             <tr *ngIf="salesmanShow" class="sub-discount border-table-tr">
@@ -207,14 +222,29 @@
                                 <td class="availableQty">Discount</td>
                                 <td class="position-relative form-check">
                                     <label class="form-check-label radio-from-lebel">
-                                    <input enterFocus value="fixed" [(ngModel)]="this.order.discount_type" name="discount_type" type="radio"
-                                        class="form-check-input" checked (click)="discountTypeChange('fixed')" />
-                                    Fixed
+                                    <input 
+                                      enterFocus 
+                                      value="fixed" 
+                                      [(ngModel)]="this.order.discount_type" 
+                                      name="discount_type" 
+                                      type="radio"
+                                      class="form-check-input" 
+                                      checked 
+                                      (click)="discountTypeChange('fixed')" 
+                                    />
+                                      Fixed
                                     </label>
                                     <label class="form-check-label radio-from-lebel" style="padding-left: 14%">
-                                    <input enterFocus value="parcentage" [(ngModel)]="this.order.discount_type" name="discount_type" type="radio"
-                                        class="form-check-input" (click)="discountTypeChange('parcentage')" />
-                                    parcentage
+                                    <input 
+                                      enterFocus 
+                                      value="parcentage" 
+                                      [(ngModel)]="this.order.discount_type" 
+                                      name="discount_type" 
+                                      type="radio"
+                                      class="form-check-input" 
+                                      (click)="discountTypeChange('parcentage')" 
+                                    />
+                                      parcentage
                                     </label>
                                 </td>
                             </tr>
@@ -225,8 +255,16 @@
                                     </h5>
                                 </td>
                                 <td style="padding-top: 0!important;">
-                                    <input enterFocus autocomplete="off" type="number" class="form-control" id="discount" name="discount"
-                                    (input)="discountChange()" [(ngModel)]="order.discount_amount" placeholder="0"/>
+                                    <input 
+                                      enterFocus 
+                                      autocomplete="off" 
+                                      type="number" 
+                                      class="form-control" 
+                                      id="discount" 
+                                      name="discount"
+                                      (input)="discountChange()" 
+                                      [(ngModel)]="order.discount_amount" placeholder="0"
+                                    />
                                 </td>
                             </tr>
                             <tr class="net-total swatch-holder swatch-holder-lg bg-midnight-bloom">
@@ -242,11 +280,21 @@
                                 </td>
                             </tr>
                             <tr class="sub-discount border-table-tr">
-                                <td class="availableQty">Tendered</td>
+                                <td class="availableQty">Advanced</td>
                                 <td>
-                                    <input enterFocus #tendered autocomplete="off" type="text" class="form-control validation-input" id="tendered"
-                                    name="tendered" (input)="getChange()" [(ngModel)]="order.tendered" (keydown.enter)="submitOrder()"
-                                    placeholder="0" />
+                                    <input 
+                                      enterFocus 
+                                      #tendered 
+                                      autocomplete="off" 
+                                      type="text" 
+                                      class="form-control validation-input" 
+                                      id="tendered"
+                                      name="tendered" 
+                                      (input)="getChange()" 
+                                      [(ngModel)]="order.tendered" 
+                                      (keydown.enter)="submitOrder()"
+                                      placeholder="0" 
+                                    />
                                 </td>
                             </tr>
                             <tr class="sub-tax border-table-tr tr-due">
