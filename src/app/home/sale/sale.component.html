@@ -798,8 +798,9 @@
         <div style="display: flex;">
           <div id="customer-info" class="customer-info">
             <h3><span class="pharmacy">{{ orderDetails.pharmacy }}</span></h3>
-            <div style="color: #728088;">{{ orderDetails.branch_name }}, {{ orderDetails.branch_city }}</div>
-            <div style="color: #728088;">{{ orderDetails.branch_mobile }}</div>
+            <div style="color: #728088;">{{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</div>
+            <div style="color: #728088;">For Order: {{ orderDetails.branch_mobile }}</div>
+            <div *ngIf="orderDetails.branch_contact_person_mobile" style="color: #728088;">For Service: {{ orderDetails.branch_contact_person_mobile }}</div>
           </div>
           <div style="flex: 1;float: right;">
             <br>
@@ -815,7 +816,8 @@
 
         <div style="display: flex;">
           <div>
-            <h3 style="background-color: #728088;padding: 1%;color: #ffff"><strong>Bill:</strong></h3>
+            <div style="background-color: #728088;padding: 1%;color: #ffff"><strong>Bill:</strong></div>
+            <br>
             <div><strong>{{ orderDetails.customer_name }}</strong></div>
             <div>{{ orderDetails.customer_mobile }}</div>
           </div>
