@@ -894,21 +894,18 @@
   <div class="row">
     <div *ngIf="orderDetails" class="col-md-12" style="width: 100%">
       <header class="clearfix mb-2">
-        <div style="display: flex;">
-          <div id="customer-info" class="customer-info">
+        <div class="row">
+          <div id="customer-info" class="col-6 customer-info">
             <h3><span class="pharmacy">{{ orderDetails.pharmacy }}</span></h3>
             <div style="color: #728088;">{{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</div>
             <div style="color: #728088;">For Order: {{ orderDetails.branch_mobile }}</div>
             <div *ngIf="orderDetails.branch_contact_person_mobile" style="color: #728088;">For Service: {{ orderDetails.branch_contact_person_mobile }}</div>
           </div>
-          <div style="flex: 1;float: right;">
-            <br>
-            <br>
-            <div class="text-center">
+          <div class="col-6 float-right">
+            <div>
               <h3><strong style="color: #728088;">INVOICE</strong></h3>
-            </div>
-            <br>
-            <div><span style="background-color: #728088;color: #ffff;padding: 1%;"># {{ orderDetails.invoice }} | DATE: {{ orderDetails.created_at }}</span></div>
+              <br>
+              <span style="background-color: #728088;color: #ffff;padding: 1%;"># {{ orderDetails.invoice }} | DATE: {{ orderDetails.created_at }}</span></div>
           </div>
         </div>
         <br>
@@ -916,8 +913,7 @@
         <div style="display: flex;">
           <div>
             <div style="background-color: #728088;padding: 1%;color: #ffff"><strong>Bill:</strong></div>
-            <br>
-            <div><strong>{{ orderDetails.customer_name }}</strong></div>
+            <div style="margin-top: 6px;"><strong>{{ orderDetails.customer_name }}</strong></div>
             <div>{{ orderDetails.customer_mobile }}</div>
           </div>
           <div style="flex: 1;"></div>
