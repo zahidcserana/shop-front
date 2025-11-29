@@ -732,15 +732,9 @@
     </div>
   </div>
   <div id="print-div" class="print-div">
-    <button id="print-button" (click)="printInvoice('a4')" class="btn btn-success btn-xs">
-      🖨 Print A4
-    </button>
-    <button id="print-button" (click)="printInvoice('pos')" class="btn btn-success btn-xs">
-      🧾 Print POS
-    </button>
-    <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">
-      Close
-    </button>
+    <button id="print-button" (click)="printHandler('a4')" class="btn btn-success btn-xs">🖨 Print A4</button>
+    <button id="print-button" (click)="printHandler('pos')" class="btn btn-success btn-xs">🧾 Print POS</button>
+    <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">Close</button>
   </div>
 </jw-modal>
 
@@ -877,6 +871,167 @@
             </tr>
             <tr>
               <td colspan="8" style="font-size: medium;" class="text-center">
+                <strong>{{ priceInWord }}</strong>
+              </td>
+            </tr>
+          </tfoot>
+          <ng-template #emptyItem>
+            <tbody>
+              <tr>
+                <td colspan="8">
+                  <h5 class="text-center">No Item Found</h5>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </main>
+    </div>
+  </div>
+</div>
+
+<div #invoice2Section id="invoice2-print-div">
+  <div class="row">
+    <div *ngIf="orderDetails" class="col-md-12" style="width: 100%">
+      <header class="clearfix mb-2">
+        <div style="display: flex;">
+          <div id="customer-info" class="customer-info">
+            <h3><span class="pharmacy">{{ orderDetails.pharmacy }}</span></h3>
+            <div style="color: #728088;">{{ orderDetails.branch_name }}, {{ orderDetails.branch_city }}</div>
+            <div style="color: #728088;">{{ orderDetails.branch_mobile }}</div>
+          </div>
+          <div style="flex: 1;float: right;">
+            <br>
+            <br>
+            <div class="text-center">
+              <h3><strong style="color: #728088;">INVOICE</strong></h3>
+            </div>
+            <br>
+            <div><span style="background-color: #728088;color: #ffff;padding: 1%;"># {{ orderDetails.invoice }} | DATE: {{ orderDetails.created_at }}</span></div>
+          </div>
+        </div>
+        <br>
+
+        <div style="display: flex;">
+          <div>
+            <h3 style="background-color: #728088;padding: 1%;color: #ffff"><strong>Bill:</strong></h3>
+            <div><strong>{{ orderDetails.customer_name }}</strong></div>
+            <div>{{ orderDetails.customer_mobile }}</div>
+          </div>
+          <div style="flex: 1;"></div>
+          <div id="pharmacy-info" class="d-none shop-info">
+            <div>{{ orderDetails.created_by }}</div>
+            <div>{{ orderDetails.branch_name }}, {{ orderDetails.branch_city }}</div>
+            <div>{{ orderDetails.branch_mobile }}</div>
+          </div>
+        </div>
+      </header>
+      <main style="margin-bottom: 1px">
+        <table class="preview">
+          <thead>
+            <tr>
+              <th style="background-color: #728088;color: #ffff;width:5%" class="unit">#</th>
+              <th style="background-color: #728088;color: #ffff;width:30%;text-align: left">Product</th>
+              <th style="background-color: #728088;color: #ffff;width:10%">Qty</th>
+              <th style="background-color: #728088;color: #ffff;width:10%">Free(Qty)</th>
+              <th *ngIf="tpShow" style="background-color: #728088;color: #ffff;width:10%;text-align: right">CPU(&#x9f3;)</th>
+              <th style="background-color: #728088;color: #ffff;width:10%;text-align: right">Price(&#x9f3;)</th>
+              <th *ngIf="profitShow" style="background-color: #728088;color: #ffff;width:10%;text-align: right">Profit(&#x9f3;)</th>
+              <th style="background-color: #728088;color: #ffff;width:15%;text-align: right;padding-right: 2%">Total(&#x9f3;)</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="
+                orderDetails && orderDetails?.order_items.length > 0;
+                else emptyItem
+              ">
+            <ng-container *ngFor="
+                  let item of orderDetails?.order_items;
+                  let i = index;
+                  trackBy: trackList
+                ">
+              <tr>
+                <td class="unit">{{ i + 1 }}</td>
+                <td class="text-left">
+                  {{ item.medicine }}
+                </td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-center">{{ item.free_quantity }}</td>
+                <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
+                <td style="text-align: right">{{ item.unit_price }}</td>
+                <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
+                <td style="text-align: right;padding-right: 2%">{{ item.sub_total }}</td>
+              </tr>
+            </ng-container>
+            <tr>
+              <td colspan="2" class="text-center"><strong>Total</strong></td>
+              <td class="text-center"><strong>{{ orderDetails.total_qty }}</strong></td>
+              <td class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td style="text-align: right;padding-right: 2%"><strong>{{ orderDetails.sub_total | number: "1.2-2" }}</strong></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                Subtotal
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                Total Discount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr style="background-color: #728088;color: #ffff">
+              <td colspan="2" class="thanku">
+                THANK YOU FOR YOUR BUSINESS
+              </td>
+              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                TOTAL
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                    orderDetails.total_payble_amount | number: "1.2-2"
+                  }}
+              </td>
+            </tr>
+            <tr *ngIf="profitShow">
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Net Profit
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                    orderDetails.total_profit | number: "1.2-2"
+                  }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="8" class="text-center amount-word">
                 <strong>{{ priceInWord }}</strong>
               </td>
             </tr>
