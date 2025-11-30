@@ -76,7 +76,7 @@
                         <th style="width: 20%" class="text-center qty-width">
                             QTY(Pcs)
                         </th>
-                        <th style="width: 20%" class="text-center qty-width">
+                        <th *ngIf="freeQtyShow" style="width: 20%" class="text-center qty-width">
                             Free(QTY)
                         </th>
                         <th style="width: 10%" class="text-center">Amount(Tk.)</th>
@@ -128,7 +128,7 @@
                                   class="btn btn-sm btn-dark  no-m" (click)="increaseQuant(cart, i)">+</span>
                               </div>
                             </td>
-                            <td class="text-center">
+                            <td *ngIf="freeQtyShow" class="text-center">
                               <div class="quantity clearfix">
                                   <span 
                                     style="background: black !important;" 
@@ -513,7 +513,7 @@
               <th style="width:10%" class="unit">Sl.</th>
               <th style="width:30%;text-align: left">Product</th>
               <th style="width:10%">Quantity(Pcs)</th>
-              <th style="width:10%">Free(Qty)</th>
+              <th *ngIf="freeQtyShow" style="width:10%">Free(Qty)</th>
               <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
@@ -536,7 +536,7 @@
                   {{ item.medicine_type }})
                 </td>
                 <td class="qty">{{ item.quantity }}</td>
-                <td class="qty">{{ item.free_quantity }}</td>
+                <td *ngIf="freeQtyShow" class="qty">{{ item.free_quantity }}</td>
                 <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
                 <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
@@ -546,8 +546,8 @@
             <tr>
               <td colspan="2"><strong>Total</strong></td>
               <td><strong>{{ orderDetails.total_qty }}</strong></td>
-              <td><strong>{{ orderDetails.total_free_qty }}</strong></td>
-              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="freeQtyShow"><strong>{{ orderDetails.total_free_qty }}</strong></td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td>&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td>&nbsp;</td>
@@ -555,8 +555,8 @@
           </tbody>
           <tfoot style="border-top: solid darkgray 1px">
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -567,8 +567,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -579,8 +579,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -593,8 +593,8 @@
               </td>
             </tr>
             <tr *ngIf="profitShow">
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -607,8 +607,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: left;font-weight: bold">
@@ -622,7 +622,7 @@
           <ng-template #emptyItem>
             <tbody>
               <tr>
-                <td colspan="7">
+                <td colspan="8">
                   <h5 class="text-center">No Item Found</h5>
                 </td>
               </tr>
@@ -674,7 +674,7 @@
               <th style="width:5%" class="unit">#</th>
               <th style="width:30%;text-align: left">Product</th>
               <th style="width:10%">Qty</th>
-              <th style="width:10%">Free(Qty)</th>
+              <th *ngIf="freeQtyShow" style="width:10%">Free(Qty)</th>
               <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="width:10%;text-align: right">Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
@@ -696,7 +696,7 @@
                   {{ item.medicine }}
                 </td>
                 <td class="text-center">{{ item.quantity }}</td>
-                <td class="text-center">{{ item.free_quantity }}</td>
+                <td *ngIf="freeQtyShow" class="text-center">{{ item.free_quantity }}</td>
                 <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
                 <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
@@ -706,18 +706,17 @@
             <tr>
               <td colspan="2" class="text-center"><strong>Total</strong></td>
               <td class="text-center"><strong>{{ orderDetails.total_qty }}</strong></td>
-              <td class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
+              <td *ngIf="freeQtyShow" class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td>&nbsp;</td>
-              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: right;padding-right: 2%"><strong>{{ orderDetails.sub_total | number: "1.2-2" }}</strong></td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -728,9 +727,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -741,9 +739,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -756,9 +753,8 @@
               </td>
             </tr>
             <tr *ngIf="profitShow">
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -832,7 +828,7 @@
               <th style="background-color: #728088;color: #ffff;width:5%" class="unit">#</th>
               <th style="background-color: #728088;color: #ffff;width:30%;text-align: left">Product</th>
               <th style="background-color: #728088;color: #ffff;width:10%">Qty</th>
-              <th style="background-color: #728088;color: #ffff;width:10%">Free(Qty)</th>
+              <th *ngIf="freeQtyShow" style="background-color: #728088;color: #ffff;width:10%">Free(Qty)</th>
               <th *ngIf="tpShow" style="background-color: #728088;color: #ffff;width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="background-color: #728088;color: #ffff;width:10%;text-align: right">Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="background-color: #728088;color: #ffff;width:10%;text-align: right">Profit(&#x9f3;)</th>
@@ -854,7 +850,7 @@
                   {{ item.medicine }}
                 </td>
                 <td class="text-center">{{ item.quantity }}</td>
-                <td class="text-center">{{ item.free_quantity }}</td>
+                <td *ngIf="freeQtyShow" class="text-center">{{ item.free_quantity }}</td>
                 <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
                 <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
@@ -864,18 +860,17 @@
             <tr>
               <td colspan="2" class="text-center"><strong>Total</strong></td>
               <td class="text-center"><strong>{{ orderDetails.total_qty }}</strong></td>
-              <td class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
+              <td *ngIf="freeQtyShow" class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td>&nbsp;</td>
-              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: right;padding-right: 2%"><strong>{{ orderDetails.sub_total | number: "1.2-2" }}</strong></td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -886,9 +881,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+               <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -902,7 +896,7 @@
               <td colspan="2" class="thanku">
                 THANK YOU FOR YOUR BUSINESS
               </td>
-              <td>&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -915,9 +909,8 @@
               </td>
             </tr>
             <tr *ngIf="profitShow">
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+             <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">

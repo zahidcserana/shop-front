@@ -95,6 +95,7 @@ export class SaleComponent implements OnInit {
   salesmanShow = false;
   profitShow = false;
   tpShow = false;
+  freeQtyShow = true;
   isCartEmpty = true;
   isSubmitting = false;
   invoiceVersion = 1;
@@ -123,6 +124,7 @@ export class SaleComponent implements OnInit {
     this.salesmanShow = user.config.salesman_show;
     this.profitShow = user.config.profit_show;
     this.tpShow = user.config.tp_show;
+    this.freeQtyShow = user.config.free_quantity_show;
     this.getUsers();
     this.getPaymentTypes();
     this.homeService.navigationTo();

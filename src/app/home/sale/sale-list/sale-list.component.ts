@@ -19,6 +19,7 @@ export class SaleListComponent implements OnInit {
   @ViewChild('invoice2Section') invoice2Section!: ElementRef;
 
   profitShow = false;
+  freeQtyShow = true;
   invoiceVersion = 1;
   tpShow = false;
   dataList: SaleModel[] = [];
@@ -115,6 +116,7 @@ export class SaleListComponent implements OnInit {
     this.getSaleList(this.pagi.page, this.pagi.limit, this.filter);
     const user = JSON.parse(localStorage.getItem("currentUser"));
     this.profitShow = user.config.profit_show;
+    this.freeQtyShow = user.config.free_quantity_show;
     this.tpShow = user.config.tp_show;
   }
 
