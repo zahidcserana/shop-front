@@ -70,10 +70,9 @@
                     <thead class="thead">
                         <tr>
                         <th style="width: 5%" class="text-center">#</th>
-                        <th style="width: 30%">Name</th>
-                        <!--<th style="width: 10%" class="text-center">TP(Tk.)</th>-->
-                        <th style="width: 10%" class="text-center">MRP(Tk.)</th>
-                        <th style="width: 20%" class="text-center qty-width">
+                        <th style="width: 20%">Name</th>
+                        <th style="width: 15%" class="text-center">MRP(Tk.)</th>
+                        <th style="width: 30%" class="text-center qty-width">
                             QTY(Pcs)
                         </th>
                         <th *ngIf="freeQtyShow" style="width: 20%" class="text-center qty-width">
@@ -99,9 +98,7 @@
                                 <div class="widget-content-wrapper">
                                 <div class="widget-content-left flex2">
                                     <div class="widget-heading">
-                                    {{ cart.medicine.type }}.
                                     {{ cart.medicine.brand_name }}
-                                    <span class="medicine-power">&nbsp;({{ cart.medicine.brand }})</span>
                                     </div>
                                 </div>
                                 </div>
@@ -117,15 +114,31 @@
                             </td>
                             <td class="text-center">
                               <div class="quantity clearfix">
-                                  <span style="background: black !important;" [ngClass]="{ 'block-cursor': increament == i }"
-                                  class="btn btn-sm btn-dark no-m" (click)="decreaseQuant(cart, i)">-</span>
-                                  <span class="cart-qunt btn btn-sm no-m"
-                                  style="position: relative;background: #ffffff!important;color: black!important;">{{ cart.quantity }}
-                                  <div *ngIf="increament == i" class="m-loader m-loader--brand"
-                                      style="position: absolute;width: 30px;top:15px; left:10px;"></div>
+                                  <span 
+                                    style="background: black !important;" 
+                                    [ngClass]="{ 'block-cursor': increament == i }"
+                                    class="btn btn-sm btn-dark no-m" (click)="decreaseQuant(cart, i)"
+                                  >-
                                   </span>
-                                  <span style="background: black !important;" [ngClass]="{ 'block-cursor': increament == i }"
-                                  class="btn btn-sm btn-dark  no-m" (click)="increaseQuant(cart, i)">+</span>
+                                  <span 
+                                    class="cart-qunt btn btn-sm no-m"
+                                    style="position: relative;background: #ffffff!important;color: black!important;"
+                                  >
+                                    {{ cart.quantity }}
+                                    <div 
+                                      *ngIf="increament == i" 
+                                      class="m-loader m-loader--brand"
+                                      style="position: absolute;width: 30px;top:15px; left:10px;"
+                                    >
+                                    </div>
+                                  </span>
+                                  <span 
+                                    style="background: black !important;" 
+                                    [ngClass]="{ 'block-cursor': increament == i }"
+                                    class="btn btn-sm btn-dark  no-m" 
+                                    (click)="increaseQuant(cart, i)"
+                                  >+
+                                  </span>
                               </div>
                             </td>
                             <td *ngIf="freeQtyShow" class="text-center">
