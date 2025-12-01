@@ -26,6 +26,8 @@ declare var require: any;
 })
 export class SaleComponent implements OnInit {
 
+  colorCode = '#82929A';
+  colorCodeText = '#ffff';
   cartItem: any = {
     medicine: "",
     medicine_id: "",
@@ -387,7 +389,9 @@ export class SaleComponent implements OnInit {
   }
   goQty() {
     this.getAvailableQuantity();
-    this.cartQty.nativeElement.focus();
+    if (this.cartItem.medicine) {
+      this.cartQty.nativeElement.focus();
+    }
   }
   goTendered() {
     this.tendered.nativeElement.focus();
@@ -433,7 +437,6 @@ export class SaleComponent implements OnInit {
           .then((res) => {
             if (res.success === true) {
               this.isCartEmpty = false;
-              this.Medicine.nativeElement.focus();
               this.saleService.saveCartsInlocalStorage(res.data);
               localStorage.setItem("token", res.data.token);
               this.productList = res.data;
@@ -444,7 +447,7 @@ export class SaleComponent implements OnInit {
               this.batchList = [];
               $("#myForm").trigger("reset");
               this.orderId = 0;
-
+              this.Medicine.nativeElement.focus();
               if (this.isAntibiotic) {
                 Swal.fire({
                   position: "center",

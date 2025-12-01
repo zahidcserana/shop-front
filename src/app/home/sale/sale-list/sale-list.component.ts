@@ -18,6 +18,8 @@ export class SaleListComponent implements OnInit {
   @ViewChild('invoiceSection') invoiceSection!: ElementRef;
   @ViewChild('invoice2Section') invoice2Section!: ElementRef;
 
+  colorCode = '#82929A'; //728088, 92A2AC
+  colorCodeText = '#ffff';
   profitShow = false;
   freeQtyShow = true;
   invoiceVersion = 1;

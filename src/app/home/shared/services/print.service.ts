@@ -562,13 +562,13 @@ export class PrintService {
         }
 
         td {
-          border: 1px solid #728088 !important;
+          border: 1px solid #B1C2CA !important;
         }
 
         th {
           background: #f5f5f5;
           font-weight: bold;
-          border: 1px solid #728088 !important;
+          border: 1px solid #B1C2CA !important;
           text-align: center;
         }
 
@@ -650,12 +650,12 @@ export class PrintService {
         table {
           width: 100%;
           border-collapse: collapse;
-          border: 1px solid #728088;
+          border: 1px solid #B1C2CA;
           margin-top: 3px;
         }
 
         th, td {
-          border: 1px solid #728088;
+          border: 1px solid #B1C2CA;
           padding: 2px 3px;
           font-size: 8px;
           vertical-align: middle;
@@ -681,7 +681,7 @@ export class PrintService {
 
         /* Subtle top border before totals */
         tfoot tr:first-child td {
-          border-top: 1px solid #728088 !important;
+          border-top: 1px solid #B1C2CA !important;
           padding-top: 4px;
         }
 
@@ -711,7 +711,7 @@ export class PrintService {
           font-size: 9px;
           font-weight: bold;
           background: #f2f2f2;
-          border-top: 1px solid #728088 !important;
+          border-top: 1px solid #B1C2CA !important;
           padding: 4px 3px;
         }
 
@@ -812,12 +812,12 @@ export class PrintService {
         table {
           width: 100%;
           border-collapse: collapse;
-          border: 1px solid #728088;
+          border: 1px solid #B1C2CA;
           margin-top: 3px;
         }
 
         th, td {
-          border: 1px solid #728088;
+          border: 1px solid #B1C2CA;
           padding: 2px 3px;
           font-size: 17px;
           vertical-align: middle;
@@ -826,7 +826,7 @@ export class PrintService {
         }
 
         td {
-          border: 0.5px solid #728088;
+          border: 0.5px solid #B1C2CA;
           padding: 2px 3px;
           font-size: 17px;
           vertical-align: middle;
@@ -852,7 +852,7 @@ export class PrintService {
 
         /* Subtle top border before totals */
         tfoot tr:first-child td {
-          border-top: 1px solid #728088 !important;
+          border-top: 1px solid #B1C2CA !important;
           padding-top: 4px;
         }
 
@@ -882,7 +882,7 @@ export class PrintService {
           font-size: 17px;
           font-weight: bold;
           background: #f2f2f2;
-          border-top: 1px solid #728088 !important;
+          border-top: 1px solid #B1C2CA !important;
           padding: 4px 3px;
         }
 
