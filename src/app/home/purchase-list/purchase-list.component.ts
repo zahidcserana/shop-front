@@ -38,7 +38,6 @@ export class PurchaseListComponent implements OnInit {
     order_id: 0,
     item_name: '',
     company: '',
-    previous_quantity: '',
     new_quantity: '',
   };
 
@@ -189,7 +188,6 @@ export class PurchaseListComponent implements OnInit {
       order_id: 0,
       item_name: '',
       company: '',
-      previous_quantity: '',
       new_quantity: '',
     };
   }
@@ -203,7 +201,6 @@ export class PurchaseListComponent implements OnInit {
     this.updatePurchaseItem.order_id = item.item_order_id;
     this.updatePurchaseItem.item_name = itemName;
     // this.updatePurchaseItem.company = item.company_name;
-    this.updatePurchaseItem.previous_quantity = item.quantity;
     this.updatePurchaseItem.new_quantity = item.quantity;
   }
 

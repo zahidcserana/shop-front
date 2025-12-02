@@ -11,6 +11,9 @@ export class SaleService {
   searchMedicineByPharmacy(search) {
     return this.http.get("medicines/search/sale", { params: search });
   }
+  getCustomerByCode(data) {
+    return this.http.post('customer-by-code', data);
+  }
   getBatchList(data: any) {
     return this.http.post(`medicines/batch`, data).pipe(map(res => res));
   }

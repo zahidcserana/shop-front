@@ -604,7 +604,7 @@
               <th style="width:10%" class="unit">Sl.</th>
               <th style="width:30%;text-align: left">Product</th>
               <th style="width:10%">Quantity(Pcs)</th>
-              <th style="width:10%">Free(Qty)</th>
+              <th *ngIf="freeQtyShow" style="width:10%">Free(Qty)</th>
               <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
@@ -627,7 +627,7 @@
                   {{ item.medicine_type }})
                 </td>
                 <td class="qty">{{ item.quantity }}</td>
-                <td class="qty">{{ item.free_quantity }}</td>
+                <td *ngIf="freeQtyShow" class="qty">{{ item.free_quantity }}</td>
                 <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
                 <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
@@ -637,17 +637,17 @@
             <tr>
               <td colspan="2"><strong>Total</strong></td>
               <td><strong>{{ orderDetails.total_qty }}</strong></td>
-              <td><strong>{{ orderDetails.total_free_qty }}</strong></td>
+              <td *ngIf="freeQtyShow"><strong>{{ orderDetails.total_free_qty }}</strong></td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td>&nbsp;</td>
-              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td>&nbsp;</td>
             </tr>
           </tbody>
           <tfoot style="border-top: solid darkgray 1px">
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -658,8 +658,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: left;font-weight: bold;display: flex;">
@@ -678,8 +678,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -692,8 +692,8 @@
               </td>
             </tr>
             <tr *ngIf="profitShow">
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -706,8 +706,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: left;font-weight: bold">
@@ -721,7 +721,7 @@
           <ng-template #emptyItem>
             <tbody>
               <tr>
-                <td colspan="7">
+                <td colspan="8">
                   <h5 class="text-center">No Item Found</h5>
                 </td>
               </tr>
@@ -732,15 +732,9 @@
     </div>
   </div>
   <div id="print-div" class="print-div">
-    <button id="print-button" (click)="printInvoice('a4')" class="btn btn-success btn-xs">
-      🖨 Print A4
-    </button>
-    <button id="print-button" (click)="printInvoice('pos')" class="btn btn-success btn-xs">
-      🧾 Print POS
-    </button>
-    <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">
-      Close
-    </button>
+    <button id="print-button" (click)="printHandler('a4')" class="btn btn-success btn-xs">🖨 Print A4</button>
+    <button id="print-button" (click)="printHandler('pos')" class="btn btn-success btn-xs">🧾 Print POS</button>
+    <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">Close</button>
   </div>
 </jw-modal>
 
@@ -779,7 +773,7 @@
               <th style="width:5%" class="unit">#</th>
               <th style="width:30%;text-align: left">Product</th>
               <th style="width:10%">Qty</th>
-              <th style="width:10%">Free(Qty)</th>
+              <th *ngIf="freeQtyShow" style="width:10%">Free(Qty)</th>
               <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="width:10%;text-align: right">Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
@@ -801,7 +795,7 @@
                   {{ item.medicine }}
                 </td>
                 <td class="text-center">{{ item.quantity }}</td>
-                <td class="text-center">{{ item.free_quantity }}</td>
+                <td *ngIf="freeQtyShow" class="text-center">{{ item.free_quantity }}</td>
                 <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
                 <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
@@ -811,18 +805,17 @@
             <tr>
               <td colspan="2" class="text-center"><strong>Total</strong></td>
               <td class="text-center"><strong>{{ orderDetails.total_qty }}</strong></td>
-              <td class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
+              <td *ngIf="freeQtyShow" class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td>&nbsp;</td>
-              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: right;padding-right: 2%"><strong>{{ orderDetails.sub_total | number: "1.2-2" }}</strong></td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -833,9 +826,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -846,9 +838,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -861,9 +852,8 @@
               </td>
             </tr>
             <tr *ngIf="profitShow">
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -877,6 +867,162 @@
             </tr>
             <tr>
               <td colspan="8" style="font-size: medium;" class="text-center">
+                <strong>{{ priceInWord }}</strong>
+              </td>
+            </tr>
+          </tfoot>
+          <ng-template #emptyItem>
+            <tbody>
+              <tr>
+                <td colspan="8">
+                  <h5 class="text-center">No Item Found</h5>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </main>
+    </div>
+  </div>
+</div>
+
+<div #invoice2Section id="invoice2-print-div">
+  <div class="row">
+    <div *ngIf="orderDetails" class="col-md-12" style="width: 100%">
+      <header class="clearfix mb-2">
+        <div class="row">
+          <div id="customer-info" class="col-6 customer-info">
+            <h3><span class="pharmacy">{{ orderDetails.pharmacy }}</span></h3>
+            <div [ngStyle]="{ color: colorCode }">{{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</div>
+            <div [ngStyle]="{ color: colorCode }">For Order: {{ orderDetails.branch_mobile }}</div>
+            <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }">For Service: {{ orderDetails.branch_contact_person_mobile }}</div>
+          </div>
+          <div class="col-6 float-right">
+            <div>
+              <h3><strong [ngStyle]="{ color: colorCode }">INVOICE</strong></h3>
+              <br>
+              <span [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="padding: 1%;"># {{ orderDetails.invoice }} | DATE: {{ orderDetails.created_at }}</span></div>
+          </div>
+        </div>
+        <br>
+
+        <div style="display: flex;">
+          <div>
+            <div [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="padding: 1%;"><strong>Bill:</strong></div>
+            <div style="margin-top: 6px;"><strong>{{ orderDetails.customer_name }}</strong></div>
+            <div>{{ orderDetails.customer_mobile }}</div>
+          </div>
+          <div style="flex: 1;"></div>
+          <div id="pharmacy-info" class="d-none shop-info">
+            <div>{{ orderDetails.created_by }}</div>
+            <div>{{ orderDetails.branch_name }}, {{ orderDetails.branch_city }}</div>
+            <div>{{ orderDetails.branch_mobile }}</div>
+          </div>
+        </div>
+      </header>
+      <main style="margin-bottom: 1px">
+        <table class="preview">
+          <thead>
+            <tr>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:5%" class="unit">#</th>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:30%;text-align: left">Product</th>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%">Qty</th>
+              <th *ngIf="freeQtyShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%">Free(Qty)</th>
+              <th *ngIf="tpShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">Price(&#x9f3;)</th>
+              <th *ngIf="profitShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:15%;text-align: right;padding-right: 2%">Total(&#x9f3;)</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="
+                orderDetails && orderDetails?.order_items.length > 0;
+                else emptyItem
+              ">
+            <ng-container *ngFor="
+                  let item of orderDetails?.order_items;
+                  let i = index;
+                  trackBy: trackList
+                ">
+              <tr>
+                <td class="unit">{{ i + 1 }}</td>
+                <td class="text-left">
+                  {{ item.medicine }}
+                </td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td *ngIf="freeQtyShow" class="text-center">{{ item.free_quantity }}</td>
+                <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
+                <td style="text-align: right">{{ item.unit_price }}</td>
+                <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
+                <td style="text-align: right;padding-right: 2%">{{ item.sub_total }}</td>
+              </tr>
+            </ng-container>
+            <tr>
+              <td colspan="2" class="text-center"><strong>Total</strong></td>
+              <td class="text-center"><strong>{{ orderDetails.total_qty }}</strong></td>
+              <td *ngIf="freeQtyShow" class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td style="text-align: right;padding-right: 2%"><strong>{{ orderDetails.sub_total | number: "1.2-2" }}</strong></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                Subtotal
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+               <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                Total Discount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
+              <td colspan="2" class="thanku">
+                THANK YOU FOR YOUR BUSINESS
+              </td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                TOTAL
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                    orderDetails.total_payble_amount | number: "1.2-2"
+                  }}
+              </td>
+            </tr>
+            <tr *ngIf="profitShow">
+             <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Net Profit
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                    orderDetails.total_profit | number: "1.2-2"
+                  }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="8" class="text-center amount-word">
                 <strong>{{ priceInWord }}</strong>
               </td>
             </tr>

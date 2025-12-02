@@ -7909,6 +7909,13 @@ a,button,.btn{
   width: 195px;
   background:url(assets/images/logo3.png)
 }
+
+.logo-img {
+  height: 60px;
+  width: 195px;
+  object-fit: contain;
+}
+
 .app-header__menu,.app-header__mobile-menu{
   display:none;
   padding:0 1.5rem;

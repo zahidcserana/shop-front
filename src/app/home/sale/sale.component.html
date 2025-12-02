@@ -70,13 +70,12 @@
                     <thead class="thead">
                         <tr>
                         <th style="width: 5%" class="text-center">#</th>
-                        <th style="width: 30%">Name</th>
-                        <!--<th style="width: 10%" class="text-center">TP(Tk.)</th>-->
-                        <th style="width: 10%" class="text-center">MRP(Tk.)</th>
-                        <th style="width: 20%" class="text-center qty-width">
+                        <th style="width: 20%">Name</th>
+                        <th style="width: 15%" class="text-center">MRP(Tk.)</th>
+                        <th style="width: 30%" class="text-center qty-width">
                             QTY(Pcs)
                         </th>
-                        <th style="width: 20%" class="text-center qty-width">
+                        <th *ngIf="freeQtyShow" style="width: 20%" class="text-center qty-width">
                             Free(QTY)
                         </th>
                         <th style="width: 10%" class="text-center">Amount(Tk.)</th>
@@ -99,9 +98,7 @@
                                 <div class="widget-content-wrapper">
                                 <div class="widget-content-left flex2">
                                     <div class="widget-heading">
-                                    {{ cart.medicine.type }}.
                                     {{ cart.medicine.brand_name }}
-                                    <span class="medicine-power">&nbsp;({{ cart.medicine.brand }})</span>
                                     </div>
                                 </div>
                                 </div>
@@ -113,22 +110,38 @@
                             <td class="text-center">
                             <input type="number" class="form-control form-input-width-100" aria-describedby="AvailableQty"
                                 id="unit_price_{{ i }}" name="unit_price" value="{{ cart.unit_price }}" placeholder="Unit Price"
-                                (change)="updateItemPrice(cart, i)" /> <small>(TP+VAT {{ cart.tp }})</small>
+                                (change)="updateItemPrice(cart, i)" /> <small class="d-none">(TP+VAT {{ cart.tp }})</small>
                             </td>
                             <td class="text-center">
                               <div class="quantity clearfix">
-                                  <span style="background: black !important;" [ngClass]="{ 'block-cursor': increament == i }"
-                                  class="btn btn-sm btn-dark no-m" (click)="decreaseQuant(cart, i)">-</span>
-                                  <span class="cart-qunt btn btn-sm no-m"
-                                  style="position: relative;background: #ffffff!important;color: black!important;">{{ cart.quantity }}
-                                  <div *ngIf="increament == i" class="m-loader m-loader--brand"
-                                      style="position: absolute;width: 30px;top:15px; left:10px;"></div>
+                                  <span 
+                                    style="background: black !important;" 
+                                    [ngClass]="{ 'block-cursor': increament == i }"
+                                    class="btn btn-sm btn-dark no-m" (click)="decreaseQuant(cart, i)"
+                                  >-
                                   </span>
-                                  <span style="background: black !important;" [ngClass]="{ 'block-cursor': increament == i }"
-                                  class="btn btn-sm btn-dark  no-m" (click)="increaseQuant(cart, i)">+</span>
+                                  <span 
+                                    class="cart-qunt btn btn-sm no-m"
+                                    style="position: relative;background: #ffffff!important;color: black!important;"
+                                  >
+                                    {{ cart.quantity }}
+                                    <div 
+                                      *ngIf="increament == i" 
+                                      class="m-loader m-loader--brand"
+                                      style="position: absolute;width: 30px;top:15px; left:10px;"
+                                    >
+                                    </div>
+                                  </span>
+                                  <span 
+                                    style="background: black !important;" 
+                                    [ngClass]="{ 'block-cursor': increament == i }"
+                                    class="btn btn-sm btn-dark  no-m" 
+                                    (click)="increaseQuant(cart, i)"
+                                  >+
+                                  </span>
                               </div>
                             </td>
-                            <td class="text-center">
+                            <td *ngIf="freeQtyShow" class="text-center">
                               <div class="quantity clearfix">
                                   <span 
                                     style="background: black !important;" 
@@ -177,17 +190,32 @@
                     <div class="col-lg-12">
                         <table class="align-middle mb-0 table table-borderless table-striped table-hover table-bordar">
                             <tr class="sub-discount border-table-tr">
-                                <td class="availableQty">Customer Name</td>
+                                <td class="availableQty">Customer Mobile</td>
                                 <td>
-                                    <input autocomplete="off" id="customer_name" [(ngModel)]="order.customer_name" name="customer_name"
-                                    type="text" class="form-control validation-input" />
+                                    <input 
+                                      autocomplete="off" 
+                                      id="customer_mobile" 
+                                      [(ngModel)]="order.customer_mobile" 
+                                      name="customer_mobile" 
+                                      type="text" 
+                                      class="form-control validation-input" 
+                                      (keydown.enter)="getCustomerByCode()" 
+                                    />
                                 </td>
                             </tr>
                             <tr class="sub-discount border-table-tr">
-                                <td class="availableQty">Mobile</td>
+                                <td class="availableQty">Name</td>
                                 <td>
-                                    <input autocomplete="off" id="customer_mobile" [(ngModel)]="order.customer_mobile"
-                                    name="customer_mobile" type="text" class="form-control validation-input" />
+                                    <input 
+                                      enterFocus 
+                                      #customerName 
+                                      autocomplete="off" 
+                                      id="customer_name" 
+                                      [(ngModel)]="order.customer_name" 
+                                      name="customer_name"
+                                      type="text" 
+                                      class="form-control validation-input" 
+                                    />
                                 </td>
                             </tr>
                             <tr *ngIf="salesmanShow" class="sub-discount border-table-tr">
@@ -207,14 +235,29 @@
                                 <td class="availableQty">Discount</td>
                                 <td class="position-relative form-check">
                                     <label class="form-check-label radio-from-lebel">
-                                    <input value="fixed" [(ngModel)]="this.order.discount_type" name="discount_type" type="radio"
-                                        class="form-check-input" checked (click)="discountTypeChange('fixed')" />
-                                    Fixed
+                                    <input 
+                                      enterFocus 
+                                      value="fixed" 
+                                      [(ngModel)]="this.order.discount_type" 
+                                      name="discount_type" 
+                                      type="radio"
+                                      class="form-check-input" 
+                                      checked 
+                                      (click)="discountTypeChange('fixed')" 
+                                    />
+                                      Fixed
                                     </label>
                                     <label class="form-check-label radio-from-lebel" style="padding-left: 14%">
-                                    <input value="parcentage" [(ngModel)]="this.order.discount_type" name="discount_type" type="radio"
-                                        class="form-check-input" (click)="discountTypeChange('parcentage')" />
-                                    parcentage
+                                    <input 
+                                      enterFocus 
+                                      value="parcentage" 
+                                      [(ngModel)]="this.order.discount_type" 
+                                      name="discount_type" 
+                                      type="radio"
+                                      class="form-check-input" 
+                                      (click)="discountTypeChange('parcentage')" 
+                                    />
+                                      parcentage
                                     </label>
                                 </td>
                             </tr>
@@ -225,9 +268,16 @@
                                     </h5>
                                 </td>
                                 <td style="padding-top: 0!important;">
-                                    <input autocomplete="off" type="number" class="form-control" id="discount" name="discount"
-                                    (input)="discountChange()" [(ngModel)]="order.discount_amount" placeholder="0"
-                                    (keydown.enter)="goTendered()" />
+                                    <input 
+                                      enterFocus 
+                                      autocomplete="off" 
+                                      type="number" 
+                                      class="form-control" 
+                                      id="discount" 
+                                      name="discount"
+                                      (input)="discountChange()" 
+                                      [(ngModel)]="order.discount_amount" placeholder="0"
+                                    />
                                 </td>
                             </tr>
                             <tr class="net-total swatch-holder swatch-holder-lg bg-midnight-bloom">
@@ -237,17 +287,27 @@
                             <tr class="sub-tax border-table-tr">
                                 <td class="availableQty">Payment Type</td>
                                 <td>
-                                    <select name="payment_type" id="payment_type" [(ngModel)]="order.payment_type" class="form-control">
+                                    <select enterFocus name="payment_type" id="payment_type" [(ngModel)]="order.payment_type" class="form-control">
                                       <option *ngFor="let item of paymentTypes" value="{{ item.name }}">{{ item.name }}</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr class="sub-discount border-table-tr">
-                                <td class="availableQty">Tendered</td>
+                                <td class="availableQty">Advanced</td>
                                 <td>
-                                    <input #tendered autocomplete="off" type="text" class="form-control validation-input" id="tendered"
-                                    name="tendered" (input)="getChange()" [(ngModel)]="order.tendered" (keydown.enter)="submitOrder()"
-                                    placeholder="0" />
+                                    <input 
+                                      enterFocus 
+                                      #tendered 
+                                      autocomplete="off" 
+                                      type="text" 
+                                      class="form-control validation-input" 
+                                      id="tendered"
+                                      name="tendered" 
+                                      (input)="getChange()" 
+                                      [(ngModel)]="order.tendered" 
+                                      (keydown.enter)="submitOrder()"
+                                      placeholder="0" 
+                                    />
                                 </td>
                             </tr>
                             <tr class="sub-tax border-table-tr tr-due">
@@ -279,6 +339,7 @@
                                 </td>
                                 <td>
                                   <button
+                                    enterFocus
                                     [disabled]="isSubmitting"
                                     (click)="submitOrder()"
                                     class="mb-2 mr-2 btn btn-success btn-lg btn-block"
@@ -465,7 +526,7 @@
               <th style="width:10%" class="unit">Sl.</th>
               <th style="width:30%;text-align: left">Product</th>
               <th style="width:10%">Quantity(Pcs)</th>
-              <th style="width:10%">Free(Qty)</th>
+              <th *ngIf="freeQtyShow" style="width:10%">Free(Qty)</th>
               <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
@@ -488,7 +549,7 @@
                   {{ item.medicine_type }})
                 </td>
                 <td class="qty">{{ item.quantity }}</td>
-                <td class="qty">{{ item.free_quantity }}</td>
+                <td *ngIf="freeQtyShow" class="qty">{{ item.free_quantity }}</td>
                 <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
                 <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
@@ -498,8 +559,8 @@
             <tr>
               <td colspan="2"><strong>Total</strong></td>
               <td><strong>{{ orderDetails.total_qty }}</strong></td>
-              <td><strong>{{ orderDetails.total_free_qty }}</strong></td>
-              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="freeQtyShow"><strong>{{ orderDetails.total_free_qty }}</strong></td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td>&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td>&nbsp;</td>
@@ -507,8 +568,8 @@
           </tbody>
           <tfoot style="border-top: solid darkgray 1px">
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -519,8 +580,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -531,8 +592,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -545,8 +606,8 @@
               </td>
             </tr>
             <tr *ngIf="profitShow">
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -559,8 +620,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: left;font-weight: bold">
@@ -574,7 +635,7 @@
           <ng-template #emptyItem>
             <tbody>
               <tr>
-                <td colspan="7">
+                <td colspan="8">
                   <h5 class="text-center">No Item Found</h5>
                 </td>
               </tr>
@@ -585,15 +646,9 @@
     </div>
   </div>
   <div id="print-div" class="print-div">
-    <button id="print-button" (click)="printInvoice('a4')" class="btn btn-success btn-xs">
-      🖨 Print A4
-    </button>
-    <button id="print-button" (click)="printInvoice('pos')" class="btn btn-success btn-xs">
-      🧾 Print POS
-    </button>
-    <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">
-      Close
-    </button>
+    <button id="print-button" (click)="printHandler('a4')" class="btn btn-success btn-xs">🖨 Print A4</button>
+    <button id="print-button" (click)="printHandler('pos')" class="btn btn-success btn-xs">🧾 Print POS</button>
+    <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">Close</button>
   </div>
 </jw-modal>
 
@@ -632,7 +687,7 @@
               <th style="width:5%" class="unit">#</th>
               <th style="width:30%;text-align: left">Product</th>
               <th style="width:10%">Qty</th>
-              <th style="width:10%">Free(Qty)</th>
+              <th *ngIf="freeQtyShow" style="width:10%">Free(Qty)</th>
               <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
               <th style="width:10%;text-align: right">Price(&#x9f3;)</th>
               <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
@@ -654,7 +709,7 @@
                   {{ item.medicine }}
                 </td>
                 <td class="text-center">{{ item.quantity }}</td>
-                <td class="text-center">{{ item.free_quantity }}</td>
+                <td *ngIf="freeQtyShow" class="text-center">{{ item.free_quantity }}</td>
                 <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
                 <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
@@ -664,18 +719,17 @@
             <tr>
               <td colspan="2" class="text-center"><strong>Total</strong></td>
               <td class="text-center"><strong>{{ orderDetails.total_qty }}</strong></td>
-              <td class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
+              <td *ngIf="freeQtyShow" class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td>&nbsp;</td>
-              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: right;padding-right: 2%"><strong>{{ orderDetails.sub_total | number: "1.2-2" }}</strong></td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -686,9 +740,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
@@ -699,9 +752,8 @@
               </td>
             </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -714,9 +766,8 @@
               </td>
             </tr>
             <tr *ngIf="profitShow">
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
@@ -730,6 +781,162 @@
             </tr>
             <tr>
               <td colspan="8" style="font-size: medium;" class="text-center">
+                <strong>{{ priceInWord }}</strong>
+              </td>
+            </tr>
+          </tfoot>
+          <ng-template #emptyItem>
+            <tbody>
+              <tr>
+                <td colspan="8">
+                  <h5 class="text-center">No Item Found</h5>
+                </td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </main>
+    </div>
+  </div>
+</div>
+
+<div #invoice2Section id="invoice2-print-div">
+  <div class="row">
+    <div *ngIf="orderDetails" class="col-md-12" style="width: 100%">
+      <header class="clearfix mb-2">
+        <div class="row">
+          <div id="customer-info" class="col-6 customer-info">
+            <h3><span class="pharmacy">{{ orderDetails.pharmacy }}</span></h3>
+            <div [ngStyle]="{ color: colorCode }">{{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</div>
+            <div [ngStyle]="{ color: colorCode }">For Order: {{ orderDetails.branch_mobile }}</div>
+            <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }">For Service: {{ orderDetails.branch_contact_person_mobile }}</div>
+          </div>
+          <div class="col-6 float-right">
+            <div>
+              <h3><strong [ngStyle]="{ color: colorCode }">INVOICE</strong></h3>
+              <br>
+              <span [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="padding: 1%;"># {{ orderDetails.invoice }} | DATE: {{ orderDetails.created_at }}</span></div>
+          </div>
+        </div>
+        <br>
+
+        <div style="display: flex;">
+          <div>
+            <div [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="padding: 1%;"><strong>Bill:</strong></div>
+            <div style="margin-top: 6px;"><strong>{{ orderDetails.customer_name }}</strong></div>
+            <div>{{ orderDetails.customer_mobile }}</div>
+          </div>
+          <div style="flex: 1;"></div>
+          <div id="pharmacy-info" class="d-none shop-info">
+            <div>{{ orderDetails.created_by }}</div>
+            <div>{{ orderDetails.branch_name }}, {{ orderDetails.branch_city }}</div>
+            <div>{{ orderDetails.branch_mobile }}</div>
+          </div>
+        </div>
+      </header>
+      <main style="margin-bottom: 1px">
+        <table class="preview">
+          <thead>
+            <tr>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:5%" class="unit">#</th>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:30%;text-align: left">Product</th>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%">Qty</th>
+              <th *ngIf="freeQtyShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%">Free(Qty)</th>
+              <th *ngIf="tpShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">Price(&#x9f3;)</th>
+              <th *ngIf="profitShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:15%;text-align: right;padding-right: 2%">Total(&#x9f3;)</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="
+                orderDetails && orderDetails?.order_items.length > 0;
+                else emptyItem
+              ">
+            <ng-container *ngFor="
+                  let item of orderDetails?.order_items;
+                  let i = index;
+                  trackBy: trackList
+                ">
+              <tr>
+                <td class="unit">{{ i + 1 }}</td>
+                <td class="text-left">
+                  {{ item.medicine }}
+                </td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td *ngIf="freeQtyShow" class="text-center">{{ item.free_quantity }}</td>
+                <td *ngIf="tpShow" style="text-align: right">{{ item.tp }}</td>
+                <td style="text-align: right">{{ item.unit_price }}</td>
+                <td *ngIf="profitShow" style="text-align: right">{{ item.profit }}</td>
+                <td style="text-align: right;padding-right: 2%">{{ item.sub_total }}</td>
+              </tr>
+            </ng-container>
+            <tr>
+              <td colspan="2" class="text-center"><strong>Total</strong></td>
+              <td class="text-center"><strong>{{ orderDetails.total_qty }}</strong></td>
+              <td *ngIf="freeQtyShow" class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td style="text-align: right;padding-right: 2%"><strong>{{ orderDetails.sub_total | number: "1.2-2" }}</strong></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                Subtotal
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+               <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                Total Discount
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
+              <td colspan="2" class="thanku">
+                THANK YOU FOR YOUR BUSINESS
+              </td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                TOTAL
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                    orderDetails.total_payble_amount | number: "1.2-2"
+                  }}
+              </td>
+            </tr>
+            <tr *ngIf="profitShow">
+             <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Net Profit
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                &#x9f3;&nbsp;{{
+                    orderDetails.total_profit | number: "1.2-2"
+                  }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="8" class="text-center amount-word">
                 <strong>{{ priceInWord }}</strong>
               </td>
             </tr>

@@ -14,6 +14,7 @@ import { of } from 'rxjs';
 export class HeaderComponent implements OnInit {
   subscriptionPeriod = true;
   user: any;
+  logoUrl: string = '';
 
   constructor(
     private router: Router,
@@ -22,8 +23,13 @@ export class HeaderComponent implements OnInit {
   ) {
    }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.user = JSON.parse(localStorage.getItem("currentUser"));
+
+    const logoPath = this.user.logo;
+
+    this.logoUrl = logoPath ? logoPath : 'assets/images/logo3.png';
+
     this.subPlane();
     this.getNotificationList();
   }

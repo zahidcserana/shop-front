@@ -100,6 +100,8 @@ export class PurchaseComponent implements OnInit {
   @ViewChild("remarks") remarks: ElementRef;
   @ViewChild("barCode") barCode: ElementRef;
   @ViewChild("lowStockQty") lowStockQty: ElementRef;
+  @ViewChild("supplier") supplier: ElementRef;
+  @ViewChild("buttonPO") buttonPO: ElementRef;
 
   checkLocalStorage() {
     const items = JSON.parse(localStorage.getItem('purchaseItems'))
@@ -521,11 +523,13 @@ export class PurchaseComponent implements OnInit {
             this.resetAllItem();
             this.allPurchaseItems = [];
 
-            swalWithBootstrapButtons.fire(
-              'Purchase details submitted successfully!',
-              'Successful!',
-              'success'
-            );
+            Swal.fire({
+              position: "center",
+              type: "success",
+              title: "Purchase completed successfully.",
+              showConfirmButton: false,
+              timer: 1500
+            });
 
             this.medicineName.nativeElement.focus();
           })
@@ -646,6 +650,13 @@ export class PurchaseComponent implements OnInit {
     //   this.purchaseDetails.due = 0;
     //   this.vatAmountInPercentage = 0;
     // }
+  }
+
+  goSupplier() {
+    this.supplier.nativeElement.focus();
+  }
+  goButtonPO() {
+    this.buttonPO.nativeElement.focus();
   }
 
   claculateDue(){
