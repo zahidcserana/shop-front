@@ -16,6 +16,7 @@ import { HomeService } from '../../services/home.service';
   styleUrls: ['./master-sale-report.component.css']
 })
 export class MasterSaleReportComponent implements OnInit {
+  currency = '৳';
   loader: boolean;
   loader_sub: boolean;
   sub: Subscription;

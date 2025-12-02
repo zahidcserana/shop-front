@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { MasterReportService } from '../master-report.service';
 import { SharedPipeModule } from '../../pipes/shared-pipe.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [MasterInventoryReportComponent],
@@ -17,7 +18,8 @@ import { SharedPipeModule } from '../../pipes/shared-pipe.module';
     FormsModule,
     NgbModule,
     BsDatepickerModule.forRoot(),
-    SharedPipeModule
+    SharedPipeModule,
+    TranslateModule
   ],
   providers: [MasterReportService, DatePipe]
 })

@@ -7,6 +7,7 @@ import { MasterReportService } from '../master-report.service'
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BsDatepickerModule } from 'ngx-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [MasterPurchaseReportComponent],
@@ -16,6 +17,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
     FormsModule,
     NgbModule,
     BsDatepickerModule.forRoot(),
+    TranslateModule
   ],
   providers: [MasterReportService, DatePipe]
 })

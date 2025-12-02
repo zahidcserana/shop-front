@@ -19,6 +19,7 @@ import { ShortcutInput, ShortcutEventOutput } from 'ng-keyboard-shortcuts';
 export class PurchaseComponent implements OnInit {
   isSubmitting = false;
   showResetButton: boolean = false;
+  currency = '৳';
 
   constructor(private PurchaseService: PurchaseService, private homeService: HomeService, private toastr: ToastrService) { }
 

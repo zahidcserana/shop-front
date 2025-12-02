@@ -10,6 +10,7 @@ import { PurchaseService } from './services/purchase.service'
 import { ToastrModule } from 'ngx-toastr';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { SharedPipeModule } from '../pipes/shared-pipe.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { SharedPipeModule } from '../pipes/shared-pipe.module';
     NgbModule,
     ToastrModule.forRoot(),
     KeyboardShortcutsModule.forRoot(),
-    SharedPipeModule
+    SharedPipeModule,
+    TranslateModule
   ],
   providers: [PurchaseService],
 })

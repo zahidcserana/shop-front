@@ -3,11 +3,11 @@
     <div class="card-header card-header-top">
       <span class="margin-align-title card-header-title">
         <div class="font-icon-wrapper font-icon-lg">
-          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Purchase Report
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> {{ 'Purchase Report' | translate }}
         </div>
       </span>
       <div class="btn-actions-pane-right">
-        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Purchase Report
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> {{ 'Purchase Report' | translate }}
       </div>
     </div>
     <div class="card-body">
@@ -32,14 +32,14 @@
         </div>
         <div class="col-lg-2 padding-bot-input">
           <select class="ace form-control" name="sales_man" [(ngModel)]="filterItem.sales_man">
-            <option value="0">- Created By -</option>
+            <option value="0">- {{ 'Created By' | translate }} -</option>
             <option *ngFor="let person of salesPersonList" value="{{ person.id }}">{{ person.name }}
               ({{ person.email }})</option>
           </select>
         </div>
         <div class="col-lg-2 padding-bot-input">
-          <button type="button" (click)="filterPurcheseList()" id="filter-medicine-btn" class="btn btn-info">Filter</button> &nbsp;
-          <button type="button" (click)="resetList()" class="btn btn-warning">Reset</button>
+          <button type="button" (click)="filterPurcheseList()" id="filter-medicine-btn" class="btn btn-info">{{ 'Filter' | translate }}</button> &nbsp;
+          <button type="button" (click)="resetList()" class="btn btn-warning">{{ 'Reset' | translate }}</button>
         </div>
       </div>
       <div class="row">
@@ -48,20 +48,20 @@
             style="font-size: 14px; width: 60%; margin-bottom: 20px !important;">
             <thead>
               <tr>
-                <th style="width: 15%;">Total Invoice</th>
-                <th style="width: 15%;">Quantity</th>
-                <th style="width: 30%;">Total Amount</th>
-                <th style="width: 20%;">Total Discount</th>
-                <th style="width: 20%;">Total Due</th>
+                <th style="width: 15%;">{{ 'Total Invoice' | translate }}</th>
+                <th style="width: 15%;">{{ 'Quantity' | translate }}</th>
+                <th style="width: 30%;">{{ 'Total Amount' | translate }}</th>
+                <th style="width: 20%;">{{ 'Total Discount' | translate }}</th>
+                <th style="width: 20%;">{{ 'Total Due' | translate }}</th>
               </tr>
               </thead>
               <tbody>
               <tr>
                 <td><span style="font-weight: bold;"> {{ summary.total_invoice }}</span></td>
                 <td><span style="font-weight: bold;"> {{ summary.total_medicine }}</span></td>
-                <td><span style="font-weight: bold;"> {{ summary.total_amount | number: "1.2-2" }} Tk.</span></td>
-                <td><span style="font-weight: bold;"> {{ summary.total_discount | number: "1.2-2" }} Tk.</span></td>
-                <td><span style="font-weight: bold;"> {{ summary.total_due | number: "1.2-2" }} Tk.</span></td>
+                <td><span style="font-weight: bold;"> {{ summary.total_amount | number: "1.2-2" }} {{ currency }}</span></td>
+                <td><span style="font-weight: bold;"> {{ summary.total_discount | number: "1.2-2" }} {{ currency }}</span></td>
+                <td><span style="font-weight: bold;"> {{ summary.total_due | number: "1.2-2" }} {{ currency }}</span></td>
               </tr>
             </tbody>
           </table>
@@ -71,25 +71,25 @@
           <table class="mb-0 table table-bordered" *ngIf="!customLoader" style="font-size: 12px;">
             <thead>
               <tr>
-                <th>Sl#</th>
-                <th>Purchase Invoice</th>
-                <th>Purchase Date</th>
-                <th>Product</th>
-                <th>Qty</th>
-                <th>TP</th>
-                <th>Subtotal</th>
-                <th>Total Amount</th>
-                <th>Total Discount</th>
-                <th>Grand Total</th>
-                <th>Total Advance</th>
-                <th>Total Due</th>
-                <th>Supplier Details</th>
-                <th>Purchase By</th>
+                <th>{{ 'Sl' | translate }}</th>
+                <th>{{ 'Purchase Invoice' | translate }}</th>
+                <th>{{ 'Purchase Date' | translate }}</th>
+                <th>{{ 'Product' | translate }}</th>
+                <th>{{ 'Qty' | translate }}</th>
+                <th>{{ 'CPU' | translate }}</th>
+                <th>{{ 'Subtotal' | translate }}</th>
+                <th>{{ 'Total Amount' | translate }}</th>
+                <th>{{ 'Total Discount' | translate }}</th>
+                <th>{{ 'Grand Total' | translate }}</th>
+                <th>{{ 'Total Advance' | translate }}</th>
+                <th>{{ 'Total Due' | translate }}</th>
+                <th>{{ 'Supplier Details' | translate }}</th>
+                <th>{{ 'Purchase By' | translate }}</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngIf="showEmptyTable">
-                <td colspan="14">No Data Found! Please Select Search Parameter!</td>
+                <td colspan="14">{{ 'No Data Found! Please Select Search Parameter!' | translate }}</td>
               </tr>
               <ng-container *ngFor="let item of purchaseList; let i='index';">
                 <ng-container *ngFor="let product of item.items; let j='index';">
@@ -116,7 +116,7 @@
                       <td [attr.rowspan]="item.items.length">
                         {{ item.total_due_amount | number: "1.2-2" }}
                         <br />
-                        <span class="small" style="color:RED;" *ngIf="item.total_due_amount<0">Receivable</span>
+                        <span class="small" style="color:RED;" *ngIf="item.total_due_amount<0">{{ 'Receivable' | translate }}</span>
                       </td>
                       <td [attr.rowspan]="item.items.length">{{ item.company_name }}</td>
                       <td [attr.rowspan]="item.items.length">{{ item.created_by }}</td>
@@ -126,7 +126,6 @@
               </ng-container>
             </tbody>
           </table>
-
         </div>
       </div>
     </div>
