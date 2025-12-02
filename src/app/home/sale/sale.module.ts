@@ -11,6 +11,7 @@ import { SaleListModule } from './sale-list/sale-list.module';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { ModalModule } from 'src/app/common/_modal/modal.module';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [SaleComponent],
@@ -23,7 +24,8 @@ import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
     SaleListModule,
     BsDatepickerModule.forRoot(),
     KeyboardShortcutsModule.forRoot(),
-    SharedPipeModule
+    SharedPipeModule,
+    TranslateModule
   ],
   providers:[]
 })

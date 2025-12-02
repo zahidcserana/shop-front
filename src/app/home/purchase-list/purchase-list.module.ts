@@ -13,6 +13,7 @@ import { PurchaseListFilterComponent } from './purchase-list-filter/purchase-lis
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { SharedPipeModule } from '../pipes/shared-pipe.module';
 import { ToastrModule } from 'ngx-toastr';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { ToastrModule } from 'ngx-toastr';
     PurchaseListRoutingModule,
     BsDatepickerModule.forRoot(),
     SharedPipeModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    TranslateModule
   ],
   providers: [PurchaseListService, DatePipe]
 })

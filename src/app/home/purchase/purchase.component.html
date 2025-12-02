@@ -4,11 +4,11 @@
       <div class="card-header card-header-top">
         <span class="margin-align-title card-header-title">
           <div class="font-icon-wrapper font-icon-lg">
-            <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Purchase
+            <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> {{ 'Purchase' | translate }}
           </div>
         </span>
         <div class="btn-actions-pane-right">
-          <a routerLink="/purchase-list"> <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> View Purchase List </a>
+          <a routerLink="/purchase-list"> <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> {{ 'View Purchase List' | translate }} </a>
         </div>
       </div>
       <div class="card-body">
@@ -18,7 +18,7 @@
               <div class="form-row">
                   <div class="col-md-3">
                       <div class="position-relative form-group">
-                        <label class="">Product Name</label>
+                        <label class="">{{ 'Product Name' | translate }}</label>
                         <div id="scrollable-dropdown-menu">
                           <input name="search" id="typeahead-basic" #typeaheadInstance="ngbTypeahead" (keydown)="typeaheadKeydown($event)" #medicineName [(ngModel)]="purchaseItem.medicine" placeholder="" [ngbTypeahead]="search" autofocus type="text" class="form-control" (keydown.enter)="getMedicinePreviousPurchaseDetails()">
                         </div>
@@ -44,25 +44,25 @@
                   </div> -->
                   <div class="col-md-2">
                       <div class="position-relative form-group">
-                        <label for="box_trade_price" class="">CPU</label>
+                        <label for="box_trade_price" class="">{{ 'CPU' | translate }}</label>
                         <input name="box_trade_price" #boxTradePrice [(ngModel)]="purchaseItem.box_trade_price" (keydown.enter)="gotoBoxMrp()" placeholder="" type="number" class="form-control" (focus)="getMedicinePreviousPurchaseDetails()">
                       </div>
                   </div>
                   <div class="col-md-2">
                       <div class="position-relative form-group">
-                        <label for="box_mrp" data-toggle="tooltip" data-html="true" class="">RPU</label>
+                        <label for="box_mrp" data-toggle="tooltip" data-html="true" class="">{{ 'RPU' | translate }}</label>
                         <input name="box_mrp" #boxMrp [(ngModel)]="purchaseItem.box_mrp" (keydown.enter)="gotoVAT()" (input)="calculateTPVAT()" placeholder="" type="number" class="form-control">
                       </div>
                   </div>
                   <div class="col-md-1">
                     <div class="position-relative form-group">
-                      <label for="box_vat" class="">Percentage(%)</label>
+                      <label for="box_vat" class="">{{ 'Percentage' | translate }}(%)</label>
                       <input name="box_vat" #boxVAT [(ngModel)]="purchaseItem.percentage" (keydown.enter)="gotoQuantity()" placeholder="" type="number" class="form-control">
                     </div>
                 </div>
                   <div class="col-md-1">
                       <div class="position-relative form-group">
-                        <label for="quantity" class="">QTY</label>
+                        <label for="quantity" class="">{{ 'QTY' | translate }}</label>
                         <input name="quantity" #quantity [(ngModel)]="purchaseItem.quantity" min="1" (keydown.enter)="addMedicine()" placeholder="" type="number" class="form-control">
                       </div>
                   </div>
@@ -80,13 +80,13 @@
                   </div> -->
                   
                   <button type="submit" style="display: none;" class="btn btn-primary mb-0 add-medicine-btn">
-                    Add
+                    {{ 'Add' | translate }}
                   </button>
 
                   <div class="col-md-4"></div>
 
                   <div *ngIf="showResetButton">
-                    <button type="button" class="btn btn-primary reset-po" (click)="confirmReset()">Reset</button>
+                    <button type="button" class="btn btn-primary reset-po" (click)="confirmReset()">{{ 'Reset' | translate }}</button>
                   </div>
               </div>
               <!-- <div class="row">
@@ -112,14 +112,14 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th class="td_text_align_left">Product Name</th>
-                    <th>Barcode</th>
-                    <th>CPU</th>
-                    <th>RPU</th>
-                    <th>Percentage</th>
-                    <th>Qty</th>
-                    <th>Total</th>
-                    <th>Action</th>
+                    <th class="td_text_align_left">{{ 'Product Name' | translate }}</th>
+                    <th>{{ 'Barcode' | translate }}</th>
+                    <th>{{ 'CPU' | translate }}</th>
+                    <th>{{ 'RPU' | translate }}</th>
+                    <th>{{ 'Percentage' | translate }}</th>
+                    <th>{{ 'Qty' | translate }}</th>
+                    <th>{{ 'Total' | translate }}</th>
+                    <th>{{ 'Action' | translate }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -141,13 +141,13 @@
             </table> 
           </div>
           <div class="col-lg-3 total-div-border">
-            <h4 style="text-align: center;">Account Summary</h4>
+            <h4 style="text-align: center;">{{ 'Account Summary' | translate }}</h4>
             <div class="row">
               <div class="col-lg-12">
                 <div class="card mb-3 widget-content widget-area-padding card-margin">
                     <div class="widget-content-wrapper net-wiget">
                         <div class="widget-content-left">
-                            <div class="widget-heading">Total Amount</div>
+                            <div class="widget-heading">{{ 'Total Amount' | translate }}</div>
                         </div>
                         <div class="widget-content-right">
                             <input name="total_amount" [(ngModel)]="purchaseDetails.total" step="0.01" readonly="readonly" id="total_amount" placeholder="Total Amount" type="number" class="form-control">
@@ -159,23 +159,23 @@
                 <div class="card mb-3 widget-content widget-area-padding card-margin">
                     <div class="widget-content-wrapper net-wiget">
                         <div class="widget-content-left">
-                            <div class="widget-heading">Total VAT</div>
+                            <div class="widget-heading">{{ 'Total VAT' | translate }}</div>
                             <div class="position-relative form-group vat-parcentage">
                                 <div>
                                     <div class="custom-radio custom-control custom-control-inline">
                                       <input type="radio" name="vat_percentage" [(ngModel)]="purchaseDetails.vat_percentage" (change)="calculateVat()" id="Fixed" value="fixed" class="custom-control-input">
-                                      <label class="custom-control-label" (click)="calculateVat()" for="Fixed">Fixed</label>
+                                      <label class="custom-control-label" (click)="calculateVat()" for="Fixed">{{ 'Fixed' | translate }}</label>
                                     </div>
                                     <div class="custom-radio custom-control custom-control-inline">
                                       <input type="radio" [(ngModel)]="purchaseDetails.vat_percentage" name="vat_percentage" (change)="calculateVat()" id="percentage" value="percentage" class="custom-control-input">
-                                      <label class="custom-control-label" (click)="calculateVat()" for="percentage">Percentage (%)</label>
+                                      <label class="custom-control-label" (click)="calculateVat()" for="percentage">{{ 'Percentage' | translate }} (%)</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="widget-content-right">
                             <input name="total_vat" id="total_vat" [(ngModel)]="purchaseDetails.vat" (input)="calculateVat()" placeholder="Total VAT" type="number" class="form-control">
-                            <span *ngIf="vatAmountInPercentage" class="small"> Amount: {{ vatAmountInPercentage | number: "1.2-2" }} Tk. </span>
+                            <span *ngIf="vatAmountInPercentage" class="small"> {{ 'Amount' | translate }}: {{ vatAmountInPercentage | number: "1.2-2" }} {{ currency }} </span>
                         </div>
                     </div>
                 </div>
@@ -184,7 +184,7 @@
                 <div class="card mb-3 widget-content widget-area-padding card-margin">
                     <div class="widget-content-wrapper net-wiget">
                         <div class="widget-content-left">
-                            <div class="widget-heading">Discount</div>
+                            <div class="widget-heading">{{ 'Discount' | translate }}</div>
                         </div>
                         <div class="widget-content-right">
                             <input enterFocus name="discount" id="discount" [(ngModel)]="purchaseDetails.discount" (input)="calculateVat()" placeholder="0" type="number" class="form-control">
@@ -196,10 +196,10 @@
                 <div class="card mb-3 widget-content widget-area-padding card-margin">
                     <div class="widget-content-wrapper net-wiget">
                         <div class="widget-content-left">
-                            <div class="widget-heading">Net Amount</div>
+                            <div class="widget-heading">{{ 'Net Amount' | translate }}</div>
                         </div>
                         <div class="widget-content-right">
-                            <div class="widget-numbers text-success"><span>{{ purchaseDetails.net_amount | number: "1.2-2" }} Tk.</span></div>
+                            <div class="widget-numbers text-success"><span>{{ purchaseDetails.net_amount | number: "1.2-2" }} {{ currency }}</span></div>
                         </div>
                     </div>
                 </div>
@@ -208,7 +208,7 @@
                 <div class="card mb-3 widget-content widget-area-padding card-margin">
                     <div class="widget-content-wrapper net-wiget">
                         <div class="widget-content-left">
-                            <div class="widget-heading">Advance</div>
+                            <div class="widget-heading">{{ 'Advance' | translate }}</div>
                         </div>
                         <div class="widget-content-right">
                             <input (keydown.enter)="goSupplier()" name="total_advance" id="total_advance" [(ngModel)]="purchaseDetails.advance" (input)="claculateDue()" placeholder="Advance" type="number" class="form-control">
@@ -220,7 +220,7 @@
                 <div class="card mb-3 widget-content widget-area-padding card-margin">
                     <div class="widget-content-wrapper net-wiget">
                         <div class="widget-content-left">
-                            <div class="widget-heading">Due</div>
+                            <div class="widget-heading">{{ 'Due' | translate }}</div>
                         </div>
                         <div class="widget-content-right">
                             <input name="total_due" id="total_due" placeholder="Due" readonly="readonly" [(ngModel)]="purchaseDetails.due" type="number" class="form-control">
@@ -232,11 +232,11 @@
                 <div class="card mb-3 widget-content widget-area-padding card-margin">
                     <div class="widget-content-wrapper net-wiget">
                         <div class="widget-content-left">
-                            <div class="widget-heading">Supplier</div>
+                            <div class="widget-heading">{{ 'Supplier' | translate }}</div>
                         </div>
                         <div class="widget-content-right">
                             <select #supplier class="ace form-control" name="company" [(ngModel)]="purchaseDetails.company" required>
-                              <option value="">--Select Supplier--</option>
+                              <option value="">--{{ 'Select Supplier' | translate }}--</option>
                               <option *ngFor="let company of companyList" value="{{ company.id }}">{{ company.name }}</option>
                             </select>
                         </div>
@@ -247,7 +247,7 @@
                 <div class="card mb-3 widget-content widget-area-padding card-margin">
                     <div class="widget-content-wrapper net-wiget">
                         <div class="widget-content-left">
-                            <div class="widget-heading">Invoice</div>
+                            <div class="widget-heading">{{ 'Invoice' | translate }}</div>
                         </div>
                         <div class="widget-content-right">
                             <input (keydown.enter)="goButtonPO()" name="invoice" id="invoice" placeholder="Invoice" [(ngModel)]="purchaseDetails.invoice" type="text" class="form-control">
@@ -265,8 +265,8 @@
                     (click)="submitPurchaseDetails()"
                     [disabled]="isSubmitting"
                   >
-                    <ng-container *ngIf="!isSubmitting">Save</ng-container>
-                    <ng-container *ngIf="isSubmitting">Saving...</ng-container>
+                    <ng-container *ngIf="!isSubmitting">{{ 'Save' | translate }}</ng-container>
+                    <ng-container *ngIf="isSubmitting">{{ 'Saving' | translate }}...</ng-container>
                   </button>
                 </div>
               </div>

@@ -6,13 +6,19 @@ import { HomeComponent } from './home.component';
 import { HeaderComponent } from './includes/header/header.component';
 import { FooterComponent } from './includes/footer/footer.component';
 import { SidebarComponent } from './includes/sidebar/sidebar.component';
-
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [HomeComponent, HeaderComponent, FooterComponent, SidebarComponent],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    TranslateModule
+  ],
+  exports: [
+    HeaderComponent,
+    FooterComponent,
+    SidebarComponent
   ]
 })
 export class HomeModule { }

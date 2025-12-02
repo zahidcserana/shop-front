@@ -3,11 +3,11 @@
     <div class="card-header card-header-top">
       <span class="margin-align-title card-header-title">
         <div class="font-icon-wrapper font-icon-lg">
-          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Sale Report
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> {{ 'Sale Report' | translate }}
         </div>
       </span>
       <div class="btn-actions-pane-right">
-        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Sale Report
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> {{ 'Sale Report' | translate }}
       </div>
     </div>
     <div class="card-body">
@@ -25,7 +25,7 @@
         </div>
         <div class="col-lg-2 padding-bot-input">
           <select class="ace form-control" name="type_id" [(ngModel)]="filterItem.product_type_id">
-            <option value="0">-Type-</option>
+            <option value="0">-{{ 'Type' | translate }}-</option>
             <option *ngFor="let type of types" value="{{ type.id }}">{{ type.name }}</option>
           </select>
         </div>
@@ -41,14 +41,14 @@
         </div>
         <div class="col-md-1 padding-bot-input">
           <select class="ace form-control" name="start_time" [(ngModel)]="filterItem.start_time">
-            <option value="">-From-</option>
+            <option value="">-{{ 'From' | translate }}-</option>
             <option *ngFor='let in of counter(12) ;let i = index' value="{{ i + 1 }}">{{i+1}} AM </option>
             <option *ngFor='let in of counter(12) ;let i = index' value="{{ i + 13 }}">{{i+1}} PM </option>
           </select>
         </div>
         <div class="col-md-1 padding-bot-input">
           <select class="ace form-control" name="end_time" [(ngModel)]="filterItem.end_time">
-            <option value="">-To-</option>
+            <option value="">-{{ 'To' | translate }}-</option>
             <option *ngFor='let in of counter(12) ;let i = index' value="{{ i + 1 }}">{{i+1}} AM </option>
             <option *ngFor='let in of counter(12) ;let i = index' value="{{ i + 13 }}">{{i+1}} PM </option>
           </select>
@@ -70,20 +70,20 @@
         </div>
         <div class="col-lg-2 padding-bot-input">
           <select name="payment_type" [(ngModel)]="filterItem.payment_type" class="form-control">
-            <option value=""> - Payment Type -</option>
+            <option value=""> - {{ 'Payment Type' | translate }} -</option>
             <option *ngFor="let item of paymentTypes" value="{{ item.name }}">{{ item.name }}</option>
           </select>
         </div>
         <div class="col-lg-2 padding-bot-input">
           <select class="ace form-control" name="sales_man" [(ngModel)]="filterItem.sales_man">
-            <option value="0">- Sales Person -</option>
+            <option value="0">- {{ 'Sales Person' | translate }} -</option>
             <option *ngFor="let person of salesPersonList" value="{{ person.id }}">{{ person.name }}
               ({{ person.email }})</option>
           </select>
         </div>
         <div class="col-lg-2 padding-bot-input">
-          <button type="button" (click)="filterList()" id="filter-medicine-btn" class="btn btn-info mb-0">Filter</button> &nbsp;
-          <button type="button" (click)="reset()" class="btn btn-warning mb-0">Reset</button>
+          <button type="button" (click)="filterList()" id="filter-medicine-btn" class="btn btn-info mb-0">{{ 'Filter' | translate }}</button> &nbsp;
+          <button type="button" (click)="reset()" class="btn btn-warning mb-0">{{ 'Reset' | translate }}</button>
         </div>
       </div>
 
@@ -93,33 +93,33 @@
             style="font-size: 14px; width: 80%; margin-bottom: 20px !important;">
             <thead>
               <tr>
-                <th style="width: 10%;">Start Date</th>
-                <th style="width: 10%;">End Date</th>
-                <th style="width: 10%;">Total Sale Amount</th>
-                <th style="width: 10%;">Total Quantity</th>
-                <th style="width: 10%;">Total Discount</th>
-                <th style="width: 10%;">Total Grand Amount</th>
-                <th style="width: 10%;">Total Profit</th>
-                <th style="width: 10%;">Total Due </th>
+                <th style="width: 10%;">{{ 'Start Date' | translate }}</th>
+                <th style="width: 10%;">{{ 'End Date' | translate }}</th>
+                <th style="width: 10%;">{{ 'Total Sale Amount' | translate }}</th>
+                <th style="width: 10%;">{{ 'Total Quantity' | translate }}</th>
+                <th style="width: 10%;">{{ 'Total Discount' | translate }}</th>
+                <th style="width: 10%;">{{ 'Total Grand Amount' | translate }}</th>
+                <th style="width: 10%;">{{ 'Total Profit' | translate }}</th>
+                <th style="width: 10%;">{{ 'Total Due' | translate }}</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngIf="summary">
                 <td><span style="font-weight: bold;">{{ dateDetails.start_date }}</span></td>
                 <td><span style="font-weight: bold;">{{ dateDetails.end_date }}</span></td>
-                <td><span style="font-weight: bold;">= {{ summary.sum_sale_amount | number: "1.2-2" }} Tk.</span></td>
+                <td><span style="font-weight: bold;">= {{ summary.sum_sale_amount | number: "1.2-2" }} {{ currency }}</span></td>
                 <td><span style="font-weight: bold;">= {{ summary.sum_quantity }} Pcs</span></td>
                 <td><span
-                    style="font-weight: bold;">= {{ summary.sum_sale_discount | number: "1.2-2"}} Tk.</span>
+                    style="font-weight: bold;">= {{ summary.sum_sale_discount | number: "1.2-2"}} {{ currency }}</span>
                 </td>
                 <td><span
-                    style="font-weight: bold;">= {{ summary.sum_grand_total | number: "1.2-2"}} Tk.</span>
+                    style="font-weight: bold;">= {{ summary.sum_grand_total | number: "1.2-2"}} {{ currency }}</span>
                 </td>
                 <td><span
-                    style="font-weight: bold;">= {{ summary.sum_total_profit | number: "1.2-2"}} Tk.</span>
+                    style="font-weight: bold;">= {{ summary.sum_total_profit | number: "1.2-2"}} {{ currency }}</span>
                 </td>
                 <td><span
-                    style="font-weight: bold;">= {{ summary.sum_sale_due | number: "1.2-2"}} Tk.</span>
+                    style="font-weight: bold;">= {{ summary.sum_sale_due | number: "1.2-2"}} {{ currency }}</span>
                 </td>
               </tr>
             </tbody>
@@ -131,32 +131,32 @@
           <table class="mb-0 table table-bordered" *ngIf="!customLoader" style="font-size: 12px;">
             <thead>
               <tr>
-                <td rowspan="2">SL#</td>
-                <td rowspan="2">Sales Invoice</td>
-                <td rowspan="2">Sales Date</td>
-                <td colspan="7" class="text-center">SALE ITEMS</td>
-                <td rowspan="2">Total Profit</td>
-                <td rowspan="2">Total Amount</td>
-                <td rowspan="2">Total Discount</td>
-                <td rowspan="2">Grand Total</td>
-                <td rowspan="2">Total Due</td>
-                <td rowspan="2">Customer</td>
-                <td rowspan="2">Payment</td>
-                <td rowspan="2">Sales Man</td>
+                <td rowspan="2">{{ 'Sl' | translate }}</td>
+                <td rowspan="2">{{ 'Sales Invoice' | translate }}</td>
+                <td rowspan="2">{{ 'Sales Date' | translate }}</td>
+                <td colspan="7" class="text-center">{{ 'Sale Items' | translate }}</td>
+                <td rowspan="2">{{ 'Total Profit' | translate }}</td>
+                <td rowspan="2">{{ 'Total Amount' | translate }}</td>
+                <td rowspan="2">{{ 'Total Discount' | translate }}</td>
+                <td rowspan="2">{{ 'Grand Total' | translate }}</td>
+                <td rowspan="2">{{ 'Total Due' | translate }}</td>
+                <td rowspan="2">{{ 'Customer' | translate }}</td>
+                <td rowspan="2">{{ 'Payment' | translate }}</td>
+                <td rowspan="2">{{ 'Salesman' | translate }}</td>
               </tr>
               <tr>
-                <td>Product</td>
-                <td>Qty</td>
-                <td>TP</td>
-                <td>MRP</td>
-                <td>Subtotal(TP)</td>
-                <td>Subtotal(MRP)</td>
-                <td>Profit</td>
+                <td>{{ 'Product' | translate }}</td>
+                <td>{{ 'Qty' | translate }}</td>
+                <td>{{ 'CPU' | translate }}</td>
+                <td>{{ 'RPU' | translate }}</td>
+                <td>{{ 'Subtotal' | translate }}({{ 'CPU' | translate }})</td>
+                <td>{{ 'Subtotal' | translate }}({{ 'RPU' | translate }})</td>
+                <td>{{ 'Profit' | translate }}</td>
               </tr>
             </thead>
             <tbody>
               <tr *ngIf="showEmptyTable">
-                <td colspan="17">No Data Found! Please Select Search Parameter!</td>
+                <td colspan="17">{{ 'No Data Found! Please Select Search Parameter' | translate }}!</td>
               </tr>
               <ng-container *ngFor="let item of saleList; let i='index';">
                 <ng-container *ngFor="let product of item.item; let j='index' ;">

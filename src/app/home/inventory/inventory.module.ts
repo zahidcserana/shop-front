@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { PaginationModule } from './../../common/modules/pagination/pagination.module';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { ModalModule } from 'src/app/common/_modal/modal.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ModalModule } from 'src/app/common/_modal/modal.module';
     PaginationModule,
     NgxBarcodeModule,
     ModalModule,
-    NgbModule
+    NgbModule,
+    TranslateModule
   ],
   providers: [InventoryService]
 })
