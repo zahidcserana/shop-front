@@ -87,6 +87,7 @@ export class SaleComponent implements OnInit {
   fileName: any;
   orderDetails: any;
   validationStatus: boolean;
+  dueValidationStatus: boolean = false;
   @ViewChild("cartMedicine") Medicine: ElementRef;
   @ViewChild("cartQty") cartQty: ElementRef;
   @ViewChild("modalButton") modalButton: ElementRef;
@@ -374,7 +375,7 @@ export class SaleComponent implements OnInit {
     this.order.total_due_amount = this.checkIsLessZero(
       this.order.tendered
         ? this.order.total_payble_amount - this.order.tendered
-        : 0
+        : this.order.total_payble_amount
     );
     if (this.order.total_due_amount == 0) {
       this.order.total_advance_amount = this.order.total_payble_amount;
@@ -736,14 +737,15 @@ export class SaleComponent implements OnInit {
   }
   validationCheck() {
     this.validationStatus = true;
-    if (!this.order.tendered) {
-      this.validationStatus = false;
-      $("#tendered").addClass("invalid-input");
-    }
+    // if (!this.order.tendered) {
+    //   this.validationStatus = false;
+    //   $("#tendered").addClass("invalid-input");
+    // }
 
     if (this.order.total_due_amount) {
+      this.dueValidationStatus = false;
       if (!this.order.customer_mobile) {
-        this.validationStatus = false;
+        this.dueValidationStatus = true;
         $("#customer_mobile").addClass("invalid-input");
       }
     }
@@ -754,78 +756,91 @@ export class SaleComponent implements OnInit {
   submitOrder() {
     if (this.isSubmitting) return; // Prevent double click
     this.isSubmitting = true;
+    this.validationCheck()
 
-    if (this.validationCheck()) {
-      this.order.token = localStorage.getItem("token");
+    if (!this.validationStatus) {
+      this.isSubmitting = false;
       
-      // localStorage.removeItem("user_cart");
-      // localStorage.removeItem("token");
+      return Swal.fire({
+        type: "warning",
+        title: "Oops...",
+        text: "Please enter all required field!",
+        showConfirmButton: false,
+      });
+    }
 
-      this.saleService
-        .makeSaleOrder(this.order)
-        .then((res) => {
-          if (res.success) {
-            this.reset();
+    if (this.dueValidationStatus) {
+      this.dueValidationStatus = false
+      this.isSubmitting = false;
 
-            this.orderId = res.data.order_id;
-            this.orderDetails = res.data;
-            this.getPriceInWord(this.orderDetails.total_payble_amount);
+      return Swal.fire({
+        type: "warning",
+        title: "Oops...",
+        text: "Mobile number is required for due Sale!",
+        showConfirmButton: false,
+      });
+    }
 
-            this.fileName = "";
-            $(".validation-input").removeClass("invalid-input");
-            Swal.fire({
-              position: "center",
-              type: "success",
-              title: "Orders successfully submitted.",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            // setTimeout(() => { this.reset(); }, 3000);
-            // this.Medicine.nativeElement.focus();
-            // setTimeout(() => { this.modalButton.nativeElement.focus(); }, 1000);
-          } else {
-              Swal.fire({
-              type: "warning",
-              title: "Oops...",
-              text: "Something went wrong!",
-              showConfirmButton: false,
-            })
-          }
-          this.isSubmitting = false;
-          this.reset();
-        })
-        .catch((err) => {
-          console.log(err);
-          Swal.fire({
-            type: "warning",
-            title: "Oops...",
-            text: "Something went wrong!",
-            showConfirmButton: false,
-          })
-          .finally(() => {
-            // ✅ Re-enable the button only after everything completes
-            this.isSubmitting = false;
-          });
-        });
-    } else {
-       if (!this.productList || !this.productList.cart_items || this.productList.cart_items.length < 1) {
+    if (!this.productList || !this.productList.cart_items || this.productList.cart_items.length < 1) {
+      this.isSubmitting = false;
+
+      return Swal.fire({
+        type: "warning",
+        title: "Oops...",
+        text: "Empty cart!",
+        showConfirmButton: false,
+      });
+    }
+
+
+  this.order.token = localStorage.getItem("token");
+  
+  this.saleService
+    .makeSaleOrder(this.order)
+    .then((res) => {
+      if (res.success) {
+        this.reset();
+
+        this.orderId = res.data.order_id;
+        this.orderDetails = res.data;
+        this.getPriceInWord(this.orderDetails.total_payble_amount);
+
+        this.fileName = "";
+        $(".validation-input").removeClass("invalid-input");
         Swal.fire({
-          type: "warning",
-          title: "Oops...",
-          text: "Empty cart!",
+          position: "center",
+          type: "success",
+          title: "Orders successfully submitted.",
           showConfirmButton: false,
+          timer: 1500,
         });
+        // setTimeout(() => { this.reset(); }, 3000);
+        // this.Medicine.nativeElement.focus();
+        // setTimeout(() => { this.modalButton.nativeElement.focus(); }, 1000);
       } else {
-        Swal.fire({
+          Swal.fire({
           type: "warning",
           title: "Oops...",
-          text: "Please enter all required field!",
+          text: "Something went wrong!",
           showConfirmButton: false,
-        });
+        })
       }
       this.isSubmitting = false;
       this.reset();
-    }
+    })
+    .catch((err) => {
+      console.log(err);
+      Swal.fire({
+        type: "warning",
+        title: "Oops...",
+        text: "Something went wrong!",
+        showConfirmButton: false,
+      })
+      .finally(() => {
+        // ✅ Re-enable the button only after everything completes
+        this.isSubmitting = false;
+      });
+    });
   }
 
   /* modal */
