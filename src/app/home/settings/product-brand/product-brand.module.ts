@@ -8,6 +8,7 @@ import { ProductBrandFilterComponent } from './product-brand-filter/product-bran
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'src/app/common/_modal/modal.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 const routes: Routes = [
   {
@@ -24,7 +25,8 @@ const routes: Routes = [
     PaginationModule,
     FormsModule,
     NgbModule,
-    ModalModule
+    ModalModule,
+    TranslateModule
   ],
   providers: [ProductService],
   exports: [RouterModule]

@@ -7,6 +7,7 @@ import { ProductSettingsComponent } from './product-settings.component';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProductSettingsService } from './services/product-settings.service'
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [ProductSettingsComponent],
@@ -14,7 +15,8 @@ import { ProductSettingsService } from './services/product-settings.service'
     CommonModule,
     FormsModule,
     ProductSettingsRoutingModule,
-    NgbModule
+    NgbModule,
+    TranslateModule
   ],
   providers: [ProductSettingsService]
 })

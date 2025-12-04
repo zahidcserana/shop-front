@@ -170,6 +170,14 @@
   "Payout Amount": "পরিশোধের পরিমাণ",
   "Search": "অনুসন্ধান",
   "Date Range": "তারিখ",
-  "Pcs": "পিস"
+  "Pcs": "পিস",
+  "New Product": "নতুন পণ্য",
+  "Title": "টাইটেল",
+  "Specification": "বৈশিষ্ট্য",
+  "Brand": "ব্র্যান্ড",
+  "Product Details": "পণ্যের বিবরণ",
+  "Add Or Modify Brand": "ব্র্যান্ড যোগ করুন অথবা পরিবর্তন করুন",
+  "Product Settings": "পণ্য সেটিংস",
+  "Add Or Modify Type": "নতুন যোগ করুন অথবা পরিবর্তন করুন"
 
 }

@@ -3,11 +3,11 @@
     <div class="card-header card-header-top">
       <span class="margin-align-title card-header-title">
         <div class="font-icon-wrapper font-icon-lg">
-          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Product Settings
+          <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> {{ 'Product Settings' | translate }}
         </div>
       </span>
       <div class="btn-actions-pane-right">
-        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Product Settings
+        <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> {{ 'Product Settings' | translate }}
       </div>
     </div>
     <div class="card-body">
@@ -18,7 +18,7 @@
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
                     <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
-                    Add Or Modify Brand
+                    {{ 'Add Or Modify Brand' | translate }}
                 </div>
             </div>
             <div class="card-body">
@@ -26,7 +26,7 @@
                 <div class="form-row">
                     <div class="col-md-12">
                       <div class="position-relative form-group">
-                        <label class="">Brand: &nbsp; <a style="cursor: pointer" class="widget-heading" (click)="newBrand()"><u>Reset</u></a></label>
+                        <label class="">{{ 'Brand' | translate }}: &nbsp; <a style="cursor: pointer" class="widget-heading" (click)="newBrand()"><u>{{ 'Reset' | translate }}</u></a></label>
                         <input id="brand" name="search" [(ngModel)]="brandDetails.name" placeholder="Brand" type="text" class="form-control">
                       </div>
                     </div>
@@ -73,7 +73,7 @@
               <div class="card-header-tab card-header">
                   <div class="card-header-title">
                       <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
-                    Add Or Modify Type
+                      {{ 'Add Or Modify Type' | translate }}
                   </div>
               </div>
               <div class="card-body">
@@ -81,7 +81,7 @@
                   <div class="form-row">
                       <div class="col-md-12">
                           <div class="position-relative form-group">
-                            <label class="">Type: &nbsp; <a style="cursor: pointer" class="widget-heading" (click)="newType()"><u>Reset</u></a></label>
+                            <label class="">{{ 'Type' | translate }}: &nbsp; <a style="cursor: pointer" class="widget-heading" (click)="newType()"><u>{{ 'Reset' | translate }}</u></a></label>
                             <input id="medicine_type" name="search" [(ngModel)]="typeDetails.type" placeholder="Type" type="text" class="form-control">
                           </div>
                       </div>
