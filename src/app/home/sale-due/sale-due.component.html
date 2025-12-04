@@ -9,7 +9,7 @@
             <div  class="col-md-1" style="float: right">
               <a routerLink="/sale">
                 <i class="ace-icon fa fa-angle-double-left"></i>
-                Sale
+                {{ 'Sale' | translate }}
               </a>
             </div>
           </div>
@@ -17,13 +17,13 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Date</th>
-              <th>Invoice</th>
-              <th>Customer Name</th>
-              <th>Customer Mobile</th>
-              <th>Amount</th>
-              <th>Due</th>
-              <th>Action</th>
+              <th>{{ 'Date' | translate }}</th>
+              <th>{{ 'Invoice' | translate }}</th>
+              <th>{{ 'Customer Name' | translate }}</th>
+              <th>{{ 'Customer Mobile' | translate }}</th>
+              <th>{{ 'Amount' | translate }}</th>
+              <th>{{ 'Due' | translate }}</th>
+              <th>{{ 'Action' | translate }}</th>
             </tr>
           </thead>
           <tbody *ngIf="dataList.length > 0; else emptyData">
@@ -50,7 +50,7 @@
           <ng-template #emptyData>
             <tbody>
               <tr>
-                <td colspan="8" style="text-align: center">Empty data</td>
+                <td colspan="8" style="text-align: center">{{ 'Empty data' | translate }}</td>
               </tr>
             </tbody>
           </ng-template>
@@ -74,12 +74,12 @@
         </div>
 
         <h1 class="pdf-div" style="font-size: 1.5em">
-          Invoice# {{ orderDetails.invoice }}
+          {{ 'Invoice' | translate }}# {{ orderDetails.invoice }}
         </h1>
         <div style="display: flex;">
           <div id="customer-info">
-            <div>Customer: {{ orderDetails.customer_name }}</div>
-            <div>Mobile: {{ orderDetails.customer_mobile }}</div>
+            <div>{{ 'Customer' | translate }}: {{ orderDetails.customer_name }}</div>
+            <div>{{ 'Mobile' | translate }}: {{ orderDetails.customer_mobile }}</div>
             <div>{{ orderDetails.created_at }}</div>
           </div>
           <div style="flex: 1;"></div>
@@ -94,12 +94,12 @@
         <table class="preview">
           <thead>
             <tr>
-              <th style="width:10%" class="unit">Sl.</th>
-              <th style="width:30%;text-align: left">Product</th>
-              <th style="width:20%">Quantity(Pcs)</th>
-              <th style="width:20%;text-align: right">Unit Price(&#x9f3;)</th>
+              <th style="width:10%" class="unit">{{ 'Sl' | translate }}.</th>
+              <th style="width:30%;text-align: left">{{ 'Product' | translate }}</th>
+              <th style="width:20%">{{ 'Quantity' | translate }}</th>
+              <th style="width:20%;text-align: right">{{ 'Unit Price' | translate }} {{ currency }}</th>
               <th style="width:20%;text-align: right;padding-right: 2%">
-                Amount(&#x9f3;)
+                {{ 'Amount' | translate }} {{ currency }}
               </th>
             </tr>
           </thead>
@@ -115,8 +115,7 @@
               <tr>
                 <td class="unit">{{ i + 1 }}</td>
                 <td class="service" style="text-align: left">
-                  {{ item.medicine }} ({{ item.medicine_power }}
-                  {{ item.medicine_type }})
+                  {{ item.medicine }}
                 </td>
                 <td class="qty">{{ item.quantity }}</td>
                 <td style="text-align: right">{{ item.unit_price }}</td>
@@ -130,28 +129,28 @@
             <tr>
               <td colspan="2">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
-                Total Amount
+                {{ 'Total Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
               <td colspan="2">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Discount Amount
+                {{ 'Discount Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
               <td colspan="2">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Net Amount
+                {{ 'Net Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                   orderDetails.total_payble_amount | number: "1.2-2"
                 }}
               </td>
@@ -159,10 +158,10 @@
             <tr>
               <td colspan="2">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Due Amount
+                {{ 'Due Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                   orderDetails.total_due_amount | number: "1.2-2"
                 }}
               </td>
@@ -170,7 +169,7 @@
             <tr>
               <td colspan="2">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Payout Amount
+                {{ 'Payout Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
                 <input type="number" [(ngModel)]="payout.amount" class="form-control" autofocus
@@ -195,7 +194,7 @@
             <tr>
               <td colspan="3">&nbsp;</td>
               <td colspan="2" style="text-align: right;padding-right: 2%">
-                <button style="width: 45%" class="btn btn-success" (click)="payoutAmount()">Save</button>
+                <button style="width: 45%" class="btn btn-success" (click)="payoutAmount()">{{ 'Save' | translate }}</button>
               </td>
             </tr>
           </tfoot>
@@ -203,7 +202,7 @@
             <tbody>
               <tr>
                 <td colspan="5">
-                  <h5 class="text-center">No Item Found</h5>
+                  <h5 class="text-center">{{ 'No Item Found' | translate }}</h5>
                 </td>
               </tr>
             </tbody>
@@ -214,10 +213,10 @@
   </div>
   <div id="print-div">
     <button id="print-button" (click)="printInvoice('print-modal')" class="btn btn-success btn-xs">
-      Print
+      {{ 'Print' | translate }}
     </button>
     <button id="close-button" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">
-      Close
+      {{ 'Close' | translate }}
     </button>
   </div>
 </jw-modal>

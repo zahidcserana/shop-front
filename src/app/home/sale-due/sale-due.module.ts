@@ -10,6 +10,7 @@ import { SaleService } from '../services/sale.service';
 import { DueFilterComponent } from './due-filter/due-filter.component';
 import { PaginationModule } from 'src/app/common/modules/pagination/pagination.module';
 import { ModalModule } from 'src/app/common/_modal/modal.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { ModalModule } from 'src/app/common/_modal/modal.module';
     NgbModule,
     FormsModule,
     BsDatepickerModule.forRoot(),
+    TranslateModule
   ],
   providers: [SaleService, DatePipe]
 })

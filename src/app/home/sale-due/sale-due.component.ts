@@ -14,6 +14,7 @@ import * as $ from "jquery";
   styleUrls: ['./sale-due.component.css']
 })
 export class SaleDueComponent implements OnInit {
+  currency = '৳';
   dataList: SaleModel[] = [];
   pagi: Pagi = new Pagi();
   filter: string;

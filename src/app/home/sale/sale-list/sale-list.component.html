@@ -683,9 +683,19 @@
                 {{ 'Net Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                {{ currency }}&nbsp;{{
-                    orderDetails.total_payble_amount | number: "1.2-2"
-                  }}
+                {{ currency }} {{ orderDetails.total_payble_amount | number: "1.2-2"}}
+              </td>
+            </tr>
+            <tr *ngIf="orderDetails.total_due_amount">
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                {{ 'Due Amount' | translate }}
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                {{ currency }} {{ orderDetails.total_due_amount | number: "1.2-2"}}
               </td>
             </tr>
             <tr *ngIf="profitShow">
@@ -848,6 +858,18 @@
                   }}
               </td>
             </tr>
+            <tr *ngIf="orderDetails.total_due_amount">
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                {{ 'Due Amount' | translate }}
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                {{ currency }} {{ orderDetails.total_due_amount | number: "1.2-2" }}
+              </td>
+            </tr>
             <tr *ngIf="profitShow">
               <td colspan="2">&nbsp;</td>
               <td *ngIf="freeQtyShow">&nbsp;</td>
@@ -974,7 +996,7 @@
                 {{ 'Subtotal' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
@@ -986,7 +1008,19 @@
                 {{ 'Total Discount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr *ngIf="orderDetails.total_due_amount">
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                {{ 'Due Amount' | translate }}
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                {{ currency }} {{ orderDetails.total_due_amount | number: "1.2-2" }}
               </td>
             </tr>
             <tr [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
@@ -1000,9 +1034,7 @@
                 {{ 'Total' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
-                    orderDetails.total_payble_amount | number: "1.2-2"
-                  }}
+                {{ currency }} {{ orderDetails.total_payble_amount | number: "1.2-2"}}
               </td>
             </tr>
             <tr *ngIf="profitShow">
@@ -1014,7 +1046,7 @@
                 {{ 'Net Profit' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                     orderDetails.total_profit | number: "1.2-2"
                   }}
               </td>
