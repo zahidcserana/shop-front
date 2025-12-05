@@ -86,8 +86,7 @@
                     <tr *ngFor="let item of purchaseDetails; let i='index';">
                       <td>{{ i+1 }}</td>
                       <td style="text-align: left;">
-                        {{ item.medicine_type | slice:0:3 }}. {{ item.medicine_name }}<br/>
-                        <span class="small">{{ item.generic }}</span>
+                        {{ item.medicine_name }}
                       </td>
                       <td>{{ item.brand }}</td>
                       <td>{{ item.quantity }}</td>

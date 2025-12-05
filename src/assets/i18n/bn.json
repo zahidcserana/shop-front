@@ -178,6 +178,11 @@
   "Product Details": "পণ্যের বিবরণ",
   "Add Or Modify Brand": "ব্র্যান্ড যোগ করুন অথবা পরিবর্তন করুন",
   "Product Settings": "পণ্য সেটিংস",
-  "Add Or Modify Type": "নতুন যোগ করুন অথবা পরিবর্তন করুন"
+  "Add Or Modify Type": "নতুন যোগ করুন অথবা পরিবর্তন করুন",
+  "Payment Date": "পেমেন্টের তারিখ",
+  "Purchase Due Report": "ক্রয়ের বকেয়া রিপোর্ট",
+  "Payment Status": "পেমেন্ট স্ট্যাটাস",
+  "Select Date": "তারিখ নির্বাচন",
+  "Created by": "তৈরি করেছেন"
 
 }
