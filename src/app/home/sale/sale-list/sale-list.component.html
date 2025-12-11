@@ -910,36 +910,68 @@
     <div *ngIf="orderDetails" class="col-md-12" style="width: 100%">
       <header class="clearfix mb-2">
         <div class="row">
+          <!-- Left Section: Branch / Pharmacy Info -->
           <div id="customer-info" class="col-6 customer-info">
-            <h3><span class="pharmacy">{{ orderDetails.pharmacy }}</span></h3>
-            <div [ngStyle]="{ color: colorCode }">{{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</div>
-            <div [ngStyle]="{ color: colorCode }">{{ 'For Order' | translate }}: {{ orderDetails.branch_mobile }}</div>
-            <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }">{{ 'For Service' | translate }}: {{ orderDetails.branch_contact_person_mobile }}</div>
-            <div [ngStyle]="{ color: colorCode }">{{ 'Invoice by' | translate }} : {{ orderDetails.created_by }}</div>
-          </div>
-          <div class="col-6 float-right">
-            <div>
-              <h3><strong [ngStyle]="{ color: colorCode }">{{ 'INVOICE' | translate }}</strong></h3>
-              <br>
-              <span [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="padding: 1%;"># {{ orderDetails.invoice }} | {{ 'DATE' | translate }}: {{ orderDetails.created_at }}</span></div>
-          </div>
-        </div>
-        <br>
+            <h3>
+              <span class="pharmacy">{{ orderDetails.pharmacy }}</span>
+            </h3>
 
-        <div style="display: flex;">
-          <div>
-            <div [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="padding: 1%;"><strong>{{ 'Bill' | translate }}:</strong></div>
-            <div style="margin-top: 6px;"><strong>{{ orderDetails.customer_name }}</strong></div>
-            <div>{{ orderDetails.customer_mobile }}</div>
+            <div [ngStyle]="{ color: colorCode }">
+              {{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}
+            </div>
+
+            <div [ngStyle]="{ color: colorCode }">
+              {{ 'For Order' | translate }}: {{ orderDetails.branch_mobile }}
+            </div>
+
+            <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }">
+              {{ 'For Service' | translate }}: {{ orderDetails.branch_contact_person_mobile }}
+            </div>
+
+            <div [ngStyle]="{ color: colorCode }">
+              {{ 'Invoice by' | translate }} : {{ orderDetails.created_by }}
+            </div>
           </div>
-          <div style="flex: 1;"></div>
-          <div id="pharmacy-info" class="d-none shop-info">
-            <div>{{ orderDetails.created_by }}</div>
-            <div>{{ orderDetails.branch_name }}, {{ orderDetails.branch_city }}</div>
-            <div>{{ orderDetails.branch_mobile }}</div>
+
+          <!-- Right Section: Invoice + Customer -->
+          <div class="col-6 float-right">
+
+            <!-- Invoice Title -->
+            <h3>
+              <strong [ngStyle]="{ color: colorCode }">
+                {{ 'INVOICE' | translate }}
+              </strong>
+            </h3>
+
+            <!-- Invoice Number + Date -->
+            <span
+              class="d-inline-block mt-2 p-1"
+              [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }"
+            >
+              # {{ orderDetails.invoice }} |
+              {{ 'DATE' | translate }}: {{ orderDetails.created_at }}
+            </span>
+
+            <div>
+              <!-- Billing Information -->
+              <div
+                class="d-none mt-3 p-1"
+                [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }"
+              >
+                <strong>{{ 'Bill' | translate }}:</strong>
+              </div>
+
+              <div class="mt-1">
+                <strong>{{ orderDetails.customer_name }}</strong>
+              </div>
+
+              <div>{{ orderDetails.customer_mobile }}</div>
+            </div>
           </div>
+
         </div>
       </header>
+
       <main style="margin-bottom: 1px">
         <table class="preview">
           <thead>
