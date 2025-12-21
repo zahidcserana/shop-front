@@ -26,7 +26,8 @@
     "BRANDS_TYPES": "Brands & Types",
     "SUPPLIERS": "Suppliers",
     "SUBSCRIPTION": "Subscription",
-    "HOTKEY": "Hot-Key"
+    "HOTKEY": "Hot-Key",
+    "DAMAGE": "Damage"
   },
   "ATTENTION": "Attention",
   "ATTENTION_TEXT": "Your Subscription period is over! Please update your Subscription Plan",

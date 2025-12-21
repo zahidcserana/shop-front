@@ -1,0 +1,134 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-header card-header-top">
+        <span class="margin-align-title card-header-title">
+          <div class="font-icon-wrapper font-icon-lg">
+            <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> {{ 'Damage List' | translate }}
+          </div>
+        </span>
+        <div class="btn-actions-pane-right">
+          <a routerLink="/damage"> <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> {{ 'Add Damage' | translate }} </a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+            <app-damage-list-filter style="width: 100%" (loadList)="filterList($event)"></app-damage-list-filter>
+          <div class="col-lg-12">
+            <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+            <table class="mb-0 table table-hover" *ngIf="!customLoader">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>{{ 'Invoice' | translate }}</th>
+                  <th>{{ 'Supplier' | translate }}</th>
+                  <th>{{ 'Date' | translate }}</th>
+                  <th>{{ 'Total' | translate }}</th>
+                  <th>{{ 'Action' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of damageList; let i='index';" class="detail-{{ item.id }}">
+                  <th scope="row">{{ i+1 }}</th>
+                  <td>{{ item.invoice }}</td>
+                  <td>{{ item.company == null ?  'N/A' : item.company.company_name}}</td>
+                  <td>{{ item.created_at | date:'medium':'Asia/Dhaka' }}</td>
+                  <td>{{ item.total_amount }}</td>
+                  <td>
+                      <button title="Damage Return" (click)="openModal(item.id, 'print-modal')" id="damage_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-info">
+                      <i class="pe-7s-note2 btn-icon-wrapper"></i>
+                      </button>
+                      <button title="Delete Invoice" (click)="deleteDamageDetails(item.id)" id="damage_order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-danger">
+                      <i class="pe-7s-trash btn-icon-wrapper"></i>
+                      </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <boot-pagination style="width: 100%" [totalSize]="pagi.total" [listSize]="pagi.limit"
+              (pageChange)="reloadTable($event)">
+            </boot-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <jw-modal id="print-modal" class="data-view-modal">
+    <div class="row">
+      <div *ngIf="damageDetails" class="col-md-12">
+        <header class="clearfix" style="margin-bottom: 0;">
+          <div id="logo">
+            <span class="pharmacy">{{ 'Damage Details' | translate }}</span>
+          </div>
+        </header>
+        <main>
+          <div style="text-align: center;padding-bottom: 1%">
+            <span style="padding-right: 2%">{{ 'Invoice' | translate }}: {{ damage.invoice }}</span>
+            <span style="padding-left: 2%">{{ 'Date' | translate }}: {{ damage.damage_date }}</span>
+            <span style="padding-left: 2%">{{ 'Total Amount' | translate }}: {{ damage.total_amount }}</span>
+          </div>
+
+          <form id="myForm" *ngIf="itemId" class="form-width-100" (keydown.enter)="$event.preventDefault()"
+            (ngSubmit)="updateItemDetails()">
+            <div class="form-row">
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label class="">{{ 'Product Name' | translate }}</label>
+                  <input name="item_name" [(ngModel)]="updateDamageItem.item_name" readonly placeholder="" type="text"
+                    class="form-control">
+                </div>
+              </div>
+              <!-- <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="company" class="">Company</label>
+                  <input name="company" [(ngModel)]="updateDamageItem.company" readonly placeholder="" type="text"
+                    class="form-control">
+                </div>
+              </div> -->
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <label for="new_quantity" class="">{{ 'Quantity' | translate }}</label>
+                  <input name="new_quantity" [(ngModel)]="updateDamageItem.new_quantity" placeholder="" autofocus
+                    type="number" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="position-relative form-group">
+                  <button type="button" (click)="updateItemDetails()"
+                    class="btn btn-primary mb-0 save-btn save-btn-margin">
+                    {{ 'Update' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <table class="preview">
+            <thead>
+              <tr>
+                <th class="sl">{{ 'Sl' | translate }}</th>
+                <th style="text-align: left;">{{ 'Item' | translate }}</th>
+                <th>{{ 'Qty' | translate }}</th>
+                <th>{{ 'CPU' | translate }} {{ currency }}</th>
+                <th>{{ 'Total' | translate }} {{ currency }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of damageDetails; let i='index';">
+                <td>{{ i+1 }}</td>
+                <td style="text-align: left;">
+                  {{ item.medicine_name }}
+                  <span class="small">({{ item.barcode }})</span>
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price | number: "1.2-2"  }}</td>
+                <td>{{ item.price * item.quantity | number: "1.2-2"  }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </main>
+      </div>
+    </div>
+    <button id="close-div" style="width: 7%;margin-left: 93%;" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">{{ 'Close' | translate }}</button>
+  </jw-modal>
