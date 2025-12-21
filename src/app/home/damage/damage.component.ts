@@ -395,6 +395,7 @@ export class DamageComponent implements OnInit {
             });
 
             this.medicineName.nativeElement.focus();
+            this.router.navigate(['/damage/list']);
           })
           .catch(err => {
             const message =
@@ -404,7 +405,6 @@ export class DamageComponent implements OnInit {
           })
           .finally(() => {
             this.isSubmitting = false;
-            this.router.navigate(['/damage/list']);
           });
       } else {
         swalWithBootstrapButtons.fire('Cancelled', '', 'error');
