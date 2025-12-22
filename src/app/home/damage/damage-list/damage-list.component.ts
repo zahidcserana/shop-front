@@ -182,18 +182,15 @@ export class DamageListComponent implements OnInit {
   }
 
   setDamageData() {
-    let itemData = new DamageModel()
-    this.damageDetails.map(row => {
-      itemData.item = row.medicine_name
-      itemData.quantity = row.quantity
-      itemData.price = row.price
-      itemData.amount = row.quantity * row.price
+    this.dataList = this.damageDetails.map(row => ({
+      item: row.medicine_name,
+      quantity: row.quantity,
+      price: row.price,
+      amount: row.quantity * row.price
+    }));
 
-      this.dataList.push(itemData)
-    })
-
-    this.sammary.total_amount = this.damage.total_amount
-    this.sammary.damage_date = this.damage.damage_date
+    this.sammary.total_amount = this.damage.total_amount;
+    this.sammary.damage_date = this.damage.damage_date;
   }
 
   exportDamageReportPDF(): void {
