@@ -14,3 +14,10 @@ export class DamageFilterModel {
   date_start: string;
   date_end: string;
 }
+
+export class DamageModel {
+  item: string;
+  quantity: number;
+  price: number;
+  amount: number;
+}

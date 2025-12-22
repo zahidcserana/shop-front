@@ -130,5 +130,8 @@
         </main>
       </div>
     </div>
+    <button type="button" (click)="exportDamageReportPDF()" class="btn btn-info">
+      <i class="fa fa-file-pdf"></i> Download PDF
+    </button>
     <button id="close-div" style="width: 7%;margin-left: 93%;" (click)="closeModal('print-modal')" class="btn btn-warning btn-xs">{{ 'Close' | translate }}</button>
   </jw-modal>
