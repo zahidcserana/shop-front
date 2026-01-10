@@ -3,6 +3,7 @@ import { MasterReportService } from '../master-report.service'
 import { map, catchError, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { AppConfigService } from 'src/app/services/app-config.service';
 
 @Component({
   selector: 'app-master-purchase-due-report',
@@ -15,6 +16,7 @@ export class MasterPurchaseDueReportComponent implements OnInit {
   constructor(
     private MasterReportService: MasterReportService,
     private datePipe: DatePipe,
+    public config: AppConfigService
     ) { }
 
   ngOnInit() {

@@ -87,8 +87,8 @@
               <tr *ngFor="let item of inventoryList; let i='index';">
                   <td>{{ i+1 }}</td>
                   <td style="text-align: left;">
-                    {{ item.medicine_type | slice:0:3 }}. {{ item.medicine_name }}
-                    <span class="small">{{ item.generic }}<br/>{{ item.brand }}</span>
+                    {{ item.medicine_type | slice:0:3 }}. {{ item.medicine_name }} <br>
+                    <small>{{ item.brand }} <span *ngIf="config.enBatch">({{ item.batch_no }})</span></small>
                   </td>
                   <td>
                     <button #modalButton title="View" (click)="openModal(item, 'print-modal')"

@@ -6,6 +6,7 @@ import * as $ from "jquery";
 import Swal from 'sweetalert2';
 import { Pagi } from 'src/app/common/modules/pagination/pagi.model';
 import { ModalService } from 'src/app/common/_modal/modal.service';
+import { AppConfigService } from 'src/app/services/app-config.service';
 
 @Component({
   selector: 'app-inventory',
@@ -19,6 +20,7 @@ export class InventoryComponent implements OnInit {
   constructor(
     private InventoryService: InventoryService,
     private modalService: ModalService,
+    public config: AppConfigService
   )
   {
     this.pagi.limit = this.pagi.limit ? this.pagi.limit : 500;

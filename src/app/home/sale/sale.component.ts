@@ -17,6 +17,7 @@ import { ShortcutInput, ShortcutEventOutput } from "ng-keyboard-shortcuts";
 import { Router } from "@angular/router";
 import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
 import { PrintService } from "../shared/services/print.service";
+import { AppConfigService } from "src/app/services/app-config.service";
 declare var require: any;
 
 @Component({
@@ -34,7 +35,7 @@ export class SaleComponent implements OnInit {
     medicine: "",
     medicine_id: "",
     quantity: "",
-    batch_no: "",
+    batch_no: "BAT-321",
     token: "",
     unit_type: "PCS",
   };
@@ -73,6 +74,7 @@ export class SaleComponent implements OnInit {
   };
   availableQuantity = {
     medicine_id: "",
+    batch_no:""
   };
   priceInWord = "";
   availability: number;
@@ -110,7 +112,8 @@ export class SaleComponent implements OnInit {
     private modalService: ModalService,
     private saleService: SaleService,
     private router: Router,
-    private printService: PrintService
+    private printService: PrintService,
+    public config: AppConfigService
   ) {
     const user = JSON.parse(localStorage.getItem("currentUser"));
     this.invoiceVersion = user.pos_version
@@ -309,7 +312,8 @@ export class SaleComponent implements OnInit {
           }
         } else {
           for (let medicine of res) {
-            this.medicineList.push(medicine.name);
+            let medicine_name = this.config.enBatch ? medicine.name + ' #' + medicine.batch_no: medicine.name
+            this.medicineList.push(medicine_name);
           }
         }
         return this.medicineList;
@@ -432,7 +436,7 @@ export class SaleComponent implements OnInit {
     this.orderId = 0;
     if (this.cartItem.medicine && this.cartItem.quantity) {
       if (this.checkingAvailability()) {
-        this.getMedicineId();
+        // this.getMedicineId();
         const token = localStorage.getItem("token");
         this.cartItem.token = token ? token : "";
         this.saleService
@@ -450,6 +454,7 @@ export class SaleComponent implements OnInit {
               this.batchList = [];
               $("#myForm").trigger("reset");
               this.orderId = 0;
+              this.cartItem.medicine = ''
               this.Medicine.nativeElement.focus();
               if (this.isAntibiotic) {
                 Swal.fire({
@@ -511,10 +516,15 @@ export class SaleComponent implements OnInit {
       .getBatchList(this.batchSearch)
       .subscribe((data) => (this.batchList = data));
   }
+
   getAvailableQuantity() {
     this.getMedicineId();
+    this.checkQuantity();
+  }
+  checkQuantity() {
     if (this.cartItem.medicine_id > 0) {
       this.availableQuantity.medicine_id = this.cartItem.medicine_id;
+      this.availableQuantity.batch_no = this.cartItem.batch_no;
       this.saleService
         .getAvailableQuantity(this.availableQuantity)
         .subscribe(
@@ -527,10 +537,16 @@ export class SaleComponent implements OnInit {
       this.availability = null;
     }
   }
+
   getMedicineId() {
-    console.log(this.cartItem.medicine);
+    if (this.cartItem.medicine === '' || this.cartItem.medicine === undefined) return
+    let cartProduct = this.cartItem.medicine.split('#')
+    if (cartProduct.length > 1) {
+      this.cartItem.batch_no = cartProduct[1]
+    }
+
     for (let s of this.searchData) {
-      if (s.name == this.cartItem.medicine) {
+      if (s.name == cartProduct[0].trim()) {
         this.cartItem.medicine_id = s.id;
         this.company = s.company;
       }

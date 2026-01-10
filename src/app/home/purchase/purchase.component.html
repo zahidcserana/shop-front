@@ -20,16 +20,37 @@
                       <div class="position-relative form-group">
                         <label class="">{{ 'Product Name' | translate }}</label>
                         <div id="scrollable-dropdown-menu">
-                          <input name="search" id="typeahead-basic" #typeaheadInstance="ngbTypeahead" (keydown)="typeaheadKeydown($event)" #medicineName [(ngModel)]="purchaseItem.medicine" placeholder="" [ngbTypeahead]="search" autofocus type="text" class="form-control" (keydown.enter)="getMedicinePreviousPurchaseDetails()">
+                          <input
+                            name="search"
+                            id="typeahead-basic" 
+                            #typeaheadInstance="ngbTypeahead" 
+                            (keydown)="typeaheadKeydown($event)" 
+                            #medicineName 
+                            [(ngModel)]="purchaseItem.medicine" 
+                            placeholder="" 
+                            [ngbTypeahead]="search" 
+                            autofocus 
+                            type="text" 
+                            class="form-control" 
+                            (keydown.enter)="gotoBoxTradePrice()"
+                          >
                         </div>
                       </div>
                   </div>
-                  <!-- <div class="col-md-1">
+                  <div class="col-md-1" *ngIf="config.enBatch">
                       <div class="position-relative form-group">
-                        <label for="batch_no" class="">Batch No</label>
-                        <input name="batch_no" #batchNo [(ngModel)]="purchaseItem.batch_no" (keydown.enter)="gotoExpDate()" (focus)="getMedicinePreviousPurchaseDetails()" placeholder="" type="text" class="form-control">
+                        <label for="batch_no" class="">{{ 'Batch No' | translate }}</label>
+                        <input 
+                          name="batch_no" 
+                          #batchNo 
+                          [(ngModel)]="purchaseItem.batch_no" 
+                          (keydown.enter)="gotoBoxTradePrice()" 
+                          placeholder="" 
+                          type="text" 
+                          class="form-control"
+                        >
                       </div>
-                  </div> -->
+                  </div>
                   <!-- <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="exp_date" class="">Exp. Date</label>
@@ -45,25 +66,61 @@
                   <div class="col-md-2">
                       <div class="position-relative form-group">
                         <label for="box_trade_price" class="">{{ 'CPU' | translate }}</label>
-                        <input name="box_trade_price" #boxTradePrice [(ngModel)]="purchaseItem.box_trade_price" (keydown.enter)="gotoBoxMrp()" placeholder="" type="number" class="form-control" (focus)="getMedicinePreviousPurchaseDetails()">
+                        <input 
+                          name="box_trade_price" 
+                          #boxTradePrice 
+                          [(ngModel)]="purchaseItem.box_trade_price" 
+                          (keydown.enter)="gotoBoxMrp()" 
+                          placeholder="" 
+                          type="number" 
+                          class="form-control"
+                        >
                       </div>
                   </div>
                   <div class="col-md-2">
                       <div class="position-relative form-group">
                         <label for="box_mrp" data-toggle="tooltip" data-html="true" class="">{{ 'RPU' | translate }}</label>
-                        <input name="box_mrp" #boxMrp [(ngModel)]="purchaseItem.box_mrp" (keydown.enter)="gotoVAT()" (input)="calculateTPVAT()" placeholder="" type="number" class="form-control">
+                        <input 
+                          name="box_mrp" 
+                          #boxMrp 
+                          [(ngModel)]="purchaseItem.box_mrp" 
+                          (keydown.enter)="gotoVAT()" 
+                          (input)="calculateTPVAT()" 
+                          placeholder="" 
+                          type="number" 
+                          class="form-control"
+                        >
                       </div>
                   </div>
                   <div class="col-md-1">
                     <div class="position-relative form-group">
                       <label for="box_vat" class="">{{ 'Percentage' | translate }}(%)</label>
-                      <input name="box_vat" #boxVAT [(ngModel)]="purchaseItem.percentage" (keydown.enter)="gotoQuantity()" placeholder="" type="number" class="form-control">
+                      <input 
+                        name="box_vat" 
+                        #boxVAT 
+                        [(ngModel)]="purchaseItem.percentage" 
+                        (keydown.enter)="gotoQuantity()" 
+                        placeholder="" 
+                        type="number" 
+                        class="form-control"
+                      >
                     </div>
                 </div>
                   <div class="col-md-1">
                       <div class="position-relative form-group">
-                        <label for="quantity" class="">{{ 'QTY' | translate }}</label>
-                        <input name="quantity" #quantity [(ngModel)]="purchaseItem.quantity" min="1" (keydown.enter)="addMedicine()" placeholder="" type="number" class="form-control">
+                        <label for="quantity" class="">{{ 'Qty' | translate }}
+                          <strong>({{ purchaseItem.stock_quantity }})</strong>
+                        </label>
+                        <input 
+                          name="quantity" 
+                          #quantity 
+                          [(ngModel)]="purchaseItem.quantity" 
+                          min="1" 
+                          (keydown.enter)="addMedicine()" 
+                          placeholder="" 
+                          type="number" 
+                          class="form-control"
+                        >
                       </div>
                   </div>
                   <!-- <div class="col-md-1">
@@ -79,14 +136,20 @@
                       </div>
                   </div> -->
                   
-                  <button type="submit" style="display: none;" class="btn btn-primary mb-0 add-medicine-btn">
-                    {{ 'Add' | translate }}
+                  <button 
+                    type="submit" 
+                    style="display: none;" 
+                    class="btn btn-primary mb-0 add-medicine-btn"
+                  >{{ 'Add' | translate }}
                   </button>
 
-                  <div class="col-md-4"></div>
-
                   <div *ngIf="showResetButton">
-                    <button type="button" class="btn btn-primary reset-po" (click)="confirmReset()">{{ 'Reset' | translate }}</button>
+                    <button 
+                      type="button" 
+                      class="btn btn-primary reset-po" 
+                      (click)="confirmReset()"
+                    >{{ 'Reset' | translate }}
+                    </button>
                   </div>
               </div>
               <!-- <div class="row">
@@ -125,7 +188,9 @@
                 <tbody>
                   <tr *ngFor="let item of allPurchaseItems; let i='index';">
                       <th scope="row">{{ i+1 }}</th>
-                      <td class="td_text_align_left">{{ item.medicine }}</td>
+                      <td class="td_text_align_left">
+                        {{ item.medicine }} <small><span *ngIf="config.enBatch">({{ item.batch_no }})</span></small>
+                      </td>
                       <td>{{ item.bar_code }}</td>
                       <td>{{ item.box_trade_price | number: "1.2-2" }}</td>
                       <td>{{ item.box_mrp | number: "1.2-2" }}</td>

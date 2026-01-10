@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { ToastrModule } from 'ngx-toastr';
+import { AppConfigService } from './services/app-config.service';
 
 // AoT requires an exported factory function
 export function HttpLoaderFactory(http: HttpClient) {
@@ -49,7 +50,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
   ],
-  providers: [ScriptLoaderService, AuthService, AuthGuard, HomeService, HomeResolveService],
+  providers: [ScriptLoaderService, AuthService, AuthGuard, HomeService, HomeResolveService, AppConfigService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

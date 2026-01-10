@@ -9,6 +9,7 @@ import { FORMAT_SEARCH } from 'src/app/common/_classes/functions';
 import { SaleService } from '../../services/sale.service';
 import * as $ from "jquery";
 import { HomeService } from '../../services/home.service';
+import { AppConfigService } from 'src/app/services/app-config.service';
 
 @Component({
   selector: 'app-master-sale-report',
@@ -63,6 +64,7 @@ export class MasterSaleReportComponent implements OnInit {
     private homeService: HomeService,
     private saleService: SaleService,
     private route: ActivatedRoute,
+    public config: AppConfigService
   ) {
     this.getCompanyList();
     this.getSalesPersonsList();

@@ -12,6 +12,7 @@ import { of, Observable } from "rxjs";
 import { DatePipe } from "@angular/common";
 import * as $ from "jquery";
 import Swal from "sweetalert2";
+import { AppConfigService } from "src/app/services/app-config.service";
 
 @Component({
   selector: "app-master-purchase-report",
@@ -23,7 +24,8 @@ export class MasterPurchaseReportComponent implements OnInit {
   
   constructor(
     private MasterReportService: MasterReportService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public config: AppConfigService
   ) {}
 
   ngOnInit() {
