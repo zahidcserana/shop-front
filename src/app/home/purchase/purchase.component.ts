@@ -10,6 +10,7 @@ import { dateFormat } from 'highcharts';
 import { ToastrService } from 'ngx-toastr';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { ShortcutInput, ShortcutEventOutput } from 'ng-keyboard-shortcuts';
+import { AppConfigService } from 'src/app/services/app-config.service';
 
 @Component({
   selector: 'app-purchase',
@@ -21,7 +22,12 @@ export class PurchaseComponent implements OnInit {
   showResetButton: boolean = false;
   currency = '৳';
 
-  constructor(private PurchaseService: PurchaseService, private homeService: HomeService, private toastr: ToastrService) { }
+  constructor(
+    private PurchaseService: PurchaseService,
+    private homeService: HomeService,
+    private toastr: ToastrService,
+    public config: AppConfigService
+  ) { }
 
   ngOnInit() {
     this.checkLocalStorage();
@@ -62,6 +68,7 @@ export class PurchaseComponent implements OnInit {
     medicine: "",
     medicine_id: "",
     quantity: "",
+    stock_quantity: "",
     batch_no: "",
     exp_date: "",
     piece_per_box: 1,
@@ -138,6 +145,7 @@ export class PurchaseComponent implements OnInit {
     
   }
   gotoBoxTradePrice() {
+    this.getMedicinePreviousPurchaseDetails();
     this.boxTradePrice.nativeElement.focus();
   }
   gotoVAT(){
@@ -262,7 +270,7 @@ export class PurchaseComponent implements OnInit {
       }
     }
     if (search_medicine_id) {
-      let data = { 'medicine_id' : search_medicine_id };
+      let data = { 'medicine_id' : search_medicine_id, 'batch_no': this.purchaseItem.batch_no };
       this.PurchaseService.getPreviousPurchasedetails(data)
         .then(details => {
           // const details = response.data;
@@ -270,9 +278,11 @@ export class PurchaseComponent implements OnInit {
           this.purchaseItem.box_trade_price = details.trade_price;
           this.purchaseItem.box_vat = details.box_vat;
           this.purchaseItem.box_mrp = details.mrp;
+          this.purchaseItem.stock_quantity = details.stock_quantity;
           this.purchaseItem.low_stock_qty = details.low_stock_qty;
           this.purchaseItem.bar_code = details.barcode;
           this.purchaseItem.percentage = details.percentage;
+          this.purchaseItem.batch_no = details.batch_no === undefined ? this.purchaseItem.batch_no : details.batch_no;
           this.purchaseItem.quantity = '';
         })
         .catch(err => {
@@ -281,7 +291,7 @@ export class PurchaseComponent implements OnInit {
       this.UnitVal = false;
       this.purchaseItem.update_price = true;
       // this.toastr.success('Box price taken!');
-      this.gotoBoxTradePrice();
+      // this.gotoBoxTradePrice();
     } else {
       this.medicineName.nativeElement.focus()
     }
@@ -745,6 +755,7 @@ export class PurchaseComponent implements OnInit {
       $("#typeahead-basic").focus();
     }
     this.medicineName.nativeElement.focus();
+    this.checkLocalStorage();
   }
 
   deleteRow(row){

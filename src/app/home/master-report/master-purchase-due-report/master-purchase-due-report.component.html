@@ -95,7 +95,8 @@
                       </ng-container>
                       <ng-container>
                         <td>
-                          {{ product.medicine }}
+                          {{ product.medicine }} <br>
+                          <small>{{  product.brand }} <span *ngIf="config.enBatch">({{ product.batch_no }})</span></small>
                         </td>
                         <td>{{ product.quantity }}</td>
                         <td>{{ product.tp_with_vat }}</td>

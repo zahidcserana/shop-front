@@ -164,3 +164,7 @@
   display: none;
 }
 
+.cart-quantity:focus {
+  border-color: red;
+}
+
