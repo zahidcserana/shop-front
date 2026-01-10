@@ -1,0 +1,31 @@
+.card-header-top {
+  height: 3rem !important;
+}
+
+.card-header-title {
+  font-size: 1rem !important;
+}
+
+.save-btn{
+  width: 100% !important;
+  background: #6f6f6f !important;
+  border: 1px solid #6f6f6f !important;
+}
+
+.save-btn-margin{
+  margin-top: 31px !important;
+}
+
+thead{
+  font-size: 13px !important;
+}
+
+.custom_loader_new{
+  background: url("loader.gif");
+  min-height: 83px;
+  max-width: 90px;
+}
+
+.detail-order {
+  background: darkkhaki;
+}

@@ -4,11 +4,11 @@
       <div class="card-header card-header-top">
         <span class="margin-align-title card-header-title">
           <div class="font-icon-wrapper font-icon-lg">
-            <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> Purchase List
+            <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> {{ 'Purchase List' | translate }}
           </div>
         </span>
         <div class="btn-actions-pane-right">
-          <a routerLink="/purchase"> <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> Back to Purchase </a>
+          <a routerLink="/purchase"> <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> {{ 'Back to Purchase' | translate }} </a>
         </div>
       </div>
       <div class="card-body">
@@ -20,16 +20,16 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Invoice</th>
-                  <th>Supplier</th>
-                  <th>Supplier Invoice</th>
-                  <th>Purchase Date</th>
-                  <th>Total</th>
-                  <th>Discount</th>
-                  <th>Net Payable</th>
-                  <th>Advance</th>
-                  <th>Due</th>
-                  <th>Action</th>
+                  <th>{{ 'Invoice' | translate }}</th>
+                  <th>{{ 'Supplier' | translate }}</th>
+                  <th>{{ 'Supplier Invoice' | translate }}</th>
+                  <th>{{ 'Purchase Date' | translate }}</th>
+                  <th>{{ 'Total' | translate }}</th>
+                  <th>{{ 'Discount' | translate }}</th>
+                  <th>{{ 'Net Payable' | translate }}</th>
+                  <th>{{ 'Advance' | translate }}</th>
+                  <th>{{ 'Due' | translate }}</th>
+                  <th>{{ 'Action' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -46,7 +46,7 @@
                   <td>
                     {{ item.total_due_amount }}
                     <br />
-                    <span class="small" style="color:RED;" *ngIf="item.total_due_amount<0">Receivable</span>
+                    <span class="small" style="color:RED;" *ngIf="item.total_due_amount<0">{{ 'Receivable' | translate }}</span>
                   </td>
                   <td>
                       <button title="Purchase Return" (click)="openModal(item.id, 'print-modal')" id="order_id" class="mr-2 btn-icon btn-icon-only btn btn-outline-info">
@@ -73,13 +73,13 @@
       <div *ngIf="purchaseDetails" class="col-md-12">
         <header class="clearfix" style="margin-bottom: 0;">
           <div id="logo">
-            <span class="pharmacy">Purchase Return</span>
+            <span class="pharmacy">{{ 'Purchase Return' | translate }}</span>
           </div>
         </header>
         <main>
           <div style="text-align: center;padding-bottom: 1%">
-            <span style="padding-right: 2%">Invoice: {{ purchase.invoice }}</span>
-            <span style="padding-left: 2%">Date: {{ purchase.purchase_date }}</span>
+            <span style="padding-right: 2%">{{ 'Invoice' | translate }}: {{ purchase.invoice }}</span>
+            <span style="padding-left: 2%">{{ 'Date' | translate }}: {{ purchase.purchase_date }}</span>
           </div>
 
           <form id="myForm" *ngIf="itemId" class="form-width-100" (keydown.enter)="$event.preventDefault()"
@@ -87,7 +87,7 @@
             <div class="form-row">
               <div class="col-md-3">
                 <div class="position-relative form-group">
-                  <label class="">Product Name</label>
+                  <label class="">{{ 'Product Name' | translate }}</label>
                   <input name="item_name" [(ngModel)]="updatePurchaseItem.item_name" readonly placeholder="" type="text"
                     class="form-control">
                 </div>
@@ -101,7 +101,7 @@
               </div> -->
               <div class="col-md-3">
                 <div class="position-relative form-group">
-                  <label for="new_quantity" class="">Quantity (Box)</label>
+                  <label for="new_quantity" class="">{{ 'Quantity' | translate }}</label>
                   <input name="new_quantity" [(ngModel)]="updatePurchaseItem.new_quantity" placeholder="" autofocus
                     type="number" class="form-control">
                 </div>
@@ -110,7 +110,7 @@
                 <div class="position-relative form-group">
                   <button type="button" (click)="updateItemDetails()"
                     class="btn btn-primary mb-0 save-btn save-btn-margin">
-                    Update
+                    {{ 'Update' | translate }}
                   </button>
                 </div>
               </div>
@@ -120,14 +120,14 @@
           <table class="preview">
             <thead>
               <tr>
-                <th class="sl">Sl</th>
-                <th style="text-align: left;">Item</th>
-                <th>Qty</th>
-                <th>CPU (Tk.)</th>
-                <th>Total (Tk.)</th>
-                <th>RPU (Tk.)</th>
-                <th>Percentage (Tk.)</th>
-                <th>Action</th>
+                <th class="sl">{{ 'Sl' | translate }}</th>
+                <th style="text-align: left;">{{ 'Item' | translate }}</th>
+                <th>{{ 'Qty' | translate }}</th>
+                <th>{{ 'CPU' | translate }} {{ currency }}</th>
+                <th>{{ 'Total' | translate }} {{ currency }}</th>
+                <th>{{ 'RPU' | translate }} {{ currency }}</th>
+                <th>{{ 'Percentage' | translate }} {{ currency }}</th>
+                <th>{{ 'Action' | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -158,6 +158,6 @@
     </div>
     <button id="close-div" style="width: 7%;margin-left: 93%;" (click)="closeModal('print-modal')"
       class="btn btn-warning btn-xs">
-      Close
+      {{ 'Close' | translate }}
     </button>
   </jw-modal>

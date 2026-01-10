@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./master-purchase-due-report.component.css']
 })
 export class MasterPurchaseDueReportComponent implements OnInit {
+  currency = '৳';
 
   constructor(
     private MasterReportService: MasterReportService,

@@ -7,6 +7,7 @@ import { SupplierComponent } from './supplier.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'src/app/common/_modal/modal.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [SupplierComponent],
@@ -16,7 +17,8 @@ import { ModalModule } from 'src/app/common/_modal/modal.module';
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
-    ModalModule
+    ModalModule,
+    TranslateModule
   ],
   providers: [SupplierService]
 })

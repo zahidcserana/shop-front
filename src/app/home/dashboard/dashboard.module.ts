@@ -7,6 +7,7 @@ import { HomeService } from '../services/home.service';
 import stock from 'highcharts/modules/stock.src';
 import more from 'highcharts/highcharts-more.src';
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
+import { TranslateModule } from '@ngx-translate/core';
 export function highchartsModules() {
   // apply Highcharts Modules to this array
   return [stock, more];
@@ -16,7 +17,8 @@ export function highchartsModules() {
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    ChartModule
+    ChartModule,
+    TranslateModule
   ],
   providers: [HomeService, { provide: HIGHCHARTS_MODULES, useFactory: highchartsModules }]
 })

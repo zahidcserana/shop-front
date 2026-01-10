@@ -3,41 +3,41 @@
     <!--begin::Form-->
     <form class="form-inline" #form="ngForm" (ngSubmit)="searchfilterData()">
       <div class="form-group mx-sm-3 mb-2">
-        <label for="inputPassword2" class="sr-only">Product</label>
+        <label for="inputPassword2" class="sr-only">{{ 'Product' | translate }}</label>
         <div id="scrollable-dropdown-menu">
-          <input placeholder="Product Name" #typeaheadInstance="ngbTypeahead" #cartMedicine id="typeahead-basic_1"
+          <input placeholder="{{ 'Product Name' | translate }}" #typeaheadInstance="ngbTypeahead" #cartMedicine id="typeahead-basic_1"
             name="search" (keydown)="typeaheadKeydown($event)" [(ngModel)]="filterData.medicine" type="text"
             class="form-control form-input-width-100" [ngbTypeahead]="medicine_search" />
         </div>
       </div>
       <div class="form-group mx-sm-3 mb-2">
-        <label for="inputPassword2" class="sr-only">Brand</label>
+        <label for="inputPassword2" class="sr-only">{{ 'Brand' | translate }}</label>
           <select class="ace form-control" name="brand_id" [(ngModel)]="filterData.brand_id">
-            <option value="">Select Brand</option>
+            <option value="">-- {{ 'Brand' | translate }} --</option>
             <option *ngFor="let brand of allBrandList" value="{{ brand.id }}">{{ brand.name }}</option>
           </select>
       </div>
       <div class="form-group mx-sm-3 mb-2">
-        <label for="inputPassword2" class="sr-only">Product Type</label>
+        <label for="inputPassword2" class="sr-only">{{ 'Product Type' | translate }}</label>
         <div id="scrollable-dropdown-menu">
           <input id="typeahead-basic_3" name="type" [(ngModel)]="filterData.type" [ngbTypeahead]="type_search"
-            placeholder="Type" type="text" class="form-control">
+            placeholder="{{ 'Type' | translate }}" type="text" class="form-control">
         </div>
       </div>
       <div class="form-group mx-sm-3 mb-2">
-        <label for="inputPassword2" class="sr-only">Specification</label>
+        <label for="inputPassword2" class="sr-only">{{ "Specification" | translate }}</label>
         <div id="scrollable-dropdown-menu">
           <input type="text" class="form-control" name="generic" [(ngModel)]="filterData.generic"
-            placeholder="Specification" />
+            placeholder="{{ 'Specification' | translate }}" />
         </div>
       </div>
       <button type="submit" class="btn btn-info mb-2" style="margin-right:10px">
         <i class="fa fa-calendar-check-o"></i>
-        Search
+        {{ 'Search' | translate }}
       </button>
       <button type="reset" class="btn btn-warning mb-2" (click)="resetSearch()">
         <i class="fa fa-history"></i>
-        Reset
+        {{ 'Reset' | translate }}
       </button>
     </form>
     <!--end::Form-->

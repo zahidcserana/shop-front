@@ -3,38 +3,38 @@
     <!--begin::Form-->
     <form class="form-inline" #form="ngForm" (ngSubmit)="searchSaleData()">
       <div class="form-group mx-sm-3 mb-2">
-        <label for="inputPassword2" class="sr-only">Invoice</label>
+        <label for="inputPassword2" class="sr-only">{{ 'Invoice' | translate }}</label>
         <input
           type="text"
           class="form-control"
           name="invoice"
           [(ngModel)]="saleData.invoice"
-          placeholder="Invoice"
+          placeholder="{{ 'Invoice' | translate }}"
         />
       </div>
       <div class="form-group mx-sm-3 mb-2">
-        <label for="medicine_name" class="sr-only">Medicine </label>
+        <label for="medicine_name" class="sr-only">{{ 'Medicine' | translate }} </label>
         <div id="scrollable-dropdown-menu">
-          <input placeholder="Product Name" id="typeahead-basic" name="search" [(ngModel)]="saleData.medicine"
+          <input placeholder="{{ 'Product Name' | translate }}" id="typeahead-basic" name="search" [(ngModel)]="saleData.medicine"
             type="text" class="form-control form-input-width-100" [ngbTypeahead]="searchMedicine" />
         </div>
       </div>
       <div class="form-group mx-sm-3 mb-2">
-        <label for="inputPassword2" class="sr-only">Customer Mobile</label>
+        <label for="inputPassword2" class="sr-only">{{ 'Customer Mobile' | translate }}</label>
         <input
           type="text"
           class="form-control"
           name="customer_mobile"
           [(ngModel)]="saleData.customer_mobile"
-          placeholder="Customer Mobile"
+          placeholder="{{ 'Customer Mobile' | translate }}"
         />
       </div>
       <div class="form-group mx-sm-3 mb-2">
-        <label for="inputPassword2" class="sr-only">Date Range</label>
+        <label for="inputPassword2" class="sr-only">{{ 'Date Range' | translate }}</label>
         <input
           autocomplete="off"
           type="text"
-          placeholder="Date Range"
+          placeholder="{{ 'Date Range' | translate }}"
           class="form-control"
           bsDaterangepicker
           [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
@@ -49,11 +49,11 @@
         style="margin-right:10px"
       >
         <i class="fa fa-calendar-check-o"></i>
-        Search
+        {{ 'Search' | translate }}
       </button>
       <button type="reset" class="btn btn-warning mb-2" (click)="resetSearch()">
         <i class="fa fa-history"></i>
-        Reset
+        {{ 'Reset' | translate }}
       </button>
     </form>
     <!--end::Form-->

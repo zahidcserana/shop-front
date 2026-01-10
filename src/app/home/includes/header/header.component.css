@@ -73,3 +73,15 @@
 	-ms-filter: "progid:DXImageTransform.Microsoft.Blur(PixelRadius=3,MakeShadow=true,ShadowOpacity=0.30)";
 	zoom: 1.2;
 } */
+
+.language-toggle button {
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: all 0.2s ease;
+}
+
+.language-toggle button:hover {
+  background-color: #007bff;
+  color: white;
+}

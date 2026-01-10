@@ -70,6 +70,7 @@ export class SaleReportsComponent implements OnInit {
         this.customLoader = false;
       });
   }
+  
   trackList(index, pro) {
     return pro ? pro.id : null;
   }

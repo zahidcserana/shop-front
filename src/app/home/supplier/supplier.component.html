@@ -6,7 +6,7 @@
           <div style="float: right">
             <button (click)="openModal('create-modal')" id="item_id" class="mb-2 mr-2 btn btn-success btn-block">
               <i class="fa fa-user"></i>
-               New Supplier
+               {{ 'New Supplier' | translate }}
             </button>
           </div>
         </div>
@@ -14,12 +14,12 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Name</th>
-              <th>Contact Person</th>
-              <th>Email</th>
-              <th>Mobile</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>{{ 'Name' | translate }}</th>
+              <th>{{ 'Contact Person' | translate }}</th>
+              <th>{{ 'Email' | translate }}</th>
+              <th>{{ 'Mobile' | translate }}</th>
+              <th>{{ 'Status' | translate }}</th>
+              <th>{{ 'Action' | translate }}</th>
             </tr>
           </thead>
           <tbody *ngIf="supplierList.length > 0; else emptyData">
@@ -45,7 +45,7 @@
           <ng-template #emptyData>
             <tbody>
               <tr>
-                <td colspan="6" class="empty-data">Empty data</td>
+                <td colspan="6" class="empty-data">{{ 'Empty data' | translate }}</td>
               </tr>
             </tbody>
           </ng-template>
@@ -56,46 +56,46 @@
 </div>
 
 <jw-modal id="edit-modal" class="view-modal data-view-modal">
-  <h3 style="text-align: center;"> Supplier Edit</h3>
+  <h3 style="text-align: center;"> {{ 'Supplier Edit' | translate }}</h3>
   <div class="row" style="padding: 25px">
     <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
       <main style="margin-bottom: 5%">
         <form class="form" #form="ngForm" id="myForm" (ngSubmit)="update()" style="padding-top: 10px">
           <div class="form-group">
-            <label for="inputPassword2">Name</label>
+            <label for="inputPassword2">{{ 'Name' | translate }}</label>
             <input type="text" class="form-control" name="name" [(ngModel)]="supplierInfo.name" placeholder="Name" />
           </div>
           <div class="form-group">
-            <label for="inputPassword2">Contact Person</label>
+            <label for="inputPassword2">{{ 'Contact Person' | translate }}</label>
             <input type="text" class="form-control" name="contact_person" [(ngModel)]="supplierInfo.contact_person" placeholder="Contact Person" />
           </div>
           <div class="form-group">
-            <label for="inputPassword2"> Email</label>
+            <label for="inputPassword2"> {{ 'Email' | translate }}</label>
             <input type="text" class="form-control" name="email" [(ngModel)]="supplierInfo.email" placeholder="Email" />
           </div>
           <div class="form-group">
-            <label for="inputPassword2"> Mobile</label>
+            <label for="inputPassword2"> {{ 'Mobile' | translate }}</label>
             <input type="text" class="form-control" name="mobile" [(ngModel)]="supplierInfo.mobile" placeholder="Mobile" />
           </div>
           <div class="form-group">
-            <label for="inputPassword2"> Address</label>
+            <label for="inputPassword2"> {{ 'Address' | translate }}</label>
             <input type="text" class="form-control" name="address" [(ngModel)]="supplierInfo.address" placeholder="Address" />
           </div>
           <div class="form-group">
-            <label for="inputPassword2"> Status</label>
+            <label for="inputPassword2"> {{ 'Status' | translate }}</label>
             <select name="supplier_status" id="status" [(ngModel)]="supplierInfo.status" class="form-control">
-              <option value="ACTIVE">ACTIVE</option>
-              <option value="INACTIVE">INACTIVE</option>
+              <option value="ACTIVE">{{ 'ACTIVE' | translate }}</option>
+              <option value="INACTIVE">{{ 'INACTIVE' | translate }}</option>
             </select>
           </div>
 
           <button type="submit" class="btn btn-primary mb-2" style="margin-right:10px">
             <i class="fa fa-calendar-check-o"></i>
-            Update
+            {{ 'Update' | translate }}
           </button>
           <button type="button" (click)="closeForm()" class="btn btn-warning mb-2" style="margin-right:10px">
             <i class="fa fa-calendar-check-o"></i>
-            Cancel
+            {{ 'Cancel' | translate }}
           </button>
         </form>
       </main>
@@ -104,54 +104,54 @@
 </jw-modal>
 
 <jw-modal id="create-modal" class="view-modal data-view-modal">
-  <h3 style="text-align: center;"> Supplier Info</h3>
+  <h3 style="text-align: center;"> {{ 'Supplier Info' | translate }}</h3>
   <div class="row" style="padding: 25px">
     <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
       <main style="margin-bottom: 5%">
         <form [formGroup]="registerForm" (keydown.enter)="$event.preventDefault()" style="padding-top: 10px">
           <div class="form-group">
-            <label>Name</label>
+            <label>{{ 'Name' | translate }}</label>
             <input type="text" formControlName="name" class="form-control"
               #nameInput
               (keydown.enter)="contactPersonInput.focus()"
               [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
             <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-              <div *ngIf="f.name.errors.required">Supplier name is required</div>
+              <div *ngIf="f.name.errors.required">{{ 'Supplier name is required' | translate }}</div>
             </div>
           </div>
           <div class="form-group">
-            <label>Contact Person</label>
+            <label>{{ 'Contact Person' | translate }}</label>
             <input type="text" formControlName="contact_person" class="form-control"
               #contactPersonInput
               (keydown.enter)="emailInput.focus()"
             />
           </div>
           <div class="form-group">
-            <label>Email</label>
+            <label>{{ 'Email' | translate }}</label>
             <input type="text" formControlName="email" class="form-control"
               #emailInput
               (keydown.enter)="mobileInput.focus()"
             />
           </div>
           <div class="form-group">
-            <label>Mobile</label>
+            <label>{{ 'Mobile' | translate }}</label>
             <input type="text" formControlName="mobile" class="form-control"
               #mobileInput
               (keydown.enter)="addressInput.focus()"
             />
           </div>
           <div class="form-group">
-            <label>Address</label>
+            <label>{{ 'Address' | translate }}</label>
             <input type="text" formControlName="address" class="form-control"
               #addressInput
               (keydown.enter)="submit()"
             />
           </div>
           <div class="form-group">
-            <button #submitButton class="btn btn-primary" (click)="submit()">Save</button>
+            <button #submitButton class="btn btn-primary" (click)="submit()">{{ 'Save' | translate }}</button>
             &nbsp;
             <a (click)="closeModal('create-modal')" class="btn btn-warning btn-xs">
-              Close
+              {{ 'Close' | translate }}
             </a>
           </div>
         </form>

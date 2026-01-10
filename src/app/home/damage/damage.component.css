@@ -1,0 +1,149 @@
+.card-header-top {
+  height: 3rem !important;
+}
+.form-width-100 {
+  width: 100%;
+}
+
+.card-header-title {
+  font-size: 1rem !important;
+}
+
+.form-control-width-15 {
+  width: 15%;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.form-control-width-10 {
+  width: 10%;
+  margin-right: 10px;
+}
+
+.add-medicine-btn {
+  width: 9% !important;
+}
+
+.input-lebel{
+  position: relative !important;
+  height: 30px !important;
+  margin-top: -31px !important;
+  width: 200px !important;
+  color: #6f6f6f !important;
+}
+
+::placeholder {
+  color: #ced4da;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: #ced4da;
+}
+
+::-ms-input-placeholder {
+  color: #ced4da;
+}
+
+.save-btn{
+  width: 100% !important;
+  background: #6f6f6f !important;
+  border: 1px solid #6f6f6f !important;
+}
+
+.first-div-margin{
+  margin-left: 10px;
+}
+
+.net-wiget{
+  width: 100%;
+}
+
+.vat-lebel-width{
+  width: 100%;
+}
+
+.vat-parcentage{
+  display: inline-block;
+  float: right;
+}
+
+.widget-area-padding{
+  padding: 5px 10px 5px 10px !important;
+  border: 0px !important;
+}
+
+.td_text_align_left{
+  text-align:left !important;
+}
+
+.total-div-border
+{
+  border: 2px solid #888;
+  padding-top: 15px;
+}
+
+.hr-margin{
+  margin-bottom: 0 !important;
+}
+
+@media (min-width: 768px){
+  .offset-md-9 {
+      margin-left: 74% !important;
+  }
+}
+
+input[type=number] {
+  text-align:right;
+}
+
+input[type=text] {
+  text-align:left;
+}
+
+.widget-content-left{
+  width: 50% !important;
+  text-align: left !important;
+}
+
+.card-margin{
+  margin-bottom: 10px!important;
+}
+
+.exp-input-focus{
+  border-color: red;
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 35, 0.25)
+}
+
+label {
+  font-size: 12px !important;
+}
+
+.damage-form{
+  background: darkseagreen;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.checkbox-label-damage{
+  padding-left: 16px !important;
+}
+
+.reset-po {
+  background-color: #794c8a;
+  color: white;
+  border-radius: 8px;
+  margin: 25%;
+}
+
+.total-quantity h2 {
+  background-color: #794c8a; /* success green */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.8rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: inline-block;
+  margin: 0;
+}

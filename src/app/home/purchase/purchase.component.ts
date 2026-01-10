@@ -19,6 +19,7 @@ import { ShortcutInput, ShortcutEventOutput } from 'ng-keyboard-shortcuts';
 export class PurchaseComponent implements OnInit {
   isSubmitting = false;
   showResetButton: boolean = false;
+  currency = '৳';
 
   constructor(private PurchaseService: PurchaseService, private homeService: HomeService, private toastr: ToastrService) { }
 
@@ -32,6 +33,9 @@ export class PurchaseComponent implements OnInit {
       this.allPurchaseItems.forEach((item, index) => {
         grand_total = grand_total + Number(item.amount);
       });
+
+      grand_total = Math.round((grand_total + Number.EPSILON) * 100) / 100;
+
       this.purchaseDetails.total = grand_total;
       this.purchaseDetails.net_amount = grand_total;
       this.purchaseDetails.advance = grand_total;

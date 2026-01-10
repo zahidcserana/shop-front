@@ -6,13 +6,13 @@
       <div class="card-header card-header-top">
         <span class="margin-align-title card-header-title">
           <div class="font-icon-wrapper font-icon-lg">
-            <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i>  Sale
+            <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i>  {{ 'Sale' | translate }}
           </div>
         </span>
         <div class="btn-actions-pane-right">
           <a routerLink="/sale/list">
             <i class="ace-icon fa fa-angle-double-left"></i>
-            Sale List
+            {{ 'Sale List' | translate }}
           </a>
         </div>
       </div>
@@ -23,9 +23,9 @@
                     <div class="row form-row form-input-width-100">
                         <div class="col-md-4">
                             <div class="form-group mb-0">
-                                <label for="medicine_name" class="sr-only">Medicine </label>
+                                <label for="medicine_name" class="sr-only">{{ 'Product' | translate }} </label>
                                 <div id="scrollable-dropdown-menu">
-                                    <input placeholder="Product Name" #typeaheadInstance="ngbTypeahead"
+                                    <input placeholder="{{ 'Product' | translate }}" #typeaheadInstance="ngbTypeahead"
                                     #cartMedicine id="typeahead-basic" name="search" (keydown)="typeaheadKeydown($event)"
                                     (keydown.enter)="$event.preventDefault()" [(ngModel)]="cartItem.medicine" type="text"
                                     class="form-control form-input-width-100" [ngbTypeahead]="search" (change)="getAvailableQuantity()"
@@ -34,8 +34,9 @@
                             </div>
                             <div class="form-group mb-0 input-details-margin">
                                 <small id="AvailableQty" class="form-text input-details-text">
-                                    IN Stock (
-                                    <span class="availableQty input-details-text details-text-color">{{ availability }} </span> Pcs)
+                                    {{ 'In Stock' | translate }}
+                                    <span class="availableQty input-details-text details-text-color">{{ availability }}</span>
+                                    ({{ 'Pcs' | translate }})
                                 </small>
                             </div>
                         </div>
@@ -51,12 +52,12 @@
                         </div> -->
                         <div class="col-md-4">
                             <div class="form-group mb-0">
-                                <label for="quantity" class="sr-only">QTY </label>
+                                <label for="quantity" class="sr-only">{{ 'Qty'  | translate }} </label>
                                 <input #cartQty type="number" class="form-control form-input-width-100" aria-describedby="AvailableQty"
                                     id="quantity" name="quantity" (keydown.enter)="addToCart()" [(ngModel)]="cartItem.quantity"
-                                    placeholder="Quantity" (input)="getAvailableQuantity()" />
+                                    placeholder="{{ 'Quantity'  | translate}}" (input)="getAvailableQuantity()" />
                             </div>
-                            <button style="display: none" type="submit" class="btn btn-primary mb-0 add-medicine-btn">Add</button>
+                            <button style="display: none" type="submit" class="btn btn-primary mb-0 add-medicine-btn">{{ 'Add' | translate }}</button>
                         </div>
                         <div class="col-md-3"></div>
 
@@ -70,15 +71,15 @@
                     <thead class="thead">
                         <tr>
                         <th style="width: 5%" class="text-center">#</th>
-                        <th style="width: 20%">Name</th>
-                        <th style="width: 15%" class="text-center">MRP(Tk.)</th>
+                        <th style="width: 20%">{{ 'Product' | translate }}</th>
+                        <th style="width: 15%" class="text-center">{{ 'RPU' | translate }} {{ currency }}</th>
                         <th style="width: 30%" class="text-center qty-width">
-                            QTY(Pcs)
+                            {{ 'Quantity' | translate }}
                         </th>
                         <th *ngIf="freeQtyShow" style="width: 20%" class="text-center qty-width">
-                            Free(QTY)
+                            {{ 'Free' | translate }}({{ 'Qty'  | translate}})
                         </th>
-                        <th style="width: 10%" class="text-center">Amount(Tk.)</th>
+                        <th style="width: 10%" class="text-center">{{ 'Amount' | translate }} {{ currency }}</th>
                         <th style="width: 15%" class="text-center"></th>
                         </tr>
                     </thead>
@@ -177,7 +178,7 @@
                         <tbody>
                         <tr>
                             <td colspan="9">
-                            <h5 class="text-center">No Item Found</h5>
+                            <h5 class="text-center d-none">{{ 'No Item Found' | translate }}</h5>
                             </td>
                         </tr>
                         </tbody>
@@ -190,9 +191,10 @@
                     <div class="col-lg-12">
                         <table class="align-middle mb-0 table table-borderless table-striped table-hover table-bordar">
                             <tr class="sub-discount border-table-tr">
-                                <td class="availableQty">Customer Mobile</td>
+                                <td class="availableQty">{{ 'Customer Mobile' | translate }}</td>
                                 <td>
                                     <input 
+                                      enterFocus
                                       autocomplete="off" 
                                       id="customer_mobile" 
                                       [(ngModel)]="order.customer_mobile" 
@@ -204,7 +206,7 @@
                                 </td>
                             </tr>
                             <tr class="sub-discount border-table-tr">
-                                <td class="availableQty">Name</td>
+                                <td class="availableQty">{{ 'Name' | translate }}</td>
                                 <td>
                                     <input 
                                       enterFocus 
@@ -219,20 +221,20 @@
                                 </td>
                             </tr>
                             <tr *ngIf="salesmanShow" class="sub-discount border-table-tr">
-                                <td class="availableQty">Salesman</td>
+                                <td class="availableQty">{{ 'Salesman' | translate }}</td>
                                 <td>
                                     <select name="created_by" id="created_by" [(ngModel)]="order.created_by" class="form-control">
-                                    <option value="0"> - Select -</option>
+                                    <option value="0"> - {{ 'Select' | translate }} -</option>
                                     <option *ngFor="let user of users" value="{{ user.id }}">{{ user.name }}</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr class="sub-total swatch-holder swatch-holder-lg bg-asteroid">
-                                <td class="tdLabel">Sub Total</td>
+                                <td class="tdLabel">{{ 'Sub Total' | translate }}</td>
                                 <td class="tdValue">{{ order.sub_total }} /-</td>
                             </tr>
                             <tr class="sub-discount">
-                                <td class="availableQty">Discount</td>
+                                <td class="availableQty">{{ 'Discount' | translate }}</td>
                                 <td class="position-relative form-check">
                                     <label class="form-check-label radio-from-lebel">
                                     <input 
@@ -245,7 +247,7 @@
                                       checked 
                                       (click)="discountTypeChange('fixed')" 
                                     />
-                                      Fixed
+                                      {{ 'Fixed' | translate }}
                                     </label>
                                     <label class="form-check-label radio-from-lebel" style="padding-left: 14%">
                                     <input 
@@ -257,7 +259,7 @@
                                       class="form-check-input" 
                                       (click)="discountTypeChange('parcentage')" 
                                     />
-                                      parcentage
+                                      {{ 'Percentage' | translate }}
                                     </label>
                                 </td>
                             </tr>
@@ -281,11 +283,11 @@
                                 </td>
                             </tr>
                             <tr class="net-total swatch-holder swatch-holder-lg bg-midnight-bloom">
-                                <td class="tdLabel">Net Total(Tk.)</td>
+                                <td class="tdLabel">{{ 'Net Total' | translate }} {{ currency }}</td>
                                 <td class="tdValue">{{ order.total_payble_amount | number: "1.2-2" }} /-</td>
                             </tr>
                             <tr class="sub-tax border-table-tr">
-                                <td class="availableQty">Payment Type</td>
+                                <td class="availableQty">{{ 'Payment Type' | translate }}</td>
                                 <td>
                                     <select enterFocus name="payment_type" id="payment_type" [(ngModel)]="order.payment_type" class="form-control">
                                       <option *ngFor="let item of paymentTypes" value="{{ item.name }}">{{ item.name }}</option>
@@ -293,7 +295,7 @@
                                 </td>
                             </tr>
                             <tr class="sub-discount border-table-tr">
-                                <td class="availableQty">Advanced</td>
+                                <td class="availableQty">{{ 'Advance' | translate }}</td>
                                 <td>
                                     <input 
                                       enterFocus 
@@ -311,13 +313,13 @@
                                 </td>
                             </tr>
                             <tr class="sub-tax border-table-tr tr-due">
-                                <td class="tdCommon">Due</td>
+                                <td class="tdCommon">{{ 'Due'  | translate}}</td>
                                 <td class="tdAmount">
                                     {{ order.total_due_amount | number: "1.2-2" }} /-
                                 </td>
                             </tr>
                             <tr class="sub-tax border-table-tr tr-change">
-                                <td class="tdCommon">Change</td>
+                                <td class="tdCommon">{{ 'Change' | translate }}</td>
                                 <td class="tdAmount">
                                     {{ order.change | number: "1.2-2" }} /-
                                 </td>
@@ -326,7 +328,7 @@
                                 <td style="display: flex;">
                                     <button *ngIf="!isCartEmpty" (click)="removeCart()" id="cancleButton"
                                     class="mb-2 mr-2 btn btn-warning btn-lg btn-block">
-                                    Reset
+                                    {{ 'Reset' | translate }}
                                     </button>
                                     <button #modalButton *ngIf="this.orderId" title="View" (click)="openModal(this.orderId, 'print-modal')"
                                     id="modal_button" class="mb-2 mr-2 btn-transition btn btn-outline-success">
@@ -345,8 +347,8 @@
                                     class="mb-2 mr-2 btn btn-success btn-lg btn-block"
                                   >
                                     <i class="ace-icon fa fa-archive bigger-110"></i>
-                                    <span *ngIf="!isSubmitting">&nbsp;Confirm</span>
-                                    <span *ngIf="isSubmitting">&nbsp;Processing...</span>
+                                    <span *ngIf="!isSubmitting">&nbsp;{{ 'Confirm' | translate }}</span>
+                                    <span *ngIf="isSubmitting">&nbsp;{{ 'Processing' | translate }}...</span>
                                   </button>
                                 </td>
                             </tr>
@@ -503,12 +505,12 @@
         </div>
 
         <h1 class="pdf-div" style="font-size: 1.5em">
-          Invoice# {{ orderDetails.invoice }}
+          {{ 'Invoice' | translate }}# {{ orderDetails.invoice }}
         </h1>
         <div style="display: flex;">
           <div id="customer-info">
-            <div>Customer: {{ orderDetails.customer_name }}</div>
-            <div>Mobile: {{ orderDetails.customer_mobile }}</div>
+            <div>{{ 'Customer' | translate }}: {{ orderDetails.customer_name }}</div>
+            <div>{{ 'Mobile' | translate }}: {{ orderDetails.customer_mobile }}</div>
             <div>{{ orderDetails.created_at }}</div>
           </div>
           <div style="flex: 1;"></div>
@@ -523,14 +525,14 @@
         <table class="preview">
           <thead>
             <tr>
-              <th style="width:10%" class="unit">Sl.</th>
-              <th style="width:30%;text-align: left">Product</th>
-              <th style="width:10%">Quantity(Pcs)</th>
-              <th *ngIf="freeQtyShow" style="width:10%">Free(Qty)</th>
-              <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
-              <th style="width:10%;text-align: right">Unit Price(&#x9f3;)</th>
-              <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
-              <th style="width:20%;text-align: right;padding-right: 2%">Amount(&#x9f3;)</th>
+              <th style="width:10%" class="unit">{{ 'Sl' | translate }}.</th>
+              <th style="width:30%;text-align: left">{{ 'Product' | translate }}</th>
+              <th style="width:10%">{{ 'Quantity(Pcs)' | translate }}</th>
+              <th *ngIf="freeQtyShow" style="width:10%">{{ 'Free(Qty)' | translate }}</th>
+              <th *ngIf="tpShow" style="width:10%;text-align: right">{{ 'CPU' | translate }}({{ currency }})</th>
+              <th style="width:10%;text-align: right">{{ 'Unit Price' | translate }}({{ currency }})</th>
+              <th *ngIf="profitShow" style="width:10%;text-align: right">{{ 'Profit' | translate }}({{ currency }})</th>
+              <th style="width:20%;text-align: right;padding-right: 2%">{{ 'Amount' | translate }}({{ currency }})</th>
             </tr>
           </thead>
           <tbody *ngIf="
@@ -557,7 +559,7 @@
               </tr>
             </ng-container>
             <tr>
-              <td colspan="2"><strong>Total</strong></td>
+              <td colspan="2"><strong>{{ 'Total' | translate }}</strong></td>
               <td><strong>{{ orderDetails.total_qty }}</strong></td>
               <td *ngIf="freeQtyShow"><strong>{{ orderDetails.total_free_qty }}</strong></td>
               <td *ngIf="profitShow">&nbsp;</td>
@@ -573,10 +575,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
-                Total Amount
+                {{ 'Total Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
@@ -585,10 +587,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Discount Amount
+                {{ 'Total Discount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+                {{ currency }} {{ orderDetails.discount | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
@@ -597,12 +599,22 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Net Amount
+                {{ 'Net Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
-                    orderDetails.total_payble_amount | number: "1.2-2"
-                  }}
+                {{ currency }} {{ orderDetails.total_payble_amount | number: "1.2-2"}}
+              </td>
+            </tr>
+            <tr *ngIf="orderDetails.total_due_amount">
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                {{ 'Due Amount' | translate }}
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                {{ currency }} {{ orderDetails.total_due_amount | number: "1.2-2"}}
               </td>
             </tr>
             <tr *ngIf="profitShow">
@@ -611,12 +623,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Net Profit
+                {{ 'Net Profit' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
-                    orderDetails.total_profit | number: "1.2-2"
-                  }}
+                {{ currency }} {{ orderDetails.total_profit | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
@@ -625,7 +635,7 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td style="text-align: left;font-weight: bold">
-                Amount In Word
+                {{ 'Amount In Word' | translate }}
               </td>
               <td colspan="2" style="text-align: right;padding-right: 2%">
                 {{ priceInWord }}
@@ -668,8 +678,8 @@
         </h4>
         <div style="display: flex;">
           <div id="customer-info" class="customer-info">
-            <div>Customer: {{ orderDetails.customer_name }}</div>
-            <div>Mobile: {{ orderDetails.customer_mobile }}</div>
+            <div>{{ 'Customer' | translate }}: {{ orderDetails.customer_name }}</div>
+            <div>{{ 'Mobile' | translate }}: {{ orderDetails.customer_mobile }}</div>
             <div>{{ orderDetails.created_at }}</div>
           </div>
           <div style="flex: 1;"></div>
@@ -685,13 +695,13 @@
           <thead>
             <tr>
               <th style="width:5%" class="unit">#</th>
-              <th style="width:30%;text-align: left">Product</th>
-              <th style="width:10%">Qty</th>
-              <th *ngIf="freeQtyShow" style="width:10%">Free(Qty)</th>
-              <th *ngIf="tpShow" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
-              <th style="width:10%;text-align: right">Price(&#x9f3;)</th>
-              <th *ngIf="profitShow" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
-              <th style="width:15%;text-align: right;padding-right: 2%">Amount(&#x9f3;)</th>
+              <th style="width:30%;text-align: left">{{ 'Product' | translate }}</th>
+              <th style="width:10%">{{ 'Qty' | translate }}</th>
+              <th *ngIf="freeQtyShow" style="width:10%">{{ 'Free(Qty)' | translate }}</th>
+              <th *ngIf="tpShow" style="width:10%;text-align: right">{{ 'CPU' | translate }}({{ currency }})</th>
+              <th style="width:10%;text-align: right">{{ 'Price' | translate }}({{ currency }})</th>
+              <th *ngIf="profitShow" style="width:10%;text-align: right">{{ 'Profit' | translate }}({{ currency }})</th>
+              <th style="width:15%;text-align: right;padding-right: 2%">{{ 'Amount' | translate }}({{ currency }})</th>
             </tr>
           </thead>
           <tbody *ngIf="
@@ -717,7 +727,7 @@
               </tr>
             </ng-container>
             <tr>
-              <td colspan="2" class="text-center"><strong>Total</strong></td>
+              <td colspan="2" class="text-center"><strong>{{ 'Total' | translate }}</strong></td>
               <td class="text-center"><strong>{{ orderDetails.total_qty }}</strong></td>
               <td *ngIf="freeQtyShow" class="text-center"><strong>{{ orderDetails.total_free_qty }}</strong></td>
               <td *ngIf="tpShow">&nbsp;</td>
@@ -733,10 +743,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
-                Total Amount
+                {{ 'Total Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
@@ -745,10 +755,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold;">
-                Total Discount
+                {{ 'Total Discount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
@@ -757,12 +767,24 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Net Amount
+                {{ 'Net Amount' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                     orderDetails.total_payble_amount | number: "1.2-2"
                   }}
+              </td>
+            </tr>
+            <tr *ngIf="orderDetails.total_due_amount">
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                {{ 'Due Amount' | translate }}
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                {{ currency }} {{ orderDetails.total_due_amount | number: "1.2-2" }}
               </td>
             </tr>
             <tr *ngIf="profitShow">
@@ -771,10 +793,10 @@
               <td *ngIf="tpShow">&nbsp;</td>
               <td *ngIf="profitShow">&nbsp;</td>
               <td colspan="2" style="text-align: left;font-weight: bold">
-                Net Profit
+                {{ 'Net Profit' | translate }}
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                     orderDetails.total_profit | number: "1.2-2"
                   }}
               </td>
@@ -789,7 +811,7 @@
             <tbody>
               <tr>
                 <td colspan="8">
-                  <h5 class="text-center">No Item Found</h5>
+                  <h5 class="text-center">{{ 'No Item Found' | translate }}</h5>
                 </td>
               </tr>
             </tbody>
@@ -805,33 +827,65 @@
     <div *ngIf="orderDetails" class="col-md-12" style="width: 100%">
       <header class="clearfix mb-2">
         <div class="row">
+          <!-- Left Section: Branch / Pharmacy Info -->
           <div id="customer-info" class="col-6 customer-info">
-            <h3><span class="pharmacy">{{ orderDetails.pharmacy }}</span></h3>
-            <div [ngStyle]="{ color: colorCode }">{{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</div>
-            <div [ngStyle]="{ color: colorCode }">For Order: {{ orderDetails.branch_mobile }}</div>
-            <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }">For Service: {{ orderDetails.branch_contact_person_mobile }}</div>
-          </div>
-          <div class="col-6 float-right">
-            <div>
-              <h3><strong [ngStyle]="{ color: colorCode }">INVOICE</strong></h3>
-              <br>
-              <span [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="padding: 1%;"># {{ orderDetails.invoice }} | DATE: {{ orderDetails.created_at }}</span></div>
-          </div>
-        </div>
-        <br>
+            <h3>
+              <span class="pharmacy">{{ orderDetails.pharmacy }}</span>
+            </h3>
 
-        <div style="display: flex;">
-          <div>
-            <div [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="padding: 1%;"><strong>Bill:</strong></div>
-            <div style="margin-top: 6px;"><strong>{{ orderDetails.customer_name }}</strong></div>
-            <div>{{ orderDetails.customer_mobile }}</div>
+            <div [ngStyle]="{ color: colorCode }">
+              {{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}
+            </div>
+
+            <div [ngStyle]="{ color: colorCode }">
+              {{ 'For Order' | translate }}: {{ orderDetails.branch_mobile }}
+            </div>
+
+            <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }">
+              {{ 'For Service' | translate }}: {{ orderDetails.branch_contact_person_mobile }}
+            </div>
+
+            <div [ngStyle]="{ color: colorCode }">
+              {{ 'Invoice by' | translate }} : {{ orderDetails.created_by }}
+            </div>
           </div>
-          <div style="flex: 1;"></div>
-          <div id="pharmacy-info" class="d-none shop-info">
-            <div>{{ orderDetails.created_by }}</div>
-            <div>{{ orderDetails.branch_name }}, {{ orderDetails.branch_city }}</div>
-            <div>{{ orderDetails.branch_mobile }}</div>
+
+          <!-- Right Section: Invoice + Customer -->
+          <div class="col-6 float-right">
+
+            <!-- Invoice Title -->
+            <h3>
+              <strong [ngStyle]="{ color: colorCode }">
+                {{ 'INVOICE' | translate }}
+              </strong>
+            </h3>
+
+            <!-- Invoice Number + Date -->
+            <span
+              class="d-inline-block mt-2 p-1"
+              [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }"
+            >
+              # {{ orderDetails.invoice }} |
+              {{ 'DATE' | translate }}: {{ orderDetails.created_at }}
+            </span>
+
+            <div>
+              <!-- Billing Information -->
+              <div
+                class="d-none mt-3 p-1"
+                [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }"
+              >
+                <strong>{{ 'Bill' | translate }}:</strong>
+              </div>
+
+              <div class="mt-1">
+                <strong>{{ orderDetails.customer_name }}</strong>
+              </div>
+
+              <div>{{ orderDetails.customer_mobile }}</div>
+            </div>
           </div>
+
         </div>
       </header>
       <main style="margin-bottom: 1px">
@@ -842,10 +896,10 @@
               <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:30%;text-align: left">Product</th>
               <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%">Qty</th>
               <th *ngIf="freeQtyShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%">Free(Qty)</th>
-              <th *ngIf="tpShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">CPU(&#x9f3;)</th>
-              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">Price(&#x9f3;)</th>
-              <th *ngIf="profitShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">Profit(&#x9f3;)</th>
-              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:15%;text-align: right;padding-right: 2%">Total(&#x9f3;)</th>
+              <th *ngIf="tpShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">CPU({{ currency }})</th>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">Price({{ currency }})</th>
+              <th *ngIf="profitShow" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:10%;text-align: right">Profit({{ currency }})</th>
+              <th [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }" style="width:15%;text-align: right;padding-right: 2%">Total({{ currency }})</th>
             </tr>
           </thead>
           <tbody *ngIf="
@@ -890,7 +944,7 @@
                 Subtotal
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.sub_total | number: "1.2-2" }}
               </td>
             </tr>
             <tr>
@@ -902,7 +956,19 @@
                 Total Discount
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+                {{ currency }}&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr *ngIf="orderDetails.total_due_amount">
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold;">
+                {{ 'Due Amount' | translate }}
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                {{ currency }} {{ orderDetails.total_due_amount | number: "1.2-2" }}
               </td>
             </tr>
             <tr [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
@@ -916,7 +982,7 @@
                 TOTAL
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                     orderDetails.total_payble_amount | number: "1.2-2"
                   }}
               </td>
@@ -930,7 +996,7 @@
                 Net Profit
               </td>
               <td style="text-align: right;padding-right: 2%">
-                &#x9f3;&nbsp;{{
+                {{ currency }}&nbsp;{{
                     orderDetails.total_profit | number: "1.2-2"
                   }}
               </td>

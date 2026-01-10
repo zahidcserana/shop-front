@@ -14,6 +14,7 @@ import { ModalService } from 'src/app/common/_modal/modal.service';
 })
 export class InventoryComponent implements OnInit {
   pagi: Pagi = new Pagi();
+  currency = '৳';
   
   constructor(
     private InventoryService: InventoryService,

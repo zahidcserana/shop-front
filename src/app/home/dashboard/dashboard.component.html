@@ -3,7 +3,7 @@
       <div class="card mb-3 widget-content bg-midnight-bloom">
          <div class="widget-content-wrapper text-white">
             <div class="widget-content-left">
-               <div class="widget-heading">Total Purchase &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+               <div class="widget-heading">{{ 'Total Purchase' | translate }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             </div>
             <div class="widget-content-right">
                <div class="widget-numbers text-white"><span>{{ summary.total_order }}</span></div>
@@ -15,7 +15,7 @@
       <div class="card mb-3 widget-content bg-midnight-bloom">
           <div class="widget-content-wrapper text-white">
               <div class="widget-content-left">
-                  <div class="widget-heading">Total Sale &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                  <div class="widget-heading">{{ 'Total Sale' | translate }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
               </div>
               <div class="widget-content-right">
                   <div class="widget-numbers text-white"><span>{{ summary.total_sale }}</span></div>
@@ -27,7 +27,7 @@
       <div class="card mb-3 widget-content bg-grow-early">
          <div class="widget-content-wrapper text-white">
             <div class="widget-content-left">
-               <div class="widget-heading">Total Product &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+               <div class="widget-heading">{{ 'Total Product' | translate }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             </div>
             <div class="widget-content-right">
                <div class="widget-numbers text-white"><span>{{ summary.total_medicine }}</span></div>
@@ -39,7 +39,7 @@
       <div class="card mb-3 widget-content bg-night-fade">
          <div class="widget-content-wrapper text-white">
             <div class="widget-content-left">
-               <div class="widget-heading">Total Customer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+               <div class="widget-heading">{{ 'Total Customer' | translate }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
             </div>
             <div class="widget-content-right">
                <div class="widget-numbers text-white"><span>{{ summary.total_customer }}</span></div>
@@ -51,7 +51,7 @@
    <div class="col-md-6">
       <div class="main-card mb-3 card">
             <div class="card-header">
-               Top Brand (Tk)
+               {{ 'Top Brand' | translate }} (৳)
             </div>
             <div class="card-body">
                <ul class="list-group">
@@ -77,7 +77,7 @@
    <div class="col-md-6">
       <div class="main-card mb-3 card">
             <div class="card-header" style="background: #385176 !important;">
-               Top Products (Quantity)
+               {{ 'Top Products (Quantity)' | translate }}
             </div>
             <div class="card-body">
                <ul class="list-group">

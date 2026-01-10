@@ -1,0 +1,100 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-header card-header-top">
+        <span class="margin-align-title card-header-title">
+          <div class="font-icon-wrapper font-icon-lg">
+            <i class="fa fa-capsules icon-gradient bg-happy-itmeo"> </i> {{ 'Damage' | translate }}
+          </div>
+        </span>
+        <div class="btn-actions-pane-right">
+          <a routerLink="/damage/list"> <i class="pe-7s-cart icon-gradient bg-happy-itmeo"> </i> {{ 'Damage List' | translate }} </a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <form id="myForm" class="form-width-100 damage-form" (keydown.enter)="$event.preventDefault()">
+              <div class="form-row">
+                  <div class="col-md-3">
+                    <div class="position-relative form-group">
+                      <label class="">{{ 'Product Name' | translate }}</label>
+                      <div id="scrollable-dropdown-menu">
+                        <input name="search" id="typeahead-basic" #typeaheadInstance="ngbTypeahead" (keydown)="typeaheadKeydown($event)" #medicineName [(ngModel)]="damageItem.medicine" placeholder="" [ngbTypeahead]="search" autofocus type="text" class="form-control" (keydown.enter)="getMedicinePreviousDamageDetails()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                      <div class="position-relative form-group">
+                        <label for="quantity" class="">{{ 'QTY' | translate }}</label>
+                        <input name="quantity" #quantity [(ngModel)]="damageItem.quantity" min="1" (keydown.enter)="addMedicine()" placeholder="" type="number" class="form-control">
+                      </div>
+                  </div>
+                  <button type="submit" style="display: none;" class="btn btn-primary mb-0 add-medicine-btn">
+                    {{ 'Add' | translate }}
+                  </button>
+
+                  <div class="col-md-1"></div>
+
+                  <div *ngIf="showResetButton">
+                    <button type="button" class="btn btn-primary reset-po" (click)="confirmReset()">{{ 'Reset' | translate }}</button>
+                  </div>
+
+                  <div class="col-md-3"></div>
+
+                  <div class="col-md-2 mt-2 text-right total-quantity">
+                    <h2><strong>{{ damageDetails.total }}</strong></h2>
+                  </div>
+              </div>
+            </form> 
+            <hr/>
+            <table class="mb-0 table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="td_text_align_left">{{ 'Product Name' | translate }}</th>
+                    <th>{{ 'Barcode' | translate }}</th>
+                    <th>{{ 'CPU' | translate }}</th>
+                    <th>{{ 'Qty' | translate }}</th>
+                    <th>{{ 'Total' | translate }}</th>
+                    <th>{{ 'Action' | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of allDamageItems; let i='index';">
+                      <th scope="row">{{ i+1 }}</th>
+                      <td class="td_text_align_left">{{ item.medicine }}</td>
+                      <td>{{ item.bar_code }}</td>
+                      <td>{{ item.box_trade_price | number: "1.2-2" }}</td>
+                      <td>{{ item.quantity }}</td>
+                      <td>{{ item.amount | number: "1.2-2" }}</td>
+                      <td>
+                        <button (click)="deleteRow(i)" class="mr-2 btn-icon btn-icon-only btn btn-outline-danger"><i class="pe-7s-trash btn-icon-wrapper"> </i></button>
+                      </td>
+                  </tr>
+                </tbody>
+            </table>
+
+            <div class="row">
+              <div class="col-4"></div>
+              <div class="position-relative form-group col-4">
+                <button
+                  #buttonPO
+                  type="button"
+                  id="submitButtonForSave"
+                  class="btn btn-primary mb-0 save-btn"
+                  (click)="submitDamageDetails()"
+                  [disabled]="isSubmitting"
+                >
+                  <ng-container *ngIf="!isSubmitting">{{ 'Save' | translate }}</ng-container>
+                  <ng-container *ngIf="isSubmitting">{{ 'Saving' | translate }}...</ng-container>
+                </button>
+              </div>
+              <div class="col-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>

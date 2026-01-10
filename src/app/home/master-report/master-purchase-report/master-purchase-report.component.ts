@@ -19,6 +19,8 @@ import Swal from "sweetalert2";
   styleUrls: ["./master-purchase-report.component.css"],
 })
 export class MasterPurchaseReportComponent implements OnInit {
+  currency = '৳';
+  
   constructor(
     private MasterReportService: MasterReportService,
     private datePipe: DatePipe

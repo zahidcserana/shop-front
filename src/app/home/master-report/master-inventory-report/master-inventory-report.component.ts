@@ -20,6 +20,7 @@ import autoTable from 'jspdf-autotable';
 export class MasterInventoryReportComponent implements OnInit {
   filterItem: StockFilterModel;
   filter: string;
+  currency = '৳';
 
   dateRangeValue: Date[];
   nextDate = new Date();

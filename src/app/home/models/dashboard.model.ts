@@ -5,3 +5,19 @@ export class DashboardModel {
   total_customer: number;
 }
 
+export class DamageFilterModel {
+  company: string;
+  company_id: number;
+  invoice: string;
+  company_invoice: string;
+  damage_date: Date[];
+  date_start: string;
+  date_end: string;
+}
+
+export class DamageModel {
+  item: string;
+  quantity: number;
+  price: number;
+  amount: number;
+}

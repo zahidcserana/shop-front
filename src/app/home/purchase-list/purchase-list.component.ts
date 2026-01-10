@@ -24,6 +24,7 @@ import { ToastrService } from "ngx-toastr";
 export class PurchaseListComponent implements OnInit {
   pagi: Pagi = new Pagi();
   filter: string;
+  currency = '৳';
 
   loader: boolean;
   loader_sub: boolean;
