@@ -562,6 +562,16 @@ export class SaleComponent implements OnInit {
   updateItemPrice(cart, i) {
     this.priceUpdate.item_id = cart.id;
     this.priceUpdate.item_price = $("#unit_price_" + i).val();
+    
+    if (this.priceUpdate.item_price < cart.tp) {
+      return Swal.fire({
+            type: "warning",
+            title: "Oops...",
+            text: "RPU should be greater than CPU",
+            showConfirmButton: false,
+          });
+    }
+
     this.saleService
       .updateItemPrice(this.priceUpdate)
       .then((res) => {
@@ -582,6 +592,7 @@ export class SaleComponent implements OnInit {
         this.increament = null;
       });
   }
+
   decreaseQuant(cart, i) {
     if (cart.quantity > 1) {
       this.increament = i;
