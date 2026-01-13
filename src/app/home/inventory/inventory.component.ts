@@ -21,8 +21,8 @@ export class InventoryComponent implements OnInit {
     private InventoryService: InventoryService,
     private modalService: ModalService,
     public config: AppConfigService
-  )
-  {
+  ) {
+    this.config.loadFromStorage();
     this.pagi.limit = this.pagi.limit ? this.pagi.limit : 500;
     this.pagi.page = this.pagi.page ? this.pagi.page : 1;
   }

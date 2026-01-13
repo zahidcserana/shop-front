@@ -66,12 +66,14 @@ export class MasterSaleReportComponent implements OnInit {
     private route: ActivatedRoute,
     public config: AppConfigService
   ) {
+    this.config.loadFromStorage();
     this.getCompanyList();
     this.getSalesPersonsList();
     this.sub = this.route.paramMap.subscribe(val => {
       this.reset();
     });
   }
+  
   counter(i: number) {
       return new Array(i);
   }

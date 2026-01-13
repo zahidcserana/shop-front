@@ -59,6 +59,7 @@ export class PurchaseListComponent implements OnInit {
     private toastr: ToastrService,
     public config: AppConfigService
   ) {
+    this.config.loadFromStorage();
     this.pagi.limit = this.pagi.limit ? this.pagi.limit : 100;
     this.pagi.page = this.pagi.page ? this.pagi.page : 1;
   }

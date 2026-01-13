@@ -27,12 +27,13 @@ export class MasterInventoryReportComponent implements OnInit {
   nextDate = new Date();
   sub: Subscription;
 
-   constructor(
+  constructor(
       private route: ActivatedRoute,
       private MasterReportService: MasterReportService,
       private datePipe: DatePipe,
       public config: AppConfigService
-   ) {
+  ) {
+    this.config.loadFromStorage();
     this.nextDate.setDate(this.nextDate.getDate());
     this.dateRangeValue = [new Date(), this.nextDate];
     this.filterItem = new StockFilterModel();

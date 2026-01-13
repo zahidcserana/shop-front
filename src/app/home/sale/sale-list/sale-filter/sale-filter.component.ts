@@ -39,6 +39,7 @@ export class SaleFilterComponent implements OnInit {
     private saleService: SaleService,
     public config: AppConfigService
   ) {
+    this.config.loadFromStorage();
     this.nextDate.setDate(this.nextDate.getDate() + 7);
     this.dateRangeValue = [new Date(), this.nextDate];
     this.saleData = new SaleFilterModel();

@@ -27,7 +27,9 @@ export class PurchaseComponent implements OnInit {
     private homeService: HomeService,
     private toastr: ToastrService,
     public config: AppConfigService
-  ) { }
+  ) {
+    this.config.loadFromStorage();
+  }
 
   ngOnInit() {
     this.checkLocalStorage();

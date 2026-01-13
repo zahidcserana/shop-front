@@ -119,9 +119,10 @@ export class SaleComponent implements OnInit {
     private printService: PrintService,
     public config: AppConfigService
   ) {
+    this.config.loadFromStorage();
     const user = JSON.parse(localStorage.getItem("currentUser"));
     this.invoiceVersion = user.pos_version
-   }
+  }
 
    printHandler(mode: 'a4' | 'pos'): void {
     if (this.invoiceVersion == 2) {

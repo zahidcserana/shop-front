@@ -17,7 +17,9 @@ export class MasterPurchaseDueReportComponent implements OnInit {
     private MasterReportService: MasterReportService,
     private datePipe: DatePipe,
     public config: AppConfigService
-    ) { }
+  ) {
+    this.config.loadFromStorage();
+  }
 
   ngOnInit() {
     this.getPurcheseDueList();
