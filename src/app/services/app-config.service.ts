@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AppConfigService {
   enBatch: boolean = false;
+  enSerialNo: boolean = false;
 
   loadFromStorage() {
     const userStr = localStorage.getItem('currentUser');
@@ -12,10 +13,12 @@ export class AppConfigService {
     if (userStr) {
       const user = JSON.parse(userStr);
 
-      if (user && user.config && user.config.en_batch) {
-        this.enBatch = true;
+      if (user && user.config) {
+        this.enBatch = !!user.config.en_batch;
+        this.enSerialNo = !!user.config.en_serial_no;
       } else {
         this.enBatch = false;
+        this.enSerialNo = false;
       }
     }
   }

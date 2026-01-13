@@ -14,6 +14,7 @@ import { SaleFilterModel } from "src/app/home/models/sale.model";
 import { BsDatepickerModule } from "ngx-bootstrap";
 import { DatePipe } from "@angular/common";
 import { debounceTime, distinctUntilChanged, tap, switchMap, map, catchError } from 'rxjs/operators';
+import { AppConfigService } from 'src/app/services/app-config.service';
 
 declare let $: any;
 declare var moment: any;
@@ -32,7 +33,12 @@ export class SaleFilterComponent implements OnInit {
   sub: Subscription;
   @Output("loadList") loadList: EventEmitter<string> = new EventEmitter();
 
-  constructor(private route: ActivatedRoute, private datePipe: DatePipe, private saleService: SaleService) {
+  constructor(
+    private route: ActivatedRoute,
+    private datePipe: DatePipe,
+    private saleService: SaleService,
+    public config: AppConfigService
+  ) {
     this.nextDate.setDate(this.nextDate.getDate() + 7);
     this.dateRangeValue = [new Date(), this.nextDate];
     this.saleData = new SaleFilterModel();

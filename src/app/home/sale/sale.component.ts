@@ -26,15 +26,18 @@ declare var require: any;
   styleUrls: ["./sale.component.css"],
 })
 export class SaleComponent implements OnInit {
+  activeSerialIndex: number | null = null;
 
   colorCode = '#82929A';
   colorCodeText = '#ffff';
   currency = '৳';
+  serialNo = ""
 
   cartItem: any = {
     medicine: "",
     medicine_id: "",
     quantity: "",
+    serial_no: [],
     batch_no: "BAT-321",
     token: "",
     unit_type: "PCS",
@@ -92,6 +95,7 @@ export class SaleComponent implements OnInit {
   dueValidationStatus: boolean = false;
   @ViewChild("cartMedicine") Medicine: ElementRef;
   @ViewChild("cartQty") cartQty: ElementRef;
+  @ViewChild("cartSerial") cartSerial: ElementRef;
   @ViewChild("modalButton") modalButton: ElementRef;
   @ViewChild("tendered") tendered: ElementRef;
   @ViewChild("cartBatch") cartBatch: ElementRef;
@@ -173,6 +177,15 @@ export class SaleComponent implements OnInit {
       }
     );
   }
+
+  toggleSerial(index: number) {
+    if (this.activeSerialIndex === index) {
+      this.activeSerialIndex = null; // close
+    } else {
+      this.activeSerialIndex = index; // open
+    }
+  }
+
   getPaymentTypes() {
     this.homeService.allPaymentTypes().subscribe((res) => {
       this.paymentTypes = res;
@@ -395,9 +408,14 @@ export class SaleComponent implements OnInit {
     return value < 0 ? 0 : value;
   }
   goQty() {
+    this.cartItem.serial_no = []
     this.getAvailableQuantity();
     if (this.cartItem.medicine) {
-      this.cartQty.nativeElement.focus();
+      if (this.config.enSerialNo) {
+        this.cartSerial.nativeElement.focus();
+      } else {
+        this.cartQty.nativeElement.focus();
+      }
     }
   }
   goTendered() {
@@ -410,9 +428,10 @@ export class SaleComponent implements OnInit {
       : 0;
     this.order.tendered = this.order.total_payble_amount;
   }
+
   checkingAvailability() {
     if (this.availability === null) {
-      return true;
+      return false;
     }
     if (this.availability >= this.cartItem.quantity) {
       return true;
@@ -454,6 +473,7 @@ export class SaleComponent implements OnInit {
               this.batchList = [];
               $("#myForm").trigger("reset");
               this.orderId = 0;
+              this.cartItem.serial_no = []
               this.cartItem.medicine = ''
               this.Medicine.nativeElement.focus();
               if (this.isAntibiotic) {
@@ -486,6 +506,10 @@ export class SaleComponent implements OnInit {
           });
       } else {
         let str = "Only " + this.availability + " Pcs is available";
+
+        if (this.availability === null) {
+          str = "Empty stock";
+        }
         Swal.fire({
           type: "warning",
           title: "Oops...",
@@ -515,6 +539,13 @@ export class SaleComponent implements OnInit {
     this.saleService
       .getBatchList(this.batchSearch)
       .subscribe((data) => (this.batchList = data));
+  }
+
+  addSerial() {
+    if (this.serialNo === "") return
+    this.cartItem.serial_no.push(this.serialNo) 
+    this.cartItem.quantity++
+    this.serialNo = ""
   }
 
   getAvailableQuantity() {
@@ -562,7 +593,7 @@ export class SaleComponent implements OnInit {
   updateItemPrice(cart, i) {
     this.priceUpdate.item_id = cart.id;
     this.priceUpdate.item_price = $("#unit_price_" + i).val();
-    
+
     if (this.priceUpdate.item_price < cart.tp) {
       return Swal.fire({
             type: "warning",
