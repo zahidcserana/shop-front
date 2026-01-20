@@ -78,6 +78,7 @@ export class PurchaseComponent implements OnInit {
     box_vat: "",
     percentage: '',
     box_mrp: "",
+    unit_price: "",
     amount: "",
     remarks: "",
     low_stock_qty: "",
@@ -278,6 +279,7 @@ export class PurchaseComponent implements OnInit {
           // const details = response.data;
           this.purchaseItem.piece_per_box = details.pieces_per_box;
           this.purchaseItem.box_trade_price = details.trade_price;
+          this.purchaseItem.unit_price = details.unit_price;
           this.purchaseItem.box_vat = details.box_vat;
           this.purchaseItem.box_mrp = details.mrp;
           this.purchaseItem.stock_quantity = details.stock_quantity;
@@ -300,7 +302,6 @@ export class PurchaseComponent implements OnInit {
   }
 
   getMedicineUnitPriceDetails(){
-    console.log('shadow');
     let search_medicine_id = 0;
     for (let medicine of this.searchData) {
       if (medicine.name == this.purchaseItem.medicine) {
@@ -443,6 +444,7 @@ export class PurchaseComponent implements OnInit {
       exp_date: "",
       piece_per_box: "",
       box_trade_price: "",
+      unit_price: "",
       box_vat: "",
       box_mrp: "",
       amount: "",
@@ -731,6 +733,7 @@ export class PurchaseComponent implements OnInit {
           exp_date: "",
           piece_per_box: 1,
           box_trade_price: "",
+          unit_price: "",
           box_vat: "",
           box_mrp: "",
           amount: "",

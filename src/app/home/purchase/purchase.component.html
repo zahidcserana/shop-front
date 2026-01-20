@@ -63,19 +63,33 @@
                         <input name="piece_per_box" #piecePerBox [(ngModel)]="purchaseItem.piece_per_box" min="1" (keydown.enter)="gotoBoxTradePrice()" placeholder="" type="number" class="form-control">
                       </div>
                   </div> -->
+                  <div class="col-md-2" *ngIf="config.enTP">
+                    <div class="position-relative form-group">
+                      <label for="unit_price" class="">{{ 'TP' | translate }}</label>
+                      <input 
+                        name="unit_price" 
+                        #unitPrice 
+                        [(ngModel)]="purchaseItem.unit_price" 
+                        (keydown.enter)="gotoBoxMrp()" 
+                        placeholder="" 
+                        type="number" 
+                        class="form-control"
+                      >
+                    </div>
+                  </div>
                   <div class="col-md-2">
-                      <div class="position-relative form-group">
-                        <label for="box_trade_price" class="">{{ 'CPU' | translate }}</label>
-                        <input 
-                          name="box_trade_price" 
-                          #boxTradePrice 
-                          [(ngModel)]="purchaseItem.box_trade_price" 
-                          (keydown.enter)="gotoBoxMrp()" 
-                          placeholder="" 
-                          type="number" 
-                          class="form-control"
-                        >
-                      </div>
+                    <div class="position-relative form-group">
+                      <label for="box_trade_price" class="">{{ 'CPU' | translate }}</label>
+                      <input 
+                        name="box_trade_price" 
+                        #boxTradePrice 
+                        [(ngModel)]="purchaseItem.box_trade_price" 
+                        (keydown.enter)="gotoBoxMrp()" 
+                        placeholder="" 
+                        type="number" 
+                        class="form-control"
+                      >
+                    </div>
                   </div>
                   <div class="col-md-2">
                       <div class="position-relative form-group">
