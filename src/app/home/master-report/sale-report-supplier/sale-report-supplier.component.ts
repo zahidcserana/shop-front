@@ -99,7 +99,9 @@ export class SaleReportSupplierComponent implements OnInit {
   exportStockReportPDF(): void {
     const doc = new jsPDF('p', 'mm', 'a4');
     const pageWidth = doc.internal.pageSize.getWidth();
-    const title = 'Supplier Report';
+    this.dateFormate();
+
+    const title = `Supplier Report (${this.filterItem.date_range})`;
     const logoImg = new Image();
     logoImg.src = 'assets/images/analyticalj.png'; // Make sure this path is correct and image exists
 
@@ -124,7 +126,7 @@ export class SaleReportSupplierComponent implements OnInit {
       doc.text(title, titleX, titleY);
 
       // Table data
-      const head = [['#', 'Supplier name', 'Sold Qty', 'Sold TP(৳)', 'Sold amount(৳)', 'Profit(৳)', 'GP(%)']];
+      const head = [['#', 'Supplier name', 'Sold Qty', 'Sold TP (Tk)', 'Sold amount (Tk)', 'Profit (Tk)', 'GP (%)']];
       const body: any[] = this.inventoryList.map((item, index) => [
         index + 1,
         `${item.company_name.slice(0, 10)}`,

@@ -32,12 +32,23 @@
                                     autofocus (keyup.enter)="goQty()" />
                                 </div>
                             </div>
-                            <div class="form-group mb-0 input-details-margin">
+                            <div class="form-group mb-2 input-details-margin">
                                 <small id="AvailableQty" class="form-text input-details-text">
                                     {{ 'In Stock' | translate }}
                                     <span class="availableQty input-details-text details-text-color">{{ availability }}</span>
                                     ({{ 'Pcs' | translate }})
                                 </small>
+                            </div>
+                            <div class="form-group mb-0 input-details-margin" *ngIf="config.enSerialNo">
+                              <strong>{{ 'Serial No' | translate }}:</strong>
+                              <small
+                                class="form-text"
+                                *ngIf="cartItem.serial_no && cartItem.serial_no.length"
+                              >
+                                <span>
+                                  {{ cartItem.serial_no.join(', ') }}
+                                </span>
+                              </small>
                             </div>
                         </div>
                         <!-- <div class="col-md-4">
@@ -50,16 +61,39 @@
                                 </select>
                             </div>
                         </div> -->
-                        <div class="col-md-4">
+                        <div *ngIf="config.enSerialNo" class="col-md-3">
+                            <div class="form-group mb-0">
+                                <label for="quantity" class="sr-only">{{ 'Serial'  | translate }} </label>
+                                <input 
+                                  #cartSerial 
+                                  class="form-control form-input-width-100 cart-quantity" 
+                                  id="serial_no" 
+                                  name="serial_no" 
+                                  (keydown.enter)="addSerial()" 
+                                  [(ngModel)]="serialNo"
+                                  placeholder="{{ 'Serial'  | translate}}" 
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-4" *ngIf="!config.enSerialNo">
                             <div class="form-group mb-0">
                                 <label for="quantity" class="sr-only">{{ 'Qty'  | translate }} </label>
-                                <input #cartQty type="number" class="form-control form-input-width-100" aria-describedby="AvailableQty"
-                                    id="quantity" name="quantity" (keydown.enter)="addToCart()" [(ngModel)]="cartItem.quantity"
-                                    placeholder="{{ 'Quantity'  | translate}}" (input)="getAvailableQuantity()" />
-                            </div>
-                            <button style="display: none" type="submit" class="btn btn-primary mb-0 add-medicine-btn">{{ 'Add' | translate }}</button>
+                                <input 
+                                  #cartQty 
+                                  type="number" 
+                                  class="form-control form-input-width-100 cart-quantity" 
+                                  aria-describedby="AvailableQty"
+                                  id="quantity" 
+                                  name="quantity" 
+                                  (keydown.enter)="addToCart()" 
+                                  [(ngModel)]="cartItem.quantity"
+                                  placeholder="{{ 'Quantity'  | translate}}" 
+                                  (input)="checkQuantity()"
+                                />
+                            </div>                            
                         </div>
-                        <div class="col-md-3"></div>
+                        <button *ngIf="config.enSerialNo" type="button" (click)="addToCart()" class="btn btn-primary mb-2 add-medicine-btn">{{ 'Add' | translate }}</button>
+                        <div *ngIf="!config.enSerialNo" class="col-md-3"></div>
 
                         <div class="col-md-1 mt-1 text-right total-quantity">
                           <h2><strong>{{ productList?.total_quantity ? productList?.total_quantity : 0 }}</strong></h2>
@@ -71,16 +105,14 @@
                     <thead class="thead">
                         <tr>
                         <th style="width: 5%" class="text-center">#</th>
-                        <th style="width: 20%">{{ 'Product' | translate }}</th>
+                        <th style="width: 30%">{{ 'Product' | translate }}</th>
                         <th style="width: 15%" class="text-center">{{ 'RPU' | translate }} {{ currency }}</th>
-                        <th style="width: 30%" class="text-center qty-width">
-                            {{ 'Quantity' | translate }}
-                        </th>
+                        <th style="width: 20%" class="text-center qty-width">{{ 'Quantity' | translate }}</th>
                         <th *ngIf="freeQtyShow" style="width: 20%" class="text-center qty-width">
                             {{ 'Free' | translate }}({{ 'Qty'  | translate}})
                         </th>
                         <th style="width: 10%" class="text-center">{{ 'Amount' | translate }} {{ currency }}</th>
-                        <th style="width: 15%" class="text-center"></th>
+                        <th style="width: 10%" class="text-center"></th>
                         </tr>
                     </thead>
                     <tbody *ngIf="
@@ -97,11 +129,35 @@
                             <td>
                             <div class="widget-content p-0">
                                 <div class="widget-content-wrapper">
-                                <div class="widget-content-left flex2">
+                                  <div class="widget-content-left flex2">
                                     <div class="widget-heading">
-                                    {{ cart.medicine.brand_name }}
+                                      {{ cart.medicine.brand_name }} 
+                                      <small><span *ngIf="config.enBatch">({{ cart.batch_no }})</span></small>
+                                      <br>
+                                      <i
+                                        *ngIf="config.enSerialNo"
+                                        class="ace-icon fa fa-qrcode text-info"
+                                        style="cursor: pointer;"
+                                        (click)="toggleSerial(i)"
+                                      >
+                                        Serial Numbers
+                                      </i>
                                     </div>
-                                </div>
+
+                                    <div *ngIf="activeSerialIndex === i && cart.serial_no?.length"
+                                      class="mt-1 p-2"
+                                      style="background:#f8f9fa;border:1px dashed #ccc;border-radius:4px;"
+                                    >
+                                      <div class="d-flex flex-wrap mt-1">
+                                        <span
+                                          *ngFor="let sn of cart.serial_no"
+                                          class="badge badge-secondary mr-1 mb-1"
+                                        >
+                                          {{ sn }}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                             </div>
                             </td>

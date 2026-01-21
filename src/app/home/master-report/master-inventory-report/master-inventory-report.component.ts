@@ -11,6 +11,7 @@ import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { AppConfigService } from 'src/app/services/app-config.service';
 
 @Component({
   selector: 'app-master-inventory-report',
@@ -26,11 +27,13 @@ export class MasterInventoryReportComponent implements OnInit {
   nextDate = new Date();
   sub: Subscription;
 
-   constructor(
+  constructor(
       private route: ActivatedRoute,
       private MasterReportService: MasterReportService,
       private datePipe: DatePipe,
-   ) {
+      public config: AppConfigService
+  ) {
+    this.config.loadFromStorage();
     this.nextDate.setDate(this.nextDate.getDate());
     this.dateRangeValue = [new Date(), this.nextDate];
     this.filterItem = new StockFilterModel();

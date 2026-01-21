@@ -164,3 +164,11 @@
   display: none;
 }
 
+.cart-quantity:focus {
+  border-color: red;
+}
+
+.add-medicine-btn {
+  width: 9% !important;
+  height: min-content;
+}

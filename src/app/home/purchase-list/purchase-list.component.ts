@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import { HomeService } from "../services/home.service";
 import { Pagi } from "src/app/common/modules/pagination/pagi.model";
 import { ToastrService } from "ngx-toastr";
+import { AppConfigService } from "src/app/services/app-config.service";
 
 @Component({
   selector: 'app-purchase-list',
@@ -55,8 +56,10 @@ export class PurchaseListComponent implements OnInit {
     private purchaseListService: PurchaseListService,
     private homeService: HomeService,
     private modalService: ModalService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public config: AppConfigService
   ) {
+    this.config.loadFromStorage();
     this.pagi.limit = this.pagi.limit ? this.pagi.limit : 100;
     this.pagi.page = this.pagi.page ? this.pagi.page : 1;
   }
