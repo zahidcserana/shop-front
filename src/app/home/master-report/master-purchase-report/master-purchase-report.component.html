@@ -76,6 +76,7 @@
                 <th>{{ 'Purchase Date' | translate }}</th>
                 <th>{{ 'Product' | translate }}</th>
                 <th>{{ 'Qty' | translate }}</th>
+                <th *ngIf="config.enTP">{{ 'TP' | translate }}</th>
                 <th>{{ 'CPU' | translate }}</th>
                 <th>{{ 'Subtotal' | translate }}</th>
                 <th>{{ 'Total Amount' | translate }}</th>
@@ -105,6 +106,7 @@
                         <small>{{  product.brand }} <span *ngIf="config.enBatch">({{ product.batch_no }})</span></small>
                       </td>
                       <td>{{ product.quantity }}</td>
+                      <td *ngIf="config.enTP"><span id='mrp{{ i }}'>{{ product.unit_price | number: "1.2-2" }}</span></td>
                       <td>{{ product.tp_with_vat | number: "1.2-2" }}</td>
                       <td>{{ product.tp_with_vat * product.quantity | number: "1.2-2" }}</td>
                     </ng-container>
