@@ -32,6 +32,7 @@ export class SaleComponent implements OnInit {
   colorCodeText = '#ffff';
   currency = '৳';
   serialNo = ""
+  emiAmount = 0
 
   cartItem: any = {
     medicine: "",
@@ -58,6 +59,7 @@ export class SaleComponent implements OnInit {
     discount_type: "fixed",
     discount_amount: 0,
     payment_type: "CASH",
+    installments: 0,
     customer_name: "",
     customer_mobile: "",
     prescription_image: "",
@@ -405,6 +407,11 @@ export class SaleComponent implements OnInit {
       $(".tr-change").removeClass("tdChange");
     }
   }
+
+  getEmiAmount() {
+    this.emiAmount = this.order.total_due_amount / this.order.installments
+  }
+
   checkIsLessZero(value) {
     return value < 0 ? 0 : value;
   }

@@ -7,6 +7,7 @@ export class AppConfigService {
   enBatch: boolean = false;
   enSerialNo: boolean = false;
   enTP: boolean = false;
+  enEMI: boolean = false;
 
   loadFromStorage() {
     const userStr = localStorage.getItem('currentUser');
@@ -18,10 +19,12 @@ export class AppConfigService {
         this.enBatch = !!user.config.en_batch;
         this.enSerialNo = !!user.config.en_serial_no;
         this.enTP = !!user.config.en_tp;
+        this.enEMI = !!user.config.en_emi;
       } else {
         this.enBatch = false;
         this.enSerialNo = false;
         this.enTP = false;
+        this.enEMI = false;
       }
     }
   }
