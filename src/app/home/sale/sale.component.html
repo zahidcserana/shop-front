@@ -343,11 +343,23 @@
                                 <td class="tdValue">{{ order.total_payble_amount | number: "1.2-2" }} /-</td>
                             </tr>
                             <tr class="sub-tax border-table-tr">
-                                <td class="availableQty">{{ 'Payment Type' | translate }}</td>
+                                <td class="availableQty">{{ 'Payment Type' | translate }} 
+                                  <span *ngIf="config.enEMI"> &nbsp; 
+                                    <input type="radio" [(ngModel)]="order.payment_type" value="emi"> {{ 'EMI' | translate }}
+                                  </span>
+                                </td>
                                 <td>
                                     <select enterFocus name="payment_type" id="payment_type" [(ngModel)]="order.payment_type" class="form-control">
                                       <option *ngFor="let item of paymentTypes" value="{{ item.name }}">{{ item.name }}</option>
+                                      <option *ngIf="order.payment_type === 'emi'" value="emi">{{ 'EMI' | translate }}</option>
                                     </select>
+                                </td>
+                            </tr>
+                            <tr class="sub-tax border-table-tr" *ngIf="order.payment_type === 'emi'">
+                                <td class="availableQty">{{ 'Installments' | translate }}</td>
+                                <td>
+                                    <input type="number" class="form-control" [(ngModel)]="order.installments" (input)="getEmiAmount()" (keydown.enter)="goTendered()" />
+                                    <span>{{ ( emiAmount | number: "1.2-2") }} /-</span>
                                 </td>
                             </tr>
                             <tr class="sub-discount border-table-tr">
