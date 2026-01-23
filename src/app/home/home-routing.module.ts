@@ -55,7 +55,11 @@ const routes: Routes = [
       {
         path: 'sale-reports',
         loadChildren: './sale-reports/sale-reports.module#SaleReportsModule'
-      }, 
+      },
+      {
+        path: 'sale-emi',
+        loadChildren: './sale-emi/sale-emi.module#SaleEmiModule'
+      },
       {
         path: 'report',
         loadChildren: './report/report.module#ReportModule',
