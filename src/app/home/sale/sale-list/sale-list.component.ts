@@ -29,6 +29,7 @@ export class SaleListComponent implements OnInit {
   dataList: SaleModel[] = [];
   pagi: Pagi = new Pagi();
   filter: string;
+  total_due_amount = 0
   orderDetails: any;
   returnItem = {
     sale_id: '',
@@ -76,6 +77,7 @@ export class SaleListComponent implements OnInit {
   showEmptyTable = false;
 
   getDiscount() {
+    this.discount_amount = 0
     if (!this.percentage) {
       $("#dicountValue").hide();
       this.discount_amount = this.orderDetails.discount;
@@ -85,7 +87,9 @@ export class SaleListComponent implements OnInit {
     }
   }
   getNet() {
-    this.orderDetails.total_payble_amount = this.orderDetails.sub_total - this.discount_amount;
+    this.orderDetails.total_due_amount = this.total_due_amount
+    this.orderDetails.total_payble_amount = this.orderDetails.sub_total - this.discount_amount
+    this.orderDetails.total_due_amount -= this.discount_amount
   }
   calculation() {
     this.getDiscount();
@@ -97,7 +101,8 @@ export class SaleListComponent implements OnInit {
       let data = {
         'id': this.orderDetails.order_id,
         'discount': this.discount_amount,
-        'total_payble_amount': this.orderDetails.total_payble_amount
+        'total_payble_amount': this.orderDetails.total_payble_amount,
+        'total_due_amount': this.orderDetails.total_due_amount
       };
       this.saleService.giveDiscount(data)
         .then(
@@ -225,6 +230,7 @@ export class SaleListComponent implements OnInit {
     this.homeService.saleDetails(saleId)
       .subscribe((data) => {
         this.orderDetails = data;
+        this.total_due_amount = this.orderDetails.total_due_amount
         this.getPriceInWord(this.orderDetails.total_payble_amount);
         console.log(data);
       });
