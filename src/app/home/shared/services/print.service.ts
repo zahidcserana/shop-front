@@ -573,7 +573,10 @@ export class PrintService {
         }
 
         .signature {
-          padding-top: 10px;
+          padding-bottom: 20px;
+        }
+        .warranty {
+          padding-top: 20px;
         }
 
         .note {
@@ -937,17 +940,18 @@ export class PrintService {
         <head>${appliedStyles}</head>
         <body>
           <div class="invoice-box">${invoiceContent.innerHTML}</div>
-          <div class="row signature">
-            <div class="text-center col-6">Signature</div>
-            <div class="text-center col-6">Signature</div>
-          </div>
-          <div class="row">
-            <div class="text-center col-6">-----------------</div>
-            <div class="text-center col-6">-----------------</div>
-          </div>
-          <div class="row note">
-            <div class="text-center col-12">
-              *** সকল পণ্য কোম্পানীকৃত ওয়ারেন্টি
+          
+          <div class="note text-center">
+            <div class="row signature">
+              <div class="text-center col-6">Customer Signature</div>
+              <div class="text-center col-6">Authorized Signature</div>
+            </div>
+            <div class="row signature">
+              <div class="text-center col-6">----------------------------------</div>
+              <div class="text-center col-6">----------------------------------</div>
+            </div>
+            <div class="row warranty">
+              <div class="text-center col-12">*** সকল পণ্য কোম্পানীকৃত ওয়ারেন্টি</div>
             </div>
           </div>
         </body>

@@ -18,7 +18,8 @@ export class SaleListComponent implements OnInit {
   @ViewChild('invoiceSection') invoiceSection!: ElementRef;
   @ViewChild('invoice2Section') invoice2Section!: ElementRef;
 
-  colorCode = '#82929A'; //728088, 92A2AC
+  colorCodeLight = '#82929A';
+  colorCode = '#5F6F76'; //728088, 92A2AC
   colorCodeText = '#ffff';
   currency = '৳';
   profitShow = false;

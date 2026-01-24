@@ -28,7 +28,8 @@ declare var require: any;
 export class SaleComponent implements OnInit {
   activeSerialIndex: number | null = null;
 
-  colorCode = '#82929A';
+  colorCodeLight = '#82929A';
+  colorCode = '#5F6F76';
   colorCodeText = '#ffff';
   currency = '৳';
   serialNo = ""
