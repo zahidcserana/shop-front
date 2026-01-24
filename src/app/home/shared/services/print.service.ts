@@ -544,7 +544,7 @@ export class PrintService {
       <style>
         body {
           font-family: Arial, sans-serif;
-          font-size: 17px;
+          font-size: 22px;
           margin: 0;
           padding: 0px;
           background: #fff;
@@ -572,13 +572,26 @@ export class PrintService {
           text-align: center;
         }
 
+        .signature {
+          padding-top: 10px;
+        }
+
+        .note {
+          position: fixed;
+          bottom: 10mm;
+          left: 0;
+          right: 0;
+          width: 100%;
+          font-size: 22px;
+        }
+
         .text-right { text-align: right; }
         .text-left { text-align: left; }
         .text-center { text-align: center; }
 
         #invoice_modal_id td {
           padding: 2px;
-          font-size: 17px;
+          font-size: 22px;
         }
       </style>
 
@@ -756,7 +769,7 @@ export class PrintService {
 
         html, body {
           font-family: "Arial", sans-serif;
-          font-size: 17px;
+          font-size: 22px;
           line-height: 1.2;
           margin: 0;
           padding: 0;
@@ -781,14 +794,14 @@ export class PrintService {
         }
 
         h1 {
-          font-size: 17px;
+          font-size: 22px;
           font-weight: bold;
           text-align: center;
           margin-bottom: 2px;
         }
 
         h2 {
-          font-size: 17px;
+          font-size: 22px;
           text-align: center;
           font-weight: normal;
           margin-bottom: 2px;
@@ -796,7 +809,7 @@ export class PrintService {
 
         .invoice-header p,
         .invoice-footer p {
-          font-size: 17px;
+          font-size: 22px;
           margin: 0;
           text-align: center;
         }
@@ -819,7 +832,7 @@ export class PrintService {
         th, td {
           border: 1px solid #B1C2CA;
           padding: 2px 3px;
-          font-size: 17px;
+          font-size: 22px;
           vertical-align: middle;
           word-wrap: break-word;
           text-align: center;
@@ -828,7 +841,7 @@ export class PrintService {
         td {
           border: 0.5px solid #B1C2CA;
           padding: 2px 3px;
-          font-size: 17px;
+          font-size: 22px;
           vertical-align: middle;
           word-wrap: break-word;
           text-align: center;
@@ -847,7 +860,7 @@ export class PrintService {
         tfoot td {
           border: none !important;
           padding: 3px;
-          font-size: 17px;
+          font-size: 22px;
         }
 
         /* Subtle top border before totals */
@@ -868,7 +881,7 @@ export class PrintService {
         }
 
         .amount-word {
-          font-size: 17px;
+          font-size: 22px;
           padding: 1%;
         }
 
@@ -879,7 +892,7 @@ export class PrintService {
         }
 
         .grand-total {
-          font-size: 17px;
+          font-size: 22px;
           font-weight: bold;
           background: #f2f2f2;
           border-top: 1px solid #B1C2CA !important;
@@ -924,6 +937,19 @@ export class PrintService {
         <head>${appliedStyles}</head>
         <body>
           <div class="invoice-box">${invoiceContent.innerHTML}</div>
+          <div class="row signature">
+            <div class="text-center col-6">Signature</div>
+            <div class="text-center col-6">Signature</div>
+          </div>
+          <div class="row">
+            <div class="text-center col-6">-----------------</div>
+            <div class="text-center col-6">-----------------</div>
+          </div>
+          <div class="row note">
+            <div class="text-center col-12">
+              *** সকল পণ্য কোম্পানীকৃত ওয়ারেন্টি
+            </div>
+          </div>
         </body>
       </html>
     `;

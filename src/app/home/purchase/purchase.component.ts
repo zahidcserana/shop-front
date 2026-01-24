@@ -110,6 +110,7 @@ export class PurchaseComponent implements OnInit {
   @ViewChild("boxTradePrice") boxTradePrice: ElementRef;
   @ViewChild("boxVAT") boxVAT: ElementRef;
   @ViewChild("boxMrp") boxMrp: ElementRef;
+  @ViewChild("unitPrice") unitPrice: ElementRef;
   @ViewChild("quantity") quantity: ElementRef;
   @ViewChild("remarks") remarks: ElementRef;
   @ViewChild("barCode") barCode: ElementRef;
@@ -149,7 +150,11 @@ export class PurchaseComponent implements OnInit {
   }
   gotoBoxTradePrice() {
     this.getMedicinePreviousPurchaseDetails();
-    this.boxTradePrice.nativeElement.focus();
+    if (this.config.enTP) {
+      this.unitPrice.nativeElement.focus();
+    } else {
+      this.boxTradePrice.nativeElement.focus();
+    }
   }
   gotoVAT(){
     this.boxVAT.nativeElement.focus();

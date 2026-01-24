@@ -8,12 +8,15 @@ export class AppConfigService {
   enSerialNo: boolean = false;
   enTP: boolean = false;
   enEMI: boolean = false;
+  logoUrl: string = '';
 
   loadFromStorage() {
     const userStr = localStorage.getItem('currentUser');
 
     if (userStr) {
       const user = JSON.parse(userStr);
+      const logoPath = user.logo;
+      this.logoUrl = logoPath ? logoPath : 'assets/images/logo3.png';
 
       if (user && user.config) {
         this.enBatch = !!user.config.en_batch;

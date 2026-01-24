@@ -901,21 +901,23 @@
               <span class="pharmacy">{{ orderDetails.pharmacy }}</span>
             </h3>
 
-            <div [ngStyle]="{ color: colorCode }">
-              {{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}
-            </div>
+            <strong>
+              <div [ngStyle]="{ color: colorCode }">
+                {{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}
+              </div>
 
-            <div [ngStyle]="{ color: colorCode }">
-              {{ 'For Order' | translate }}: {{ orderDetails.branch_mobile }}
-            </div>
+              <div [ngStyle]="{ color: colorCode }">
+                {{ 'For Order' | translate }}: {{ orderDetails.branch_mobile }}
+              </div>
 
-            <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }">
-              {{ 'For Service' | translate }}: {{ orderDetails.branch_contact_person_mobile }}
-            </div>
+              <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }">
+                {{ 'For Service' | translate }}: {{ orderDetails.branch_contact_person_mobile }}
+              </div>
 
-            <div [ngStyle]="{ color: colorCode }">
-              {{ 'Invoice by' | translate }} : {{ orderDetails.created_by }}
-            </div>
+              <div [ngStyle]="{ color: colorCode }">
+                {{ 'Invoice by' | translate }} : {{ orderDetails.created_by }}
+              </div>
+            </strong>
           </div>
 
           <!-- Right Section: Invoice + Customer -->
