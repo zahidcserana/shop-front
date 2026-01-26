@@ -130,6 +130,7 @@ export class SaleListComponent implements OnInit {
   }
 
   getPriceInWord(value: number) {
+    if (value === undefined) return
     const converter = require("number-to-words");
     let words = converter.toWords(value);
 
@@ -232,7 +233,6 @@ export class SaleListComponent implements OnInit {
         this.orderDetails = data;
         this.total_due_amount = this.orderDetails.total_due_amount
         this.getPriceInWord(this.orderDetails.total_payble_amount);
-        console.log(data);
       });
   }
   itemReturn(item) {
@@ -274,7 +274,7 @@ export class SaleListComponent implements OnInit {
     return false;
   }
 
-   checkAdmin() {
+  checkAdmin() {
     const user = JSON.parse(localStorage.getItem("currentUser"));
     if (user.user_type == 'ADMIN') {
       this.isAdmin = true;
@@ -282,45 +282,50 @@ export class SaleListComponent implements OnInit {
     }
     return this.adminStatus();
   }
+  
   submitReturn() {
     if (this.checkAdmin) {
-    this.saleService.returnItem(this.returnItem).then(
-        res => {
-          Swal.fire({
-            position: "center",
-            type: "success",
-            title: "Item successfully updated.",
-            showConfirmButton: false,
-            timer: 1500
-          });
-          this.getSaleDetails(this.returnItem.sale_id);
-          this.saleItem = '';
-          this.getSaleList(this.pagi.page, this.pagi.limit, this.filter);
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel',
+      }).then((result) => {
+
+        if (!result.value) {
+          return;
         }
-      );
-      // Swal.fire({
-      //   title: 'Are you sure?',
-      //   text: "You won't be able to revert this!",
-      //   type: 'warning',
-      //   showCancelButton: true,
-      //   customClass: {
-      //     confirmButton: 'confirm-button-class btn btn-success modal-button',
-      //     cancelButton: 'cancel-button-class btn btn-danger modal-button',
-      //   },
-      //   confirmButtonColor: '#3085d6',
-      //   cancelButtonColor: '#d33',
-      //   confirmButtonText: 'Yes'
-      // }).then((result) => {
-      //   if (result.value) {
-      //     this.saleService.returnItem(this.returnItem).then(
-      //       res => {
-      //         this.getSaleDetails(this.returnItem.sale_id);
-      //         this.saleItem = '';
-      //         this.getSaleList(this.pagi.page, this.pagi.limit, this.filter);
-      //       }
-      //     );
-      //   }
-      // });
+
+        this.saleService.returnItem(this.returnItem)
+          .then((res: any) => {
+
+            if (!res || res.success === false) {
+              throw res;
+            }
+
+            Swal.fire({
+              type: 'success',
+              title: 'Item successfully updated.',
+              timer: 1500,
+              showConfirmButton: false
+            });
+
+            this.getSaleDetails(this.returnItem.sale_id);
+            this.saleItem = '';
+            this.getSaleList(this.pagi.page, this.pagi.limit, this.filter);
+
+          })
+          .catch((err: any) => {
+            Swal.fire({
+              type: 'error',
+              title: 'Update failed',
+              text: err.error.message || 'Invalid quantity or server error.',
+            });
+
+          });
+      });
     } else {
       Swal.fire({
         type: "warning",
@@ -330,6 +335,7 @@ export class SaleListComponent implements OnInit {
       });
     }
   }
+
   removeItem(item) {
     Swal.fire({
       title: 'Are you sure?',
