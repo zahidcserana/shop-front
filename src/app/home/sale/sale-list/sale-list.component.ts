@@ -284,6 +284,15 @@ export class SaleListComponent implements OnInit {
   }
   
   submitReturn() {
+    if (this.returnItem.new_quantity < 1) {
+      return Swal.fire({
+        type: "warning",
+        title: "Oops...",
+        text: "Quantity must be minimun 1",
+        showConfirmButton: false
+      });
+    }
+
     if (this.checkAdmin) {
       Swal.fire({
         title: 'Are you sure?',
