@@ -1,0 +1,146 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div class="row sale-filter-form-background">
+          <div class="form-inline ml-2">
+            <div class="position-relative form-group search-div">
+              <ng-select
+                class="w-100 form-control-custom"
+                [items]="customers$ | async"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Customer: "
+                [typeahead]="customerInput$"
+                [(ngModel)]="filters.customer_id"
+                [clearable]="true"
+                [loading]="customLoader">
+
+                <ng-template ng-option-tmp let-item="item">
+                  <span class="text-muted text-customer">
+                    {{ item.name }}
+                    <small>({{ item.mobile }})</small>
+                  </span>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="position-relative form-group search-div ml-2 d-flex align-items-center">
+              <input
+                type="text"
+                placeholder="Select Month"
+                class="form-control"
+                bsDatepicker
+                [bsConfig]="bsConfig"
+                [(ngModel)]="selectedMonth"
+                (bsValueChange)="onMonthChange($event)"
+                name="selected_month"
+                readonly
+              />
+
+              <button
+                *ngIf="selectedMonth"
+                type="button"
+                title="Close calendar"
+                class="btn btn-sm btn-light ml-1"
+                (click)="clearMonth()">
+                ✕
+              </button>
+            </div>
+            <div class="position-relative form-group search-div ml-2">
+              <select [(ngModel)]="filters.status" class="form-control">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="partial">Partial</option>
+                <option value="paid">Paid</option>
+                <option value="overdue">Overdue</option>
+              </select>
+            </div>
+            
+            <button class="btn btn-primary ml-2" (click)="loadData()">Search</button>
+            <button class="btn btn-danger ml-2" (click)="reset()">Reset</button>
+          </div>
+        </div>
+        <div class="custom_loader_new" style="margin: 0 auto !important;" *ngIf="customLoader"></div>
+        <table id="sale-days-report" class="mb-0 table table-bordered" *ngIf="!customLoader">
+          <thead>
+            <tr>
+               <th>#</th>
+              <th>Invoice</th>
+              <th>Customer</th>
+              <th>Installment</th>
+              <th>Due Date</th>
+              <th>Amount {{ currency }}</th>
+              <th>Paid {{ currency }}</th>
+              <th>Status</th>
+              <th>{{ 'Action' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="emis.length > 0; else emptyData">
+            <tr *ngFor="
+                let item of emis;
+                trackBy: trackList;
+                let i = index;
+                let e = even;
+                let o = odd
+              " [ngClass]="{ odd: o, even: e }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.sale?.invoice }}</td>
+              <td>{{ item.customer?.name }}</td>
+              <td>{{ item.installment_no }}</td>
+              <td>{{ item.due_date | date }}</td>
+              <td>{{ item.amount | bdCurrencyFormat }}</td>
+              <td>{{ item.paid_amount | bdCurrencyFormat }}</td>
+              <td>
+                <span [ngClass]="{
+                  'badge badge-warning': item.status === 'pending',
+                  'badge badge-info': item.status === 'partial',
+                  'badge badge-success': item.status === 'paid',
+                  'badge badge-danger': item.status === 'overdue'
+                }">
+                  {{ item.status }}
+                </span>
+              </td>
+              <td>
+                <button
+                  *ngIf="item.status !== 'paid'"
+                  class="btn btn-sm btn-info"
+                  (click)="openPayModal(item)">
+                  Pay
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="5" class="text-center"><strong>Total</strong></td>
+              <td><strong>{{ summary.amount | bdCurrencyFormat: true }}</strong></td>
+              <td><strong>{{ summary.paid_amount | bdCurrencyFormat: true }}</strong></td>
+              <td><strong>{{ summary.due_amount | bdCurrencyFormat: true }} (Due)</strong></td>
+            </tr>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="6">Empty data</td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+
+        <div class="d-flex justify-content-between mt-2" *ngIf="totalPages > 1">
+          <button
+            class="btn btn-sm btn-secondary"
+            [disabled]="pageNo === 1"
+            (click)="prevPage()">
+            Previous
+          </button>
+
+          <button
+            class="btn btn-sm btn-secondary"
+            [disabled]="pageNo === totalPages"
+            (click)="nextPage()">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

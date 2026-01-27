@@ -513,3 +513,56 @@ table>thead{
 .padding-bot-input{
   padding-bottom: 8px !important;
 }
+
+/* ng-select base */
+.ng-select {
+  width: 100%;
+  min-width: 220px;
+}
+
+.ng-select .ng-select-container {
+  min-height: 38px;
+  background-color: #fff;
+}
+
+/* Dropdown panel */
+.ng-dropdown-panel {
+  background-color: #fff !important;
+}
+
+/* Each option row */
+.ng-dropdown-panel .ng-option {
+  background-color: #fff !important;
+  color: #212529;
+}
+
+/* Hover state */
+.ng-dropdown-panel .ng-option:hover {
+  background-color: #f8f9fa !important;
+}
+
+/* Selected option */
+.ng-dropdown-panel .ng-option-selected {
+  background-color: #e9ecef !important;
+}
+
+/* Your custom option wrapper */
+.customer-option {
+  background-color: #fff;
+}
+
+.form-control-custom {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + .75rem + 2px);
+  /* padding: .375rem .75rem; */
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}

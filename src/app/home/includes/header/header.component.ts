@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { LanguageService } from 'src/app/services/language.service';
+import { AppConfigService } from 'src/app/services/app-config.service';
 
 @Component({
   selector: "app-header",
@@ -21,8 +22,10 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private homeService: HomeService,
-    public langService: LanguageService
+    public langService: LanguageService,
+    public config: AppConfigService
   ) {
+    this.config.loadFromStorage()
   }
 
   toggleLanguage() {
