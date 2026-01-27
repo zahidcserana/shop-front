@@ -12,6 +12,16 @@
           placeholder="{{ 'Invoice' | translate }}"
         />
       </div>
+      <div class="form-group mx-sm-3 mb-2" *ngIf="config.enSerialNo">
+        <label for="inputPassword2" class="sr-only">{{ 'Serial No' | translate }}</label>
+        <input
+          type="text"
+          class="form-control"
+          name="serial_no"
+          [(ngModel)]="saleData.serial_no"
+          placeholder="{{ 'Serial No' | translate }}"
+        />
+      </div>
       <div class="form-group mx-sm-3 mb-2">
         <label for="medicine_name" class="sr-only">{{ 'Medicine' | translate }} </label>
         <div id="scrollable-dropdown-menu">

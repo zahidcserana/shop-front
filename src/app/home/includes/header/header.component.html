@@ -58,6 +58,7 @@
               <li class="nav-item"><a routerLink="/sale-reports" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SALE_DAYS_REPORT' | translate }}</a></li>
               <li class="nav-item"><a routerLink="/master-report/sale-report-supplier" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SUPPLIER_REPORT' | translate }}</a></li>
               <li class="nav-item"><a routerLink="/sale-due" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SALE_DUE' | translate }}</a></li>
+              <li *ngIf="config.enEMI" class="nav-item"><a routerLink="/sale-emi" class="nav-link"><i class="fa fa-caret-right"></i> {{ 'HEADER.SALE_EMI' | translate }}</a></li>
             </ul>
           </li>
         </div>

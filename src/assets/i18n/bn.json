@@ -12,6 +12,7 @@
     "SALE_DAYS_REPORT": "বিক্রয় দৈনিক রিপোর্ট ",
     "SUPPLIER_REPORT": "সাপ্লাইয়ার রিপোর্ট ",
     "SALE_DUE": "বাকি বিক্রয়",
+    "SALE_EMI": "ইএমআই বিক্রয়",
     "STOCK": "স্টক",
     "INVENTORY": "ইনভেন্টরি",
     "REPORT": "রিপোর্ট ",
@@ -186,6 +187,7 @@
   "Select Date": "তারিখ নির্বাচন",
   "Created by": "তৈরি করেছেন",
   "Damage": "ড্যামেজ",
-  "View Damage List": "ড্যামেজ তালিকা"
+  "View Damage List": "ড্যামেজ তালিকা",
+  "Batch No": "ব্যাচ নং"
 
 }

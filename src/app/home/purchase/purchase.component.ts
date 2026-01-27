@@ -10,6 +10,7 @@ import { dateFormat } from 'highcharts';
 import { ToastrService } from 'ngx-toastr';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { ShortcutInput, ShortcutEventOutput } from 'ng-keyboard-shortcuts';
+import { AppConfigService } from 'src/app/services/app-config.service';
 
 @Component({
   selector: 'app-purchase',
@@ -21,7 +22,14 @@ export class PurchaseComponent implements OnInit {
   showResetButton: boolean = false;
   currency = '৳';
 
-  constructor(private PurchaseService: PurchaseService, private homeService: HomeService, private toastr: ToastrService) { }
+  constructor(
+    private PurchaseService: PurchaseService,
+    private homeService: HomeService,
+    private toastr: ToastrService,
+    public config: AppConfigService
+  ) {
+    this.config.loadFromStorage();
+  }
 
   ngOnInit() {
     this.checkLocalStorage();
@@ -62,6 +70,7 @@ export class PurchaseComponent implements OnInit {
     medicine: "",
     medicine_id: "",
     quantity: "",
+    stock_quantity: "",
     batch_no: "",
     exp_date: "",
     piece_per_box: 1,
@@ -69,6 +78,7 @@ export class PurchaseComponent implements OnInit {
     box_vat: "",
     percentage: '',
     box_mrp: "",
+    unit_price: "",
     amount: "",
     remarks: "",
     low_stock_qty: "",
@@ -100,6 +110,7 @@ export class PurchaseComponent implements OnInit {
   @ViewChild("boxTradePrice") boxTradePrice: ElementRef;
   @ViewChild("boxVAT") boxVAT: ElementRef;
   @ViewChild("boxMrp") boxMrp: ElementRef;
+  @ViewChild("unitPrice") unitPrice: ElementRef;
   @ViewChild("quantity") quantity: ElementRef;
   @ViewChild("remarks") remarks: ElementRef;
   @ViewChild("barCode") barCode: ElementRef;
@@ -138,7 +149,12 @@ export class PurchaseComponent implements OnInit {
     
   }
   gotoBoxTradePrice() {
-    this.boxTradePrice.nativeElement.focus();
+    this.getMedicinePreviousPurchaseDetails();
+    if (this.config.enTP) {
+      this.unitPrice.nativeElement.focus();
+    } else {
+      this.boxTradePrice.nativeElement.focus();
+    }
   }
   gotoVAT(){
     this.boxVAT.nativeElement.focus();
@@ -262,17 +278,20 @@ export class PurchaseComponent implements OnInit {
       }
     }
     if (search_medicine_id) {
-      let data = { 'medicine_id' : search_medicine_id };
+      let data = { 'medicine_id' : search_medicine_id, 'batch_no': this.purchaseItem.batch_no };
       this.PurchaseService.getPreviousPurchasedetails(data)
         .then(details => {
           // const details = response.data;
           this.purchaseItem.piece_per_box = details.pieces_per_box;
           this.purchaseItem.box_trade_price = details.trade_price;
+          this.purchaseItem.unit_price = details.unit_price;
           this.purchaseItem.box_vat = details.box_vat;
           this.purchaseItem.box_mrp = details.mrp;
+          this.purchaseItem.stock_quantity = details.stock_quantity;
           this.purchaseItem.low_stock_qty = details.low_stock_qty;
           this.purchaseItem.bar_code = details.barcode;
           this.purchaseItem.percentage = details.percentage;
+          this.purchaseItem.batch_no = details.batch_no === undefined ? this.purchaseItem.batch_no : details.batch_no;
           this.purchaseItem.quantity = '';
         })
         .catch(err => {
@@ -281,14 +300,13 @@ export class PurchaseComponent implements OnInit {
       this.UnitVal = false;
       this.purchaseItem.update_price = true;
       // this.toastr.success('Box price taken!');
-      this.gotoBoxTradePrice();
+      // this.gotoBoxTradePrice();
     } else {
       this.medicineName.nativeElement.focus()
     }
   }
 
   getMedicineUnitPriceDetails(){
-    console.log('shadow');
     let search_medicine_id = 0;
     for (let medicine of this.searchData) {
       if (medicine.name == this.purchaseItem.medicine) {
@@ -431,6 +449,7 @@ export class PurchaseComponent implements OnInit {
       exp_date: "",
       piece_per_box: "",
       box_trade_price: "",
+      unit_price: "",
       box_vat: "",
       box_mrp: "",
       amount: "",
@@ -719,6 +738,7 @@ export class PurchaseComponent implements OnInit {
           exp_date: "",
           piece_per_box: 1,
           box_trade_price: "",
+          unit_price: "",
           box_vat: "",
           box_mrp: "",
           amount: "",
@@ -745,6 +765,7 @@ export class PurchaseComponent implements OnInit {
       $("#typeahead-basic").focus();
     }
     this.medicineName.nativeElement.focus();
+    this.checkLocalStorage();
   }
 
   deleteRow(row){

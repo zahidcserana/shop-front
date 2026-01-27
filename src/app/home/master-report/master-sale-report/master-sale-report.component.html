@@ -168,9 +168,8 @@
                     </ng-container>
                     <ng-container>
                       <td class="sale-item-info">
-                        {{ product.medicine.type }}.&nbsp;{{ product.medicine.name }}
-                        <br>
-                        {{ product.medicine.brand }}
+                        {{ product.medicine.name }} <br>
+                        <small>{{ product.medicine.brand }} <span *ngIf="config.enBatch">({{ product.batch_no }})</span></small>
                       </td>
                       <td class="sale-item-info">{{ product.quantity }}</td>
                       <td class="sale-item-info">{{ product.tp | number: "1.2-2" }}</td>

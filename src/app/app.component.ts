@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ShortcutInput, ShortcutEventOutput } from 'ng-keyboard-shortcuts';
 import { interval, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { AppConfigService } from './services/app-config.service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +17,11 @@ export class AppComponent {
   constructor(
     private _script: ScriptLoaderService,
     private MainHomeService: HomeService,
-    private router: Router
+    private router: Router,
+    private config: AppConfigService
   ) {
     this.getSettings();
+    this.config.loadFromStorage();
   }
   ngOnInit() {
     this.MainHomeService.navigationTo();

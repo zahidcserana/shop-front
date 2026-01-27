@@ -17,6 +17,7 @@ import { ShortcutInput, ShortcutEventOutput } from "ng-keyboard-shortcuts";
 import { Router } from "@angular/router";
 import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
 import { PrintService } from "../shared/services/print.service";
+import { AppConfigService } from "src/app/services/app-config.service";
 declare var require: any;
 
 @Component({
@@ -25,16 +26,21 @@ declare var require: any;
   styleUrls: ["./sale.component.css"],
 })
 export class SaleComponent implements OnInit {
+  activeSerialIndex: number | null = null;
 
-  colorCode = '#82929A';
+  colorCodeLight = '#82929A';
+  colorCode = '#5F6F76';
   colorCodeText = '#ffff';
   currency = '৳';
+  serialNo = ""
+  emiAmount = 0
 
   cartItem: any = {
     medicine: "",
     medicine_id: "",
     quantity: "",
-    batch_no: "",
+    serial_no: [],
+    batch_no: "BAT-321",
     token: "",
     unit_type: "PCS",
   };
@@ -54,6 +60,7 @@ export class SaleComponent implements OnInit {
     discount_type: "fixed",
     discount_amount: 0,
     payment_type: "CASH",
+    installments: 0,
     customer_name: "",
     customer_mobile: "",
     prescription_image: "",
@@ -73,6 +80,7 @@ export class SaleComponent implements OnInit {
   };
   availableQuantity = {
     medicine_id: "",
+    batch_no:""
   };
   priceInWord = "";
   availability: number;
@@ -90,6 +98,7 @@ export class SaleComponent implements OnInit {
   dueValidationStatus: boolean = false;
   @ViewChild("cartMedicine") Medicine: ElementRef;
   @ViewChild("cartQty") cartQty: ElementRef;
+  @ViewChild("cartSerial") cartSerial: ElementRef;
   @ViewChild("modalButton") modalButton: ElementRef;
   @ViewChild("tendered") tendered: ElementRef;
   @ViewChild("cartBatch") cartBatch: ElementRef;
@@ -110,11 +119,13 @@ export class SaleComponent implements OnInit {
     private modalService: ModalService,
     private saleService: SaleService,
     private router: Router,
-    private printService: PrintService
+    private printService: PrintService,
+    public config: AppConfigService
   ) {
+    this.config.loadFromStorage();
     const user = JSON.parse(localStorage.getItem("currentUser"));
     this.invoiceVersion = user.pos_version
-   }
+  }
 
    printHandler(mode: 'a4' | 'pos'): void {
     if (this.invoiceVersion == 2) {
@@ -170,6 +181,15 @@ export class SaleComponent implements OnInit {
       }
     );
   }
+
+  toggleSerial(index: number) {
+    if (this.activeSerialIndex === index) {
+      this.activeSerialIndex = null; // close
+    } else {
+      this.activeSerialIndex = index; // open
+    }
+  }
+
   getPaymentTypes() {
     this.homeService.allPaymentTypes().subscribe((res) => {
       this.paymentTypes = res;
@@ -309,7 +329,8 @@ export class SaleComponent implements OnInit {
           }
         } else {
           for (let medicine of res) {
-            this.medicineList.push(medicine.name);
+            let medicine_name = this.config.enBatch ? medicine.name + ' #' + medicine.batch_no: medicine.name
+            this.medicineList.push(medicine_name);
           }
         }
         return this.medicineList;
@@ -387,13 +408,23 @@ export class SaleComponent implements OnInit {
       $(".tr-change").removeClass("tdChange");
     }
   }
+
+  getEmiAmount() {
+    this.emiAmount = this.order.total_due_amount / this.order.installments
+  }
+
   checkIsLessZero(value) {
     return value < 0 ? 0 : value;
   }
   goQty() {
+    this.cartItem.serial_no = []
     this.getAvailableQuantity();
     if (this.cartItem.medicine) {
-      this.cartQty.nativeElement.focus();
+      if (this.config.enSerialNo) {
+        this.cartSerial.nativeElement.focus();
+      } else {
+        this.cartQty.nativeElement.focus();
+      }
     }
   }
   goTendered() {
@@ -406,9 +437,10 @@ export class SaleComponent implements OnInit {
       : 0;
     this.order.tendered = this.order.total_payble_amount;
   }
+
   checkingAvailability() {
     if (this.availability === null) {
-      return true;
+      return false;
     }
     if (this.availability >= this.cartItem.quantity) {
       return true;
@@ -432,7 +464,7 @@ export class SaleComponent implements OnInit {
     this.orderId = 0;
     if (this.cartItem.medicine && this.cartItem.quantity) {
       if (this.checkingAvailability()) {
-        this.getMedicineId();
+        // this.getMedicineId();
         const token = localStorage.getItem("token");
         this.cartItem.token = token ? token : "";
         this.saleService
@@ -450,6 +482,8 @@ export class SaleComponent implements OnInit {
               this.batchList = [];
               $("#myForm").trigger("reset");
               this.orderId = 0;
+              this.cartItem.serial_no = []
+              this.cartItem.medicine = ''
               this.Medicine.nativeElement.focus();
               if (this.isAntibiotic) {
                 Swal.fire({
@@ -481,6 +515,10 @@ export class SaleComponent implements OnInit {
           });
       } else {
         let str = "Only " + this.availability + " Pcs is available";
+
+        if (this.availability === null) {
+          str = "Empty stock";
+        }
         Swal.fire({
           type: "warning",
           title: "Oops...",
@@ -511,10 +549,22 @@ export class SaleComponent implements OnInit {
       .getBatchList(this.batchSearch)
       .subscribe((data) => (this.batchList = data));
   }
+
+  addSerial() {
+    if (this.serialNo === "") return
+    this.cartItem.serial_no.push(this.serialNo) 
+    this.cartItem.quantity++
+    this.serialNo = ""
+  }
+
   getAvailableQuantity() {
     this.getMedicineId();
+    this.checkQuantity();
+  }
+  checkQuantity() {
     if (this.cartItem.medicine_id > 0) {
       this.availableQuantity.medicine_id = this.cartItem.medicine_id;
+      this.availableQuantity.batch_no = this.cartItem.batch_no;
       this.saleService
         .getAvailableQuantity(this.availableQuantity)
         .subscribe(
@@ -527,10 +577,16 @@ export class SaleComponent implements OnInit {
       this.availability = null;
     }
   }
+
   getMedicineId() {
-    console.log(this.cartItem.medicine);
+    if (this.cartItem.medicine === '' || this.cartItem.medicine === undefined) return
+    let cartProduct = this.cartItem.medicine.split('#')
+    if (cartProduct.length > 1) {
+      this.cartItem.batch_no = cartProduct[1]
+    }
+
     for (let s of this.searchData) {
-      if (s.name == this.cartItem.medicine) {
+      if (s.name == cartProduct[0].trim()) {
         this.cartItem.medicine_id = s.id;
         this.company = s.company;
       }
@@ -546,6 +602,16 @@ export class SaleComponent implements OnInit {
   updateItemPrice(cart, i) {
     this.priceUpdate.item_id = cart.id;
     this.priceUpdate.item_price = $("#unit_price_" + i).val();
+
+    if (this.priceUpdate.item_price < cart.tp) {
+      return Swal.fire({
+            type: "warning",
+            title: "Oops...",
+            text: "RPU should be greater than CPU",
+            showConfirmButton: false,
+          });
+    }
+
     this.saleService
       .updateItemPrice(this.priceUpdate)
       .then((res) => {
@@ -566,6 +632,7 @@ export class SaleComponent implements OnInit {
         this.increament = null;
       });
   }
+
   decreaseQuant(cart, i) {
     if (cart.quantity > 1) {
       this.increament = i;
