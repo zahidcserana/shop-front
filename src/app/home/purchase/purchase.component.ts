@@ -156,6 +156,9 @@ export class PurchaseComponent implements OnInit {
       this.boxTradePrice.nativeElement.focus();
     }
   }
+  gotoCPU() {
+    this.boxTradePrice.nativeElement.focus();
+  }
   gotoVAT(){
     this.boxVAT.nativeElement.focus();
   }

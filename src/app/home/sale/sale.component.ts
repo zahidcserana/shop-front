@@ -29,6 +29,7 @@ export class SaleComponent implements OnInit {
   activeSerialIndex: number | null = null;
 
   colorCodeLight = '#82929A';
+  colorCodeSuper = '#c4d2da';
   colorCode = '#5F6F76';
   colorCodeText = '#ffff';
   currency = '৳';

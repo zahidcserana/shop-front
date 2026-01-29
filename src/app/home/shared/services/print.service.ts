@@ -553,6 +553,7 @@ export class PrintService {
         table {
           width: 100% !important;
           border-collapse: collapse;
+          line-height: 1.3;
         }
 
         th, td {
@@ -943,12 +944,14 @@ export class PrintService {
           
           <div class="note text-center">
             <div class="row signature">
-              <div class="text-center col-6">Customer Signature</div>
-              <div class="text-center col-6">Authorized Signature</div>
+              <div class="col-4">----------------------------------</div>
+              <div class="text-center col-4">&nbsp;</div>
+              <div class="text-right col-4">----------------------------------</div>
             </div>
             <div class="row signature">
-              <div class="text-center col-6">----------------------------------</div>
-              <div class="text-center col-6">----------------------------------</div>
+              <div class="col-4">Customer Signature</div>
+              <div class="text-center col-4">&nbsp;</div>
+              <div class="text-right col-4">Authorized Signature</div>
             </div>
             <div class="row warranty">
               <div class="text-center col-12">*** সকল পণ্য কোম্পানীকৃত ওয়ারেন্টি</div>
