@@ -927,7 +927,7 @@
               <strong><span class="pharmacy">{{ orderDetails.pharmacy }}</span></strong>
             </h3>
           </div>
-          <div class="col-4 text-right">
+          <div class="col-4">
             <h3 class="m-0">
               <strong [ngStyle]="{ color: colorCode }">
                 {{ 'INVOICE' | translate }}
@@ -938,9 +938,9 @@
 
         <div class="row mb-4">
           <div [ngStyle]="{ color: colorCode }" class="col-8 text-left">
-            <strong>{{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</strong>
+            <strong>{{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</strong>
           </div>
-          <div [ngStyle]="{ color: colorCode }" class="col-4 text-right">
+          <div [ngStyle]="{ color: colorCode }" class="col-4">
             <strong># {{ orderDetails.invoice }}</strong>
           </div>
         </div>
@@ -949,17 +949,17 @@
           <div class="col-6 text-left">
             <div [ngStyle]="{ color: colorCode }" class="row no-gutters mb-1">
               <div class="col-5"><strong>{{ 'For Order' | translate }}</strong></div>
-              <div class="col-7">: {{ orderDetails.branch_mobile }}</div>
+              <div class="col-7">: <b>{{ orderDetails.branch_mobile }}</b></div>
             </div>
 
             <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }" class="row no-gutters mb-1">
               <div class="col-5"><strong>{{ 'For Service' | translate }}</strong></div>
-              <div class="col-7">: {{ orderDetails.branch_contact_person_mobile }}</div>
+              <div class="col-7">: <b>{{ orderDetails.branch_contact_person_mobile }}</b></div>
             </div>
 
             <div [ngStyle]="{ color: colorCode }" class="row no-gutters mb-1">
               <div class="col-5"><strong>{{ 'Invoice by' | translate }}</strong></div>
-              <div class="col-7">: {{ orderDetails.created_by }}</div>
+              <div class="col-7">: <b>{{ orderDetails.created_by }}</b></div>
             </div>
           </div>
 
@@ -1054,20 +1054,6 @@
                 {{ currency }}&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
               </td>
             </tr>
-            <tr>
-              <td colspan="2">&nbsp;</td>
-              <td *ngIf="freeQtyShow">&nbsp;</td>
-              <td *ngIf="tpShow">&nbsp;</td>
-              <td *ngIf="profitShow">&nbsp;</td>
-              <td colspan="2" style="text-align: left;font-weight: bold">
-                Paid Amount
-              </td>
-              <td style="text-align: right;padding-right: 2%">
-                {{ currency }}&nbsp;{{
-                    (orderDetails.total_payble_amount - orderDetails.total_due_amount) | number: "1.2-2"
-                  }}
-              </td>
-            </tr>
             <tr [ngStyle]="{ backgroundColor: colorCodeSuper, color: colorCodeText }">
               <td colspan="2" class="thanku"  [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
                 {{ 'THANK YOU FOR YOUR BUSINESS' | translate }}
@@ -1080,6 +1066,20 @@
               </td>
               <td style="text-align: right;padding-right: 2%" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
                 {{ currency }} {{ orderDetails.total_payble_amount | number: "1.2-2"}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Payment
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                {{ currency }}&nbsp;{{
+                    (orderDetails.total_payble_amount - orderDetails.total_due_amount) | number: "1.2-2"
+                  }}
               </td>
             </tr>
             <tr *ngIf="orderDetails.total_due_amount">
