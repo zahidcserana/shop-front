@@ -102,6 +102,7 @@ export class SaleComponent implements OnInit {
   @ViewChild("cartSerial") cartSerial: ElementRef;
   @ViewChild("modalButton") modalButton: ElementRef;
   @ViewChild("tendered") tendered: ElementRef;
+  @ViewChild("installment") installment: ElementRef;
   @ViewChild("cartBatch") cartBatch: ElementRef;
   @ViewChild("customerName") customerName: ElementRef;
   @ViewChild('invoiceSection') invoiceSection!: ElementRef;
@@ -189,6 +190,14 @@ export class SaleComponent implements OnInit {
     } else {
       this.activeSerialIndex = index; // open
     }
+  }
+
+  onPaymentTypeChange(type: string) {
+    this.order.tendered = 0;
+    this.getChange()
+    setTimeout(() => {
+      this.installment.nativeElement.focus();
+    }, 1000);
   }
 
   getPaymentTypes() {
