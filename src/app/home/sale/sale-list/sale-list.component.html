@@ -928,17 +928,15 @@
             </h3>
           </div>
           <div class="col-4">
-            <h3 class="m-0">
-              <strong [ngStyle]="{ color: colorCode }">
+              <strong [ngStyle]="{ color: colorCode }" style="font-size: 40px;">
                 {{ 'INVOICE' | translate }}
               </strong>
-            </h3>
           </div>
         </div>
 
         <div class="row mb-4">
           <div [ngStyle]="{ color: colorCode }" class="col-8 text-left">
-            <strong>{{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</strong>
+            <h4>{{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</h4>
           </div>
           <div [ngStyle]="{ color: colorCode }" class="col-4">
             <strong># {{ orderDetails.invoice }}</strong>
@@ -947,17 +945,17 @@
 
         <div class="row">
           <div class="col-6 text-left">
-            <div [ngStyle]="{ color: colorCode }" class="row no-gutters mb-1">
+            <div class="row no-gutters mb-1">
               <div class="col-5"><strong>{{ 'For Order' | translate }}</strong></div>
               <div class="col-7">: <b>{{ orderDetails.branch_mobile }}</b></div>
             </div>
 
-            <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }" class="row no-gutters mb-1">
+            <div *ngIf="orderDetails.branch_contact_person_mobile" class="row no-gutters mb-1">
               <div class="col-5"><strong>{{ 'For Service' | translate }}</strong></div>
               <div class="col-7">: <b>{{ orderDetails.branch_contact_person_mobile }}</b></div>
             </div>
 
-            <div [ngStyle]="{ color: colorCode }" class="row no-gutters mb-1">
+            <div class="row no-gutters mb-1">
               <div class="col-5"><strong>{{ 'Invoice by' | translate }}</strong></div>
               <div class="col-7">: <b>{{ orderDetails.created_by }}</b></div>
             </div>
@@ -1069,6 +1067,9 @@
               </td>
             </tr>
             <tr>
+              <td colspan="8">&nbsp;</td>
+            </tr>
+            <tr>
               <td colspan="2">&nbsp;</td>
               <td *ngIf="freeQtyShow">&nbsp;</td>
               <td *ngIf="tpShow">&nbsp;</td>
@@ -1107,6 +1108,9 @@
                     orderDetails.total_profit | number: "1.2-2"
                   }}
               </td>
+            </tr>
+            <tr>
+              <td colspan="8">&nbsp;</td>
             </tr>
             <tr>
               <td colspan="8" class="text-center amount-word">
