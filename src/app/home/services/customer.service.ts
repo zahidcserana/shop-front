@@ -13,14 +13,14 @@ export class CustomerService {
   }
 
   addCustomer(data: any) {
-    return this.http.post('customer/store', data).toPromise();
+    return this.http.post('customers/store', data).toPromise();
   }
 
   editCustomer(id, data: any) {
-    return this.http.post(`customer/${id}/update`, data).toPromise();
+    return this.http.post(`customers/${id}/update`, data).toPromise();
   }
 
   deleteCustomer(id) {
-    return this.http.delete(`customer/${id}/delete`).pipe(map(res => res));
+    return this.http.delete(`customers/${id}/delete`).pipe(map(res => res));
   }
 }

@@ -34,7 +34,7 @@ export class CustomerComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.data.subscribe(
       val => {
-        this.customerList = val && val['customers'] ? val['customers'] : [];
+        this.customerList = val && val['customers'] ? val['customers']['data'] : [];
       }
     );
 
@@ -75,7 +75,7 @@ export class CustomerComponent implements OnInit {
   getCustomerList() {
     this.customerService.getCustomers()
       .subscribe((res) => {
-        this.customerList = res;
+        this.customerList = res.data;
       });
   }
 
@@ -86,7 +86,7 @@ export class CustomerComponent implements OnInit {
     }
     this.customerService.addCustomer(this.registerForm.value).then(
       res => {
-        if (res.success === true) {
+        if (res.status === true) {
           this.modalService.close('create-modal');
           this.registerForm.reset();
           $('#myForm').trigger('reset');
@@ -142,7 +142,7 @@ export class CustomerComponent implements OnInit {
   update() {
     this.customerService.editCustomer(this.customer_id, this.customerInfo).then(
       res => {
-        if (res.success === true) {
+        if (res.status === true) {
           $('#myForm').trigger('reset');
           this.editForm = false;
           this.modalService.close('edit-modal');
