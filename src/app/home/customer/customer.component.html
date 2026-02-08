@@ -40,6 +40,7 @@
               <td>{{ item.status }}</td>
               <td>
                 <a style="cursor: pointer" class="btn btn-info fa fa-edit" (click)="editCustomer(item.id)"></a> &nbsp;
+                <a style="cursor: pointer" class="btn btn-primary fa fa-file" (click)="openDocumentModal(item)"></a> &nbsp;
                 <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="remove(item.id)"></a>
               </td>
             </tr>
@@ -47,7 +48,7 @@
           <ng-template #emptyData>
             <tbody>
               <tr>
-                <td colspan="7" class="empty-data">{{ 'Empty data' | translate }}</td>
+                <td colspan="8" class="empty-data">{{ 'Empty data' | translate }}</td>
               </tr>
             </tbody>
           </ng-template>
@@ -96,6 +97,66 @@
             {{ 'Cancel' | translate }}
           </button>
         </form>
+      </main>
+    </div>
+  </div>
+</jw-modal>
+
+<jw-modal id="documents-modal" class="view-modal data-view-modal">
+  <h3 style="text-align: center;"> {{ 'Upload Customer Documents' | translate }}</h3>
+  <div class="row" style="padding: 25px">
+    <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
+      <main style="margin-bottom: 5%">
+        <form class="form" (keydown.enter)="$event.preventDefault()" style="padding-top: 10px">
+          <div class="form-group">
+            <label>{{ 'Document Type' | translate }}</label>
+            <input type="text" class="form-control" [(ngModel)]="documentType" name="documentType"
+              placeholder="Document Type" />
+          </div>
+          <div class="form-group">
+            <label>{{ 'Select Files' | translate }}</label>
+            <input type="file" class="form-control" multiple (change)="onDocumentFilesChange($event)" />
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn btn-primary" (click)="uploadDocuments()" [disabled]="isUploadingDocuments">
+              {{ 'Upload' | translate }}
+            </button>
+            &nbsp;
+            <a (click)="closeModal('documents-modal')" class="btn btn-warning btn-xs">
+              {{ 'Close' | translate }}
+            </a>
+          </div>
+        </form>
+
+        <div class="table-responsive">
+          <table class="data-list mb-0 table table-bordered">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>{{ 'Document Type' | translate }}</th>
+                <th>{{ 'File Name' | translate }}</th>
+                <th>{{ 'Action' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="documentList.length > 0; else emptyDocuments">
+              <tr *ngFor="let doc of documentList; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ doc.type }}</td>
+                <td>{{ doc.file_name }}</td>
+                <td>
+                  <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="deleteDocument(doc)"></a>
+                </td>
+              </tr>
+            </tbody>
+            <ng-template #emptyDocuments>
+              <tbody>
+                <tr>
+                  <td colspan="4" class="empty-data">{{ 'No documents found' | translate }}</td>
+                </tr>
+              </tbody>
+            </ng-template>
+          </table>
+        </div>
       </main>
     </div>
   </div>

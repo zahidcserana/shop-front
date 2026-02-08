@@ -22,6 +22,11 @@ export class CustomerComponent implements OnInit {
   sub: Subscription;
   customer_id: number;
   customerInfo: Customer = new Customer();
+  documentList: any[] = [];
+  documentCustomer: any;
+  documentType = '';
+  documentFiles: File[] = [];
+  isUploadingDocuments = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,6 +55,19 @@ export class CustomerComponent implements OnInit {
 
   openModal(modal: string) {
     this.modalService.open(modal);
+  }
+
+  openDocumentModal(customer: any) {
+    this.documentCustomer = customer;
+    this.documentType = '';
+    this.documentFiles = [];
+    this.documentList = [];
+    if (customer && customer.id) {
+      this.customerService.listDocuments(customer.id).subscribe((res) => {
+        this.documentList = res || [];
+      });
+    }
+    this.modalService.open('documents-modal');
   }
   closeModal(id: string) {
     this.modalService.close(id);
@@ -176,5 +194,82 @@ export class CustomerComponent implements OnInit {
 
   trackList(index, pro) {
     return pro ? pro.id : null;
+  }
+
+  onDocumentFilesChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input || !input.files) {
+      this.documentFiles = [];
+      return;
+    }
+    this.documentFiles = Array.from(input.files);
+  }
+
+  uploadDocuments() {
+    if (!this.documentCustomer || !this.documentCustomer.id) {
+      return;
+    }
+    if (!this.documentType) {
+      Swal.fire({
+        type: "warning",
+        title: "Document type is required.",
+      });
+      return;
+    }
+    if (!this.documentFiles.length) {
+      Swal.fire({
+        type: "warning",
+        title: "Please select at least one file.",
+      });
+      return;
+    }
+
+    const payload = new FormData();
+    payload.append('type', this.documentType);
+    this.documentFiles.forEach((file) => {
+      payload.append('files[]', file);
+    });
+
+    this.isUploadingDocuments = true;
+    this.customerService.uploadDocuments(this.documentCustomer.id, payload).subscribe(
+      (res) => {
+        const uploaded = Array.isArray(res) ? res : [];
+        this.documentList = [...uploaded, ...this.documentList];
+        this.documentType = '';
+        this.documentFiles = [];
+        this.isUploadingDocuments = false;
+        Swal.fire({
+          position: "center",
+          type: "success",
+          title: "Documents uploaded.",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      },
+      () => {
+        this.isUploadingDocuments = false;
+        Swal.fire({
+          type: "warning",
+          title: "Upload failed.",
+          text: "Something went wrong!"
+        });
+      }
+    );
+  }
+
+  deleteDocument(document) {
+    if (!this.documentCustomer || !this.documentCustomer.id) {
+      return;
+    }
+    this.customerService.deleteDocument(this.documentCustomer.id, document.id).subscribe(() => {
+      this.documentList = this.documentList.filter((item) => item.id !== document.id);
+      Swal.fire({
+        position: "center",
+        type: "success",
+        title: "Document deleted.",
+        showConfirmButton: false,
+        timer: 1500
+      });
+    });
   }
 }

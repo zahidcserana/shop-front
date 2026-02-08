@@ -23,4 +23,16 @@ export class CustomerService {
   deleteCustomer(id) {
     return this.http.delete(`customers/${id}/delete`).pipe(map(res => res));
   }
+
+  listDocuments(id) {
+    return this.http.get(`customers/${id}/documents`).pipe(map(res => res));
+  }
+
+  uploadDocuments(id, payload: FormData) {
+    return this.http.post(`customers/${id}/documents/upload`, payload).pipe(map(res => res));
+  }
+
+  deleteDocument(customerId, documentId) {
+    return this.http.delete(`customers/${customerId}/documents/${documentId}/delete`).pipe(map(res => res));
+  }
 }
