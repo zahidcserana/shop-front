@@ -81,6 +81,11 @@ const routes: Routes = [
         resolve: { suppliers: HomeResolveService }
       },
       {
+        path: 'customer',
+        loadChildren: './customer/customer.module#CustomerModule',
+        resolve: { customers: HomeResolveService }
+      },
+      {
         path: 'notifications',
         loadChildren: './notification/notification.module#NotificationModule'
       },

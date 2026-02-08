@@ -26,6 +26,7 @@
     "PRODUCTS": "পণ্য",
     "BRANDS_TYPES": "ব্র্যান্ড ও টাইপ",
     "SUPPLIERS": "সাপ্লাইয়ার",
+    "CUSTOMERS": "কাস্টমার",
     "SUBSCRIPTION": "সাবস্ক্রিপশন",
     "HOTKEY": "হট-কী",
     "DAMAGE": "ড্যামেজ"
@@ -96,6 +97,10 @@
   "Total Due Amount": "মোট বাকি টাকা",
   "Customer Name": "গ্রাহকের নাম",
   "Customer Mobile": "গ্রাহকের মোবাইল",
+  "New Customer": "নতুন কাস্টমার",
+  "Customer Info": "কাস্টমার তথ্য",
+  "Customer Edit": "কাস্টমার সম্পাদনা",
+  "Customer name is required": "কাস্টমারের নাম আবশ্যক",
   "Empty data": "কোনো তথ্য নেই",
   "Sold by": "বিক্রেতা",
   "Address": "ঠিকানা",

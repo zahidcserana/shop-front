@@ -1,0 +1,152 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div>
+          <div style="float: right">
+            <button (click)="openModal('create-modal')" id="item_id" class="mb-2 mr-2 btn btn-success btn-block">
+              <i class="fa fa-user"></i>
+              {{ 'New Customer' | translate }}
+            </button>
+          </div>
+        </div>
+        <table class="data-list mb-0 table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{{ 'Name' | translate }}</th>
+              <th>{{ 'Email' | translate }}</th>
+              <th>{{ 'Mobile' | translate }}</th>
+              <th>{{ 'Balance' | translate }}</th>
+              <th>{{ 'Address' | translate }}</th>
+              <th>{{ 'Status' | translate }}</th>
+              <th>{{ 'Action' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="customerList.length > 0; else emptyData">
+            <tr *ngFor="
+                  let item of customerList;
+                  trackBy: trackList;
+                  let i = index;
+                  let e = even;
+                  let o = odd
+                " [ngClass]="{ odd: o, even: e }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.mobile }}</td>
+              <td>{{ item.balance }}</td>
+              <td>{{ item.address }}</td>
+              <td>{{ item.status }}</td>
+              <td>
+                <a style="cursor: pointer" class="btn btn-info fa fa-edit" (click)="editCustomer(item.id)"></a> &nbsp;
+                <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="remove(item.id)"></a>
+              </td>
+            </tr>
+          </tbody>
+          <ng-template #emptyData>
+            <tbody>
+              <tr>
+                <td colspan="7" class="empty-data">{{ 'Empty data' | translate }}</td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<jw-modal id="edit-modal" class="view-modal data-view-modal">
+  <h3 style="text-align: center;"> {{ 'Customer Edit' | translate }}</h3>
+  <div class="row" style="padding: 25px">
+    <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
+      <main style="margin-bottom: 5%">
+        <form class="form" #form="ngForm" id="myForm" (ngSubmit)="update()" style="padding-top: 10px">
+          <div class="form-group">
+            <label for="inputPassword2">{{ 'Name' | translate }}</label>
+            <input type="text" class="form-control" name="name" [(ngModel)]="customerInfo.name" placeholder="Name" />
+          </div>
+          <div class="form-group">
+            <label for="inputPassword2"> {{ 'Email' | translate }}</label>
+            <input type="text" class="form-control" name="email" [(ngModel)]="customerInfo.email" placeholder="Email" />
+          </div>
+          <div class="form-group">
+            <label for="inputPassword2"> {{ 'Mobile' | translate }}</label>
+            <input type="text" class="form-control" name="mobile" [(ngModel)]="customerInfo.mobile" placeholder="Mobile" />
+          </div>
+          <div class="form-group">
+            <label for="inputPassword2"> {{ 'Address' | translate }}</label>
+            <input type="text" class="form-control" name="address" [(ngModel)]="customerInfo.address" placeholder="Address" />
+          </div>
+          <div class="form-group">
+            <label for="inputPassword2"> {{ 'Status' | translate }}</label>
+            <select name="customer_status" id="status" [(ngModel)]="customerInfo.status" class="form-control">
+              <option value="ACTIVE">{{ 'ACTIVE' | translate }}</option>
+              <option value="INACTIVE">{{ 'INACTIVE' | translate }}</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary mb-2" style="margin-right:10px">
+            <i class="fa fa-calendar-check-o"></i>
+            {{ 'Update' | translate }}
+          </button>
+          <button type="button" (click)="closeForm()" class="btn btn-warning mb-2" style="margin-right:10px">
+            <i class="fa fa-calendar-check-o"></i>
+            {{ 'Cancel' | translate }}
+          </button>
+        </form>
+      </main>
+    </div>
+  </div>
+</jw-modal>
+
+<jw-modal id="create-modal" class="view-modal data-view-modal">
+  <h3 style="text-align: center;"> {{ 'Customer Info' | translate }}</h3>
+  <div class="row" style="padding: 25px">
+    <div class="col-md-12" style="border: #8080804a solid 1px; width: 100%">
+      <main style="margin-bottom: 5%">
+        <form [formGroup]="registerForm" (keydown.enter)="$event.preventDefault()" style="padding-top: 10px">
+          <div class="form-group">
+            <label>{{ 'Name' | translate }}</label>
+            <input type="text" formControlName="name" class="form-control"
+              #nameInput
+              (keydown.enter)="emailInput.focus()"
+              [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+              <div *ngIf="f.name.errors.required">{{ 'Customer name is required' | translate }}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>{{ 'Email' | translate }}</label>
+            <input type="text" formControlName="email" class="form-control"
+              #emailInput
+              (keydown.enter)="mobileInput.focus()"
+            />
+          </div>
+          <div class="form-group">
+            <label>{{ 'Mobile' | translate }}</label>
+            <input type="text" formControlName="mobile" class="form-control"
+              #mobileInput
+              (keydown.enter)="addressInput.focus()"
+            />
+          </div>
+          <div class="form-group">
+            <label>{{ 'Address' | translate }}</label>
+            <input type="text" formControlName="address" class="form-control"
+              #addressInput
+              (keydown.enter)="submit()"
+            />
+          </div>
+          <div class="form-group">
+            <button #submitButton class="btn btn-primary" (click)="submit()">{{ 'Save' | translate }}</button>
+            &nbsp;
+            <a (click)="closeModal('create-modal')" class="btn btn-warning btn-xs">
+              {{ 'Close' | translate }}
+            </a>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+</jw-modal>

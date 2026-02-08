@@ -26,6 +26,7 @@
     "PRODUCTS": "Products",
     "BRANDS_TYPES": "Brands & Types",
     "SUPPLIERS": "Suppliers",
+    "CUSTOMERS": "Customers",
     "SUBSCRIPTION": "Subscription",
     "HOTKEY": "Hot-Key",
     "DAMAGE": "Damage"
@@ -37,5 +38,9 @@
   "Total Product": "Total Product",
   "Total Customer": "Total Customer",
   "Top Brand": "Top Brand",
-  "Top Products (Quantity)": "Top Products (Quantity)"
+  "Top Products (Quantity)": "Top Products (Quantity)",
+  "New Customer": "New Customer",
+  "Customer Info": "Customer Info",
+  "Customer Edit": "Customer Edit",
+  "Customer name is required": "Customer name is required"
 }

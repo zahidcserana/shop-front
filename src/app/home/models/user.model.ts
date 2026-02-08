@@ -26,3 +26,11 @@ export class Supplier {
   email: string;
   status = 'ACTIVE';
 }
+
+export class Customer {
+  name: string;
+  address: string;
+  mobile: string;
+  email: string;
+  status = 'ACTIVE';
+}

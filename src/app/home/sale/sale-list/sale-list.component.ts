@@ -94,16 +94,18 @@ export class SaleListComponent implements OnInit {
   }
   calculation() {
     this.getDiscount();
-    this.getNet();
+    // this.getNet();
   }
+
   submit() {
     this.checkAdmin();
     if (this.isAdmin == true) {
       let data = {
         'id': this.orderDetails.order_id,
         'discount': this.discount_amount,
-        'total_payble_amount': this.orderDetails.total_payble_amount,
-        'total_due_amount': this.orderDetails.total_due_amount
+        // 'discount_total': this.discount_amount,
+        // 'total_payble_amount': this.orderDetails.total_payble_amount,
+        // 'total_due_amount': this.orderDetails.total_due_amount
       };
       this.saleService.giveDiscount(data)
         .then(
@@ -115,8 +117,17 @@ export class SaleListComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500
             });
+             this.getSaleDetails(this.orderDetails.order_id)
             this.getSaleList(this.pagi.page, this.pagi.limit, this.filter);
-          });
+          }).catch(err => {
+            console.log(err);
+            Swal.fire({
+              type: 'warning',
+              title: 'Oops...',
+              text: err.error.error,
+              showConfirmButton: false
+            });
+          })
     } else {
       this.checkAdmin();
     }

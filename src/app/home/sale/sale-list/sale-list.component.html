@@ -670,8 +670,15 @@
                     class="form-check-input"> % </label>
               </td>
               <td style="text-align: right;padding-right: 2%">
-                <input type="number" [(ngModel)]="orderDetails.discount" class="form-control" autofocus
-                  (input)="calculation()" (keydown.enter)="submit()">
+                <input 
+                  autofocus
+                  (input)="calculation()" 
+                  [disabled]="orderDetails.status === 'COMPLETE'" 
+                  type="number" 
+                  [(ngModel)]="orderDetails.discount" 
+                  class="form-control" 
+                  (keydown.enter)="submit()"
+                >
               </td>
             </tr>
             <tr>
