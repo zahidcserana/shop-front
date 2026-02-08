@@ -42,5 +42,11 @@
   "New Customer": "New Customer",
   "Customer Info": "Customer Info",
   "Customer Edit": "Customer Edit",
-  "Customer name is required": "Customer name is required"
+  "Customer name is required": "Customer name is required",
+  "Upload Customer Documents": "Upload Customer Documents",
+  "Document Type": "Document Type",
+  "Select Files": "Select Files",
+  "Upload": "Upload",
+  "No documents found": "No documents found",
+  "File Name": "File Name"
 }
