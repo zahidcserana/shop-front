@@ -919,69 +919,65 @@
 
 <div #invoice2Section id="invoice2-print-div">
   <div class="row">
-    <div *ngIf="orderDetails" class="col-md-12" style="width: 100%">
-      <header class="clearfix mb-2">
-        <div class="row">
-          <!-- Left Section: Branch / Pharmacy Info -->
-          <div id="customer-info" class="col-6 customer-info">
-            <h3>
+    <div *ngIf="orderDetails" class="col-md-12 mt-5" style="width: 100%">
+      <header class="clearfix mb-4">
+        <div class="row mb-2">
+          <div class="col-8 text-left">
+            <h3 class="m-0">
               <strong><span class="pharmacy">{{ orderDetails.pharmacy }}</span></strong>
             </h3>
-
-            <div [ngStyle]="{ color: colorCode }">
-              <strong>{{ orderDetails.branch_name }}, {{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</strong>
-            </div>
-
-            <div [ngStyle]="{ color: colorCode }">
-              <strong>{{ 'For Order' | translate }}:</strong> {{ orderDetails.branch_mobile }}
-            </div>
-
-            <div *ngIf="orderDetails.branch_contact_person_mobile" [ngStyle]="{ color: colorCode }">
-              <strong>{{ 'For Service' | translate }}:</strong> {{ orderDetails.branch_contact_person_mobile }}
-            </div>
-
-            <div [ngStyle]="{ color: colorCode }">
-              <strong>{{ 'Invoice by' | translate }} :</strong> {{ orderDetails.created_by }}
-            </div>
           </div>
-
-          <!-- Right Section: Invoice + Customer -->
-          <div class="col-6 float-right">
-
-            <!-- Invoice Title -->
-            <h3>
-              <strong [ngStyle]="{ color: colorCode }">
+          <div class="col-4">
+              <strong [ngStyle]="{ color: colorCode }" style="font-size: 40px;">
                 {{ 'INVOICE' | translate }}
               </strong>
-            </h3>
+          </div>
+        </div>
 
-            <!-- Invoice Number + Date -->
-            <span
-              class="d-inline-block mt-2 p-1"
-              [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }"
-            >
-              # {{ orderDetails.invoice }} 
-              <span style="background-color: white;" >&nbsp;</span>
-              <span style="font-style: italic;">{{ 'DATE' | translate }}: {{ orderDetails.created_at }}</span>
-            </span>
+        <div class="row mb-4">
+          <div [ngStyle]="{ color: colorCode }" class="col-8 text-left">
+            <h4>{{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</h4>
+          </div>
+          <div [ngStyle]="{ color: colorCode }" class="col-4">
+            <strong># {{ orderDetails.invoice }}</strong>
+          </div>
+        </div>
 
-            <div>
-              <!-- Billing Information -->
-              <div
-                class="d-none mt-3 p-1"
-                [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }"
-              >
-                <strong>{{ 'Bill' | translate }}:</strong>
-              </div>
+        <div class="row">
+          <div class="col-6 text-left">
+            <div class="row no-gutters mb-1">
+              <div class="col-5"><strong>{{ 'For Order' | translate }}</strong></div>
+              <div class="col-7">: <b>{{ orderDetails.branch_mobile }}</b></div>
+            </div>
 
-              <div class="mt-1">
-                <strong>Customer:</strong> {{ orderDetails.customer_name }}
-              </div>
+            <div *ngIf="orderDetails.branch_contact_person_mobile" class="row no-gutters mb-1">
+              <div class="col-5"><strong>{{ 'For Service' | translate }}</strong></div>
+              <div class="col-7">: <b>{{ orderDetails.branch_contact_person_mobile }}</b></div>
+            </div>
 
-              <div><strong>Mobile: </strong> {{ orderDetails.customer_mobile }}</div>
+            <div class="row no-gutters mb-1">
+              <div class="col-5"><strong>{{ 'Invoice by' | translate }}</strong></div>
+              <div class="col-7">: <b>{{ orderDetails.created_by }}</b></div>
             </div>
           </div>
 
+          <div class="col-6 float-right">
+            <div class="row no-gutters mb-1 text-right">
+              <div class="col-5"><strong>{{ 'Customer' | translate }}</strong></div>
+              <div class="col-1">&nbsp;</div>
+              <div class="col-6 text-left">: {{ orderDetails.customer_name }}</div>
+            </div>
+            <div class="row no-gutters mb-1 text-right">
+              <div class="col-5"><strong>{{ 'Mobile' | translate }}</strong></div>
+              <div class="col-1">&nbsp;</div>
+              <div class="col-6 text-left">: {{ orderDetails.customer_mobile }}</div>
+            </div>
+            <div class="row no-gutters mb-1 text-right">
+              <div class="col-5"><strong>{{ 'Date' | translate }}</strong></div>
+              <div class="col-1">&nbsp;</div>
+              <div class="col-6 text-left">: {{ orderDetails.created_at }}</div>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -1056,6 +1052,37 @@
                 {{ currency }}&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
               </td>
             </tr>
+            <tr [ngStyle]="{ backgroundColor: colorCodeSuper, color: colorCodeText }">
+              <td colspan="2" class="thanku"  [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
+                {{ 'THANK YOU FOR YOUR BUSINESS' | translate }}
+              </td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold; color: black;" [ngStyle]="{ backgroundColor: colorCodeSuper}">
+                {{ 'Total' | translate }}
+              </td>
+              <td style="text-align: right;padding-right: 2%" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
+                {{ currency }} {{ orderDetails.total_payble_amount | number: "1.2-2"}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="8">&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="2" style="text-align: left;font-weight: bold">
+                Payment
+              </td>
+              <td style="text-align: right;padding-right: 2%">
+                {{ currency }}&nbsp;{{
+                    (orderDetails.total_payble_amount - orderDetails.total_due_amount) | number: "1.2-2"
+                  }}
+              </td>
+            </tr>
             <tr *ngIf="orderDetails.total_due_amount">
               <td colspan="2">&nbsp;</td>
               <td *ngIf="freeQtyShow">&nbsp;</td>
@@ -1066,34 +1093,6 @@
               </td>
               <td style="text-align: right;padding-right: 2%">
                 {{ currency }} {{ orderDetails.total_due_amount | number: "1.2-2" }}
-              </td>
-            </tr>
-            <tr [ngStyle]="{ backgroundColor: colorCodeLight, color: colorCodeText }">
-              <td colspan="2" class="thanku"  [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
-                {{ 'THANK YOU FOR YOUR BUSINESS' | translate }}
-              </td>
-              <td *ngIf="freeQtyShow">&nbsp;</td>
-              <td *ngIf="tpShow">&nbsp;</td>
-              <td *ngIf="profitShow">&nbsp;</td>
-              <td colspan="2" style="text-align: left;font-weight: bold" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
-                {{ 'Total' | translate }}
-              </td>
-              <td style="text-align: right;padding-right: 2%" [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
-                {{ currency }} {{ orderDetails.total_payble_amount | number: "1.2-2"}}
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">&nbsp;</td>
-              <td *ngIf="freeQtyShow">&nbsp;</td>
-              <td *ngIf="tpShow">&nbsp;</td>
-              <td *ngIf="profitShow">&nbsp;</td>
-              <td colspan="2" style="text-align: left;font-weight: bold">
-                Paid Amount
-              </td>
-              <td style="text-align: right;padding-right: 2%">
-                {{ currency }}&nbsp;{{
-                    (orderDetails.total_payble_amount - orderDetails.total_due_amount) | number: "1.2-2"
-                  }}
               </td>
             </tr>
             <tr *ngIf="profitShow">
@@ -1109,6 +1108,9 @@
                     orderDetails.total_profit | number: "1.2-2"
                   }}
               </td>
+            </tr>
+            <tr>
+              <td colspan="8">&nbsp;</td>
             </tr>
             <tr>
               <td colspan="8" class="text-center amount-word">
