@@ -40,7 +40,7 @@
               <td>{{ item.status }}</td>
               <td>
                 <a style="cursor: pointer" class="btn btn-info fa fa-edit" (click)="editCustomer(item.id)"></a> &nbsp;
-                <a style="cursor: pointer" class="btn btn-primary fa fa-file" (click)="openDocumentModal(item)"></a> &nbsp;
+                <a style="cursor: pointer" class="btn btn-primary fa fa-file-image" (click)="openDocumentModal(item)"></a> &nbsp;
                 <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="remove(item.id)"></a>
               </td>
             </tr>
@@ -142,7 +142,9 @@
               <tr *ngFor="let doc of documentList; let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ doc.type }}</td>
-                <td>{{ doc.file_name }}</td>
+                <td>
+                  <a [href]="getFileUrl(doc.file_path)" target="_blank">{{ doc.file_name }}</a>
+                </td>
                 <td>
                   <a style="cursor: pointer" class="btn btn-danger fa fa-trash" (click)="deleteDocument(doc)"></a>
                 </td>

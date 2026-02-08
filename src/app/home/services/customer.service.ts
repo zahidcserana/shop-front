@@ -29,7 +29,7 @@ export class CustomerService {
   }
 
   uploadDocuments(id, payload: FormData) {
-    return this.http.post(`customers/${id}/documents/upload`, payload).pipe(map(res => res));
+    return this.http.post(`customers/${id}/documents`, payload).pipe(map(res => res));
   }
 
   deleteDocument(customerId, documentId) {

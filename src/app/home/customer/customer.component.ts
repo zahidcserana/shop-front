@@ -7,6 +7,8 @@ import { Customer } from '../models/user.model';
 import { ModalService } from 'src/app/common/_modal';
 import * as $ from 'jquery';
 import Swal from 'sweetalert2';
+import { environment } from 'src/environments/environment';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-customer',
@@ -17,6 +19,7 @@ export class CustomerComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
   editForm = false;
+  baseUrl = environment.api_url
 
   customerList: any[] = [];
   sub: Subscription;
@@ -33,6 +36,7 @@ export class CustomerComponent implements OnInit {
     private customerService: CustomerService,
     private formBuilder: FormBuilder,
     private modalService: ModalService,
+    private sanitizer: DomSanitizer
   ) {
   }
 
@@ -71,6 +75,12 @@ export class CustomerComponent implements OnInit {
   }
   closeModal(id: string) {
     this.modalService.close(id);
+  }
+
+  getFileUrl(path: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(
+      this.baseUrl + path
+    );
   }
 
   remove(id) {
