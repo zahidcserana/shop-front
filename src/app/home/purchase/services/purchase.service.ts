@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "src/app/common/modules/http-with-injector/http.service";
 import { map } from "rxjs/operators";
+import { HttpParams } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class PurchaseService {
@@ -23,6 +25,14 @@ export class PurchaseService {
 
   getUnitPriceDetails(data: any) {
     return this.http.post('item/unit/details', data).toPromise();
+  }
+
+  searchBatch(medicineId: number, query: string): Observable<any[]> {
+    const params = new HttpParams()
+      .set('medicine_id', medicineId.toString())
+      .set('q', query);
+
+    return this.http.get("medicines/search-batch", { params });
   }
 
 }

@@ -32,25 +32,40 @@
                             autofocus 
                             type="text" 
                             class="form-control" 
-                            (keydown.enter)="gotoBoxTradePrice()"
+                            (keydown.enter)="gotoBatchNo()"
                           >
                         </div>
                       </div>
                   </div>
-                  <div class="col-md-1" *ngIf="config.enBatch">
-                      <div class="position-relative form-group">
-                        <label for="batch_no" class="">{{ 'Batch No' | translate }}</label>
-                        <input 
-                          name="batch_no" 
-                          #batchNo 
-                          [(ngModel)]="purchaseItem.batch_no" 
-                          (keydown.enter)="gotoBoxTradePrice()" 
-                          placeholder="" 
-                          type="text" 
-                          class="form-control"
-                        >
-                      </div>
+                  <div class="col-md-2" *ngIf="config.enBatch">
+                    <div class="position-relative form-group">
+                      <label>{{ 'Batch No' | translate }}</label>
+
+                      <input
+                        #batchNo
+                        type="text"
+                        class="form-control"
+                        name="batch_no"
+                        [(ngModel)]="purchaseItem.batch_no"
+                        (ngModelChange)="onBatchType($event)"
+                        (keydown.enter)="gotoBoxTradePrice()" 
+                        autocomplete="off"
+                      />
+
+                      <!-- Suggestion List -->
+                      <ul class="list-group position-absolute w-100"
+                          *ngIf="batchSuggestions.length > 0"
+                          style="z-index: 1000; max-height: 200px; overflow-y: auto;">
+                        <li
+                          class="list-group-item list-group-item-action"
+                          *ngFor="let batch of batchSuggestions"
+                          (click)="selectBatch(batch)">
+                          {{ batch.batch_no }}
+                        </li>
+                      </ul>
+                    </div>
                   </div>
+
                   <!-- <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="exp_date" class="">Exp. Date</label>
@@ -93,12 +108,12 @@
                   </div>
                   <div class="col-md-2">
                       <div class="position-relative form-group">
-                        <label for="box_mrp" data-toggle="tooltip" data-html="true" class="">{{ 'RPU' | translate }}</label>
+                        <label for="box_mrp" data-toggle="tooltip" data-html="true" class="">{{ 'RPU' | translate }} ({{ purchaseItem.percentage }}%)</label>
                         <input 
                           name="box_mrp" 
                           #boxMrp 
                           [(ngModel)]="purchaseItem.box_mrp" 
-                          (keydown.enter)="gotoVAT()" 
+                          (keydown.enter)="gotoQuantity()" 
                           (input)="calculateTPVAT()" 
                           placeholder="" 
                           type="number" 
@@ -106,7 +121,7 @@
                         >
                       </div>
                   </div>
-                  <div class="col-md-1">
+                  <!-- <div class="col-md-1">
                     <div class="position-relative form-group">
                       <label for="box_vat" class="">{{ 'Percentage' | translate }}(%)</label>
                       <input 
@@ -119,11 +134,11 @@
                         class="form-control"
                       >
                     </div>
-                </div>
+                  </div> -->
                   <div class="col-md-1">
                       <div class="position-relative form-group">
                         <label for="quantity" class="">{{ 'Qty' | translate }}
-                          <strong>({{ purchaseItem.stock_quantity }})</strong>
+                          <strong *ngIf="purchaseItem.stock_quantity">({{ purchaseItem.stock_quantity }})</strong>
                         </label>
                         <input 
                           name="quantity" 
@@ -150,12 +165,12 @@
                       </div>
                   </div> -->
                   
-                  <button 
+                  <!-- <button 
                     type="submit" 
                     style="display: none;" 
                     class="btn btn-primary mb-0 add-medicine-btn"
                   >{{ 'Add' | translate }}
-                  </button>
+                  </button> -->
 
                   <div *ngIf="showResetButton">
                     <button 

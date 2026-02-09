@@ -1,6 +1,6 @@
 import { HomeService } from './../services/home.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap, switchMap, map, catchError } from 'rxjs/operators';
 import { PurchaseService } from "./services/purchase.service";
 import * as $ from "jquery";
@@ -21,6 +21,8 @@ export class PurchaseComponent implements OnInit {
   isSubmitting = false;
   showResetButton: boolean = false;
   currency = '৳';
+  batchSuggestions: any[] = [];
+  private batchSearch$ = new Subject<string>();
 
   constructor(
     private PurchaseService: PurchaseService,
@@ -29,6 +31,18 @@ export class PurchaseComponent implements OnInit {
     public config: AppConfigService
   ) {
     this.config.loadFromStorage();
+
+    this.batchSearch$
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap(q =>
+          q.length > 0
+            ? this.PurchaseService.searchBatch(this.getProductId(), q)
+            : []
+        )
+      )
+      .subscribe(res => this.batchSuggestions = res);
   }
 
   ngOnInit() {
@@ -50,6 +64,16 @@ export class PurchaseComponent implements OnInit {
     }
     this.getCompanyList();
     this.medicineName.nativeElement.focus();
+  }
+
+  onBatchType(value: string) {
+    this.batchSearch$.next(value);
+  }
+
+  selectBatch(batch: any) {
+    this.purchaseItem.batch_no = batch.batch_no;
+    this.batchSuggestions = [];
+    this.gotoBoxTradePrice()
   }
 
   searchList: any[];
@@ -125,7 +149,12 @@ export class PurchaseComponent implements OnInit {
 
   gotoBatchNo() {
     this.getMedicinePreviousPurchaseDetails();
-    this.batchNo.nativeElement.focus();
+
+     if (this.config.enBatch) {
+      this.batchNo.nativeElement.focus();
+    } else {
+      this.gotoBoxTradePrice();
+    }
   }
   gotoExpDate() {
     this.getMedicinePreviousPurchaseDetails();
@@ -271,6 +300,17 @@ export class PurchaseComponent implements OnInit {
         return [];
       })
     );
+  }
+
+  getProductId() {
+    let search_medicine_id = 0;
+    for (let medicine of this.searchData) {
+      if (medicine.name == this.purchaseItem.medicine) {
+        search_medicine_id = medicine.id;
+      }
+    }
+    
+    return search_medicine_id
   }
 
   getMedicinePreviousPurchaseDetails() {
@@ -548,6 +588,7 @@ export class PurchaseComponent implements OnInit {
             localStorage.removeItem('purchaseItems');
             this.resetAllItem();
             this.allPurchaseItems = [];
+            this.showResetButton = false;
 
             Swal.fire({
               position: "center",
