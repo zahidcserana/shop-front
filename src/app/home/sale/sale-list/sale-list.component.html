@@ -63,6 +63,10 @@
                 <a (click)="openModalPos(item.id,'print-modal-pos')" id="item_id" class="btn btn-success">
                   <i class="fa fa-print"></i>
                 </a>
+                &nbsp;
+                <a (click)="openModal(item.id, 'sale-order-modal')" id="item_id" class="btn btn-info">
+                  <i class="fa fa-calendar"></i>
+                </a>
               </td>
             </tr>
           </tbody>
@@ -74,7 +78,11 @@
             </tbody>
           </ng-template>
         </table>
-        <boot-pagination style="width: 100%" [totalSize]="pagi.total" [listSize]="pagi.limit"
+        <boot-pagination 
+          style="width: 100%"
+          [totalSize]="pagi.total"
+          [page]="pagi.page"
+          [listSize]="pagi.limit"
           (pageChange)="reloadTable($event)">
         </boot-pagination>
       </div>
@@ -566,6 +574,59 @@
   </button>
 </jw-modal>
 
+<jw-modal id="sale-order-modal" class="data-view-modal">
+  <div class="row">
+    <div *ngIf="orderDetails" class="col-md-12">
+      <header class="clearfix" style="margin-bottom: 0;">
+        <div id="logo">
+          <span>{{ 'Order Details' | translate }}</span>
+        </div>
+      </header>
+      <main>
+        <div style="text-align: center;padding-bottom: 1%">
+          <span style="padding-right: 2%">{{ 'Invoice' | translate }}: {{ orderDetails.invoice }}</span>
+          <span style="padding-left: 2%">{{ orderDetails.created_at }}</span>
+        </div>
+        <form id="myForm" (ngSubmit)="updateSaleOrder()">
+          <div class="form-group">
+            <ckeditor
+              [(ngModel)]="orderDetails.remarks"
+              name="remarks"
+              [config]="editorConfig">
+            </ckeditor>
+          </div>
+
+          <div class="mt-2 flex">
+            <button type="submit" class="btn btn-info">
+              {{ 'Save' | translate }}
+            </button>
+            &nbsp;
+
+            <button type="button" class="btn btn-success ml-10p" (click)="downloadPDF()">
+              <i class="fa fa-download"></i> Download
+            </button>
+            &nbsp;
+
+            <label class="form-check-label ml-10p" *ngIf="this.config.enDeliveryOrder">
+              <input
+                (click)="deliveryOrder()"
+                type="checkbox"
+                name="is_sync"
+                [(ngModel)]="orderDetails.is_sync"
+                class="form-check-input">
+              <span>{{ 'Delivered' | translate }}</span>
+            </label>
+            
+            <button type="button" id="close-div" (click)="closeModal('sale-order-modal')" class="btn btn-warning btn-xs float-right">
+              {{ 'Close' | translate }}
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+</jw-modal>
+
 <jw-modal id="print-modal" class="data-view-modal">
   <div class="row" style="padding: 50px">
     <div *ngIf="orderDetails" class="col-md-12" style="border: black solid 1px; width: 100%">
@@ -922,6 +983,19 @@
       </main>
     </div>
   </div>
+</div>
+
+<div #invoiceContent id="invoice-order-div" *ngIf="orderDetails">
+    <div class="invoice-order-container" *ngIf="showEditor">
+      <div style="text-align: center; border-bottom: 2px solid #EEE; padding-bottom: 20px;">
+          <h2>{{ 'Invoice' | translate }}: {{ orderDetails.invoice }}</h2>
+          <p>{{ orderDetails.created_at }}</p>
+      </div>
+
+      <div style="margin-top: 30px;">
+          <div [innerHTML]="orderDetails.remarks"></div>
+      </div>
+    </div>
 </div>
 
 <div #invoice2Section id="invoice2-print-div">

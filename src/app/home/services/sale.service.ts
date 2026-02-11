@@ -87,4 +87,12 @@ export class SaleService {
   getGenericList(data: any) {
     return this.http.post('inventory/generic/search', data).toPromise();
   }
+
+  updateSaleOrder(id, payload) {
+    return this.http.post(`sales/${id}/remarks`, payload).toPromise();
+  }
+
+  deliveryOrder(id) {
+    return this.http.post(`sales/${id}/delivery_order`, {}).toPromise();
+  }
 }

@@ -89,6 +89,15 @@ export class PaginationComponent implements AfterViewInit, OnChanges {
 
     }
 
+    changeLimit(page?) {
+        if (page) {
+            this.page = page;
+        }
+        this.calculateDataCount();
+        this.pageChange.emit({page: 1, limit: +this.pagelimit, start: this.start});
+
+    }
+
     calculateDataCount() {
         this.start = (this.page * this.pagelimit) - this.pagelimit + 1;
         let last = this.start + this.listSize - 1;

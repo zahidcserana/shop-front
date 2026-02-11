@@ -8,6 +8,9 @@ declare var require: any
 import { ModalService } from 'src/app/common/_modal/modal.service';
 import Swal from 'sweetalert2';
 import { PrintService } from '../../shared/services/print.service';
+import { AppConfigService } from 'src/app/services/app-config.service';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-sale-list',
@@ -17,6 +20,7 @@ import { PrintService } from '../../shared/services/print.service';
 export class SaleListComponent implements OnInit {
   @ViewChild('invoiceSection') invoiceSection!: ElementRef;
   @ViewChild('invoice2Section') invoice2Section!: ElementRef;
+  @ViewChild('invoiceContent') invoiceContent: ElementRef;
 
   colorCodeLight = '#82929A';
   colorCodeSuper = '#c4d2da';
@@ -51,15 +55,30 @@ export class SaleListComponent implements OnInit {
   }
   saleItem: any;
   isAdmin = false;
+  showEditor = false;
+
+  public editorConfig = {
+    versionCheck: false,
+    height: 400,
+    toolbar: [['Bold', 'Italic', 'Underline', 'NumberedList', 'BulletedList', 'Table']]
+  };
+
   constructor(
     private saleService: SaleService,
     private homeService: HomeService,
     private modalService: ModalService,
     private renderer: Renderer2,
-    private printService: PrintService
+    private printService: PrintService,
+    public config: AppConfigService
   ) {
+    this.config.loadFromStorage();
     this.filter = this.filter ? this.filter : '';
-    this.pagi.limit = this.pagi.limit ? this.pagi.limit : 500;
+
+    if (this.config.enDeliveryOrder) {
+      this.filter += "&" + "is_sync" + "=" + this.config.enDeliveryOrder
+    }
+
+    this.pagi.limit = this.pagi.limit ? this.pagi.limit : 100;
     this.pagi.page = this.pagi.page ? this.pagi.page : 1;
 
     const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -92,9 +111,60 @@ export class SaleListComponent implements OnInit {
     this.orderDetails.total_payble_amount = this.orderDetails.sub_total - this.discount_amount
     this.orderDetails.total_due_amount -= this.discount_amount
   }
+
   calculation() {
     this.getDiscount();
     // this.getNet();
+  }
+
+  updateSaleOrder() {
+    const payload = {
+      remarks: this.orderDetails.remarks
+    };
+
+    this.saleService.updateSaleOrder(this.orderDetails.order_id, payload)
+      .then(
+        res => {
+          Swal.fire({
+            position: "center",
+            type: "success",
+            title: "Successfully submitted.",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.getSaleDetails(this.orderDetails.order_id)
+      }).catch(err => {
+        console.log(err);
+        Swal.fire({
+          type: 'warning',
+          title: 'Oops...',
+          text: err.error.error,
+          showConfirmButton: false
+        });
+      })
+  }
+
+  deliveryOrder() {
+    this.saleService.deliveryOrder(this.orderDetails.order_id)
+      .then(
+        res => {
+          Swal.fire({
+            position: "center",
+            type: "success",
+            title: "Successfully submitted.",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.getSaleDetails(this.orderDetails.order_id)
+      }).catch(err => {
+        console.log(err);
+        Swal.fire({
+          type: 'warning',
+          title: 'Oops...',
+          text: err.error.error,
+          showConfirmButton: false
+        });
+      })
   }
 
   submit() {
@@ -167,7 +237,7 @@ export class SaleListComponent implements OnInit {
       });
   }
   reloadTable(e) {
-    this.getSaleList(e.page, e.limit, e.filter);
+    this.getSaleList(e.page, e.limit, this.filter);
   }
   trackList(index, pro) {
     return pro ? pro.id : null;
@@ -175,7 +245,7 @@ export class SaleListComponent implements OnInit {
   private setData(res) {
     this.pagi.total = res['total'] || 0;
     this.pagi.page = parseInt(res['page_no']) || 1;
-    this.pagi.limit = parseInt(res['limit']) || 500;
+    this.pagi.limit = parseInt(res['limit']) || 100;
   }
   openModal(saleId: number, modal: string) {
     //const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -189,6 +259,10 @@ export class SaleListComponent implements OnInit {
     $('#close-div').show();
     this.getSaleDetails(saleId);
     this.modalService.open(modal);
+
+    if (modal === 'sale-order-modal') {
+      this.showEditor = true;
+    }
   }
 
   openModalPos(saleId: number, modal: string) {
@@ -208,6 +282,41 @@ export class SaleListComponent implements OnInit {
   closeModal(id: string) {
     this.saleItem = '';
     this.modalService.close(id);
+    this.showEditor = false;
+  }
+
+  downloadPDF() {
+    const data = this.invoiceContent.nativeElement;
+
+    html2canvas(data, {
+      scale: 3, // Boosts resolution and makes text sharper/bigger
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff'
+    }).then(canvas => {
+      const imgWidth = 210; // A4 Width in mm
+      const pageHeight = 297; // A4 Height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      // If the content is longer than one page
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      
+      // Add extra pages if needed
+      while (heightLeft >= pageHeight) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(`Invoice_${this.orderDetails.invoice}.pdf`);
+    });
   }
 
   printInvoiceBackup(printArea) {
@@ -245,6 +354,16 @@ export class SaleListComponent implements OnInit {
         this.orderDetails = data;
         this.total_due_amount = this.orderDetails.total_due_amount
         this.getPriceInWord(this.orderDetails.total_payble_amount);
+
+        // if (data['remarks'] === '') {
+        //   this.orderDetails.remarks = `
+        //     <h3 style="text-align:center">Order</h3>
+        //     <p><strong>Invoice:</strong> ${this.orderDetails.invoice}</p>
+        //     <p><strong>Date:</strong> ${this.orderDetails.created_at}</p>
+        //     <hr>
+        //     <p>${data['remarks']}</p>
+        //   `;
+        //   }
       });
   }
   itemReturn(item) {
@@ -380,7 +499,7 @@ export class SaleListComponent implements OnInit {
   /* Filter start*/
   filterList(e) {
     this.filter = e;
-    this.getSaleList(1, 20, this.filter);
+    this.getSaleList(1, this.pagi.limit, this.filter);
   }
   /* Filter end */
 }

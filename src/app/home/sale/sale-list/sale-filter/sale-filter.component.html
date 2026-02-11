@@ -53,6 +53,18 @@
         />
       </div>
 
+      <div class="form-group mx-sm-2 mb-1" *ngIf="this.config.enDeliveryOrder">
+        <label class="form-check-label low-stock">
+          <input
+            (ngModelChange)="searchDelivered($event)"
+            type="checkbox"
+            name="is_sync"
+            [(ngModel)]="saleData.is_sync"
+            class="form-check-input">
+          <span style="color: white">{{ 'Delivered' | translate }}</span>
+        </label>
+      </div>
+
       <button
         type="submit"
         class="btn btn-info mb-2"

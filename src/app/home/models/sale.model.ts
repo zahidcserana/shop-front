@@ -17,6 +17,7 @@ export class SaleDayWiseReportModel {
   amount: number;
 }
 export class SaleFilterModel {
+  is_sync: boolean; //is_delivery_order
   medicine: string;
   medicine_id: number;
   customer_name: string;

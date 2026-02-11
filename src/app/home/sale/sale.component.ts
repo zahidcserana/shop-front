@@ -66,6 +66,7 @@ export class SaleComponent implements OnInit {
     customer_mobile: "",
     prescription_image: "",
     sendsms: false,
+    is_delivery_order: false
   };
   searchData: any[] = [];
   loader_sub: boolean;
@@ -871,6 +872,10 @@ export class SaleComponent implements OnInit {
 
 
   this.order.token = localStorage.getItem("token");
+
+  if (this.config.enDeliveryOrder) {
+    this.order.is_delivery_order = this.config.enDeliveryOrder
+  }
   
   this.saleService
     .makeSaleOrder(this.order)
