@@ -81,7 +81,7 @@ export class PurchaseListComponent implements OnInit {
   private setData(res) {
     this.pagi.total = res["total"] || 0;
     this.pagi.page = parseInt(res["page_no"]) || 1;
-    this.pagi.limit = parseInt(res["limit"]) || 500;
+    this.pagi.limit = parseInt(res["limit"]) || 100;
   }
   getPurchaseList(p, l, q) {
     this.customLoader = true;
