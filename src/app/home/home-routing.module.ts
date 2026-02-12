@@ -82,8 +82,7 @@ const routes: Routes = [
       },
       {
         path: 'customer',
-        loadChildren: './customer/customer.module#CustomerModule',
-        resolve: { customers: HomeResolveService }
+        loadChildren: './customer/customer.module#CustomerModule'
       },
       {
         path: 'notifications',

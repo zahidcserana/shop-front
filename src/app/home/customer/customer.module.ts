@@ -8,6 +8,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'src/app/common/_modal/modal.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { EmiService } from '../sale-emi/emi.service';
+import { SharedPipeModule } from '../pipes/shared-pipe.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [CustomerComponent],
@@ -17,9 +20,11 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
+    SharedPipeModule,
+    NgSelectModule,
     ModalModule,
     TranslateModule
   ],
-  providers: [CustomerService]
+  providers: [CustomerService, EmiService]
 })
 export class CustomerModule { }

@@ -2,13 +2,15 @@ import { CustomerService } from './../services/customer.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { Customer } from '../models/user.model';
 import { ModalService } from 'src/app/common/_modal';
 import * as $ from 'jquery';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { EmiService } from '../sale-emi/emi.service';
 
 @Component({
   selector: 'app-customer',
@@ -31,20 +33,42 @@ export class CustomerComponent implements OnInit {
   documentFiles: File[] = [];
   isUploadingDocuments = false;
 
+  /** 🔹 customer search */
+  customerInput$ = new Subject<string>();
+  customers$: Observable<any[]>;
+
+  pageNo = 1;
+  limit = 100;
+  totalPages = 0;
+
+  filters = {
+    is_due: true,
+    customer_id: ''
+  };
+
   constructor(
     private route: ActivatedRoute,
     private customerService: CustomerService,
     private formBuilder: FormBuilder,
     private modalService: ModalService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private emiService: EmiService
   ) {
   }
 
   ngOnInit() {
-    this.sub = this.route.data.subscribe(
-      val => {
-        this.customerList = val && val['customers'] ? val['customers']['data'] : [];
-      }
+    this.loadData();
+    // this.sub = this.route.data.subscribe(
+    //   val => {
+    //     this.customerList = val && val['customers'] ? val['customers']['data'] : [];
+    //   }
+    // );
+
+    /** ✅ async customer search */
+    this.customers$ = this.customerInput$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => this.emiService.searchCustomer(term))
     );
 
     this.registerForm = this.formBuilder.group({
@@ -88,7 +112,7 @@ export class CustomerComponent implements OnInit {
       .deleteCustomer(id)
       .subscribe(res => {
         if (res.success === true) {
-          this.getCustomerList();
+          this.loadData();
           Swal.fire({
             position: "center",
             type: "success",
@@ -100,11 +124,26 @@ export class CustomerComponent implements OnInit {
       });
   }
 
-  getCustomerList() {
-    this.customerService.getCustomers()
-      .subscribe((res) => {
-        this.customerList = res.data;
-      });
+  searchDue(value: boolean) {
+    this.filters.is_due = !this.filters.is_due 
+    this.loadData()
+  }
+
+  loadData() {
+    this.pageNo = this.pageNo || 1;
+    const params = {
+      ...this.filters,
+      page_no: this.pageNo,
+      limit: this.limit
+    };
+
+    // this.customLoader = true;
+
+    this.customerService.getCustomers(params).subscribe(res => {
+      this.customerList = res.data;
+      this.totalPages = res.pagination.total_pages;
+      // this.customLoader = false;
+    });
   }
 
   submit() {
@@ -125,7 +164,7 @@ export class CustomerComponent implements OnInit {
             showConfirmButton: false,
             timer: 1500
           });
-          this.getCustomerList();
+          this.loadData();
         } else {
           Swal.fire({
             type: "warning",
@@ -161,6 +200,14 @@ export class CustomerComponent implements OnInit {
     this.modalService.open('edit-modal');
   }
 
+  reset() {
+    this.filters = {
+      is_due: true,
+      customer_id: null
+    };
+    this.loadData();
+  }
+
   closeForm() {
     $('#myForm').trigger('reset');
     this.editForm = false;
@@ -182,7 +229,7 @@ export class CustomerComponent implements OnInit {
             timer: 1500
           });
 
-          this.getCustomerList();
+          this.loadData();
         } else {
           Swal.fire({
             type: "warning",
@@ -281,5 +328,20 @@ export class CustomerComponent implements OnInit {
         timer: 1500
       });
     });
+  }
+
+  /** ✅ pagination */
+  prevPage() {
+    if (this.pageNo > 1) {
+      this.pageNo--;
+      this.loadData();
+    }
+  }
+
+  nextPage() {
+    if (this.pageNo < this.totalPages) {
+      this.pageNo++;
+      this.loadData();
+    }
   }
 }

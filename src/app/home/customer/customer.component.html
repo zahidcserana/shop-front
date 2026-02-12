@@ -3,6 +3,45 @@
     <div class="main-card mb-3 card">
       <div class="card-body">
         <div>
+          <div class="row sale-filter-form-background">
+              <div class="col-3 position-relative form-group search-div">
+                <ng-select
+                  class="w-100 form-control-custom"
+                  [items]="customers$ | async"
+                  bindLabel="name"
+                  bindValue="id"
+                  placeholder="Customer: "
+                  [typeahead]="customerInput$"
+                  [(ngModel)]="filters.customer_id"
+                  [clearable]="true"
+                  [loading]="customLoader">
+
+                  <ng-template ng-option-tmp let-item="item">
+                    <span class="text-muted text-customer">
+                      {{ item.name }}
+                      <small>({{ item.mobile }})</small>
+                    </span>
+                  </ng-template>
+                </ng-select>
+              </div>
+
+              <div class="col-1 position-relative form-group search-div mt-2 text-center">
+                <label class="form-check-label low-stock">
+                  <input
+                    (ngModelChange)="searchDue($event)"
+                    type="checkbox"
+                    name="is_due"
+                    [(ngModel)]="filters.is_due"
+                    class="form-check-input">
+                  <span style="color: white">{{ 'Due' | translate }}</span>
+                </label>
+              </div>
+              
+              <div class="col-2">
+                <button class="btn btn-primary ml-2" (click)="loadData()">Search</button>
+                <button class="btn btn-danger ml-2" (click)="reset()">Reset</button>
+              </div>
+          </div>
           <div style="float: right">
             <button (click)="openModal('create-modal')" id="item_id" class="mb-2 mr-2 btn btn-success btn-block">
               <i class="fa fa-user"></i>
@@ -53,6 +92,22 @@
             </tbody>
           </ng-template>
         </table>
+
+        <div class="d-flex justify-content-between mt-2" *ngIf="totalPages > 1">
+          <button
+            class="btn btn-sm btn-secondary"
+            [disabled]="pageNo === 1"
+            (click)="prevPage()">
+            Previous
+          </button>
+
+          <button
+            class="btn btn-sm btn-secondary"
+            [disabled]="pageNo === totalPages"
+            (click)="nextPage()">
+            Next
+          </button>
+        </div>
       </div>
     </div>
   </div>

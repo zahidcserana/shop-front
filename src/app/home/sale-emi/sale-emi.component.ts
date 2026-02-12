@@ -25,7 +25,7 @@ export class SaleEmiComponent implements OnInit {
   customers$: Observable<any[]>;
 
   pageNo = 1;
-  limit = 20;
+  limit = 100;
   totalPages = 0;
 
   filters = {

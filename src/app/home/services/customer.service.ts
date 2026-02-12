@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../../common/modules/http-with-injector/http.service';
 import { map } from "rxjs/operators";
+import { CustomerData } from '../customer/customer.model';
+import { HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class CustomerService {
@@ -8,8 +11,16 @@ export class CustomerService {
   constructor(private http: HttpService) {
   }
 
-  getCustomers() {
-    return this.http.get('customers').pipe(map(res => res));
+  getCustomers(filters: any): Observable<CustomerData> {
+    let params = new HttpParams();
+
+    Object.keys(filters).forEach(key => {
+    if (filters[key]) {
+        params = params.set(key, filters[key]);
+    }
+    });
+
+    return this.http.get("customers", { params });
   }
 
   addCustomer(data: any) {

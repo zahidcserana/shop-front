@@ -196,37 +196,43 @@ export class InventoryComponent implements OnInit {
   }
 
   ChangeMrpTp(item, index) {
+    let dNoneClass = this.config.enTP? '' :'d-none'
+    
     console.log(item);
     Swal.fire({
-      title: 'Change RPU & CPU of ' + item.medicine_name,
+      title: 'Change Price of ' + item.medicine_name,
       inputAttributes: {
         autocapitalize: 'off'
       },
       html:
-        '<p style="margin-bottom: 0;"><strong>RPU</strong></p><input id="item_mrp" type="number" value="' + item.mrp + '" class="swal2-input">' +
-        '<p style="margin-bottom: 0;"><strong>CPU</strong></p><input id="item_tp" type="number" value="' + item.tp + '" class="swal2-input">',
+        '<div class="'+dNoneClass+'"><strong style="padding-right: 2px;">TP</strong><input id="item_unit_price" type="number" value="' + item.unit_price + '" class="swal2-input"></div>' +
+        '<div><strong style="padding-right: 2px;">CPU</strong><input id="item_tp" type="number" value="' + item.tp + '" class="swal2-input"></div>' +
+        '<div><strong style="padding-right: 2px;">RPU</strong><input id="item_mrp" type="number" value="' + item.mrp + '" class="swal2-input"></div>',
       showCancelButton: true,
       confirmButtonText: 'Update',
     }).then((result) => {
       if (result.value) {
         let mrp = $('#item_mrp').val();
         let tp = $('#item_tp').val();
+        let unit_price = $('#item_unit_price').val();
 
-        let data = { 'id': item.id, 'mrp': mrp, 'tp': tp };
+        let data = { 'id': item.id, 'mrp': mrp, 'tp': tp, 'unit_price': unit_price };
 
         this.InventoryService.updateMRPTP(data)
           .then(response => {
             Swal.fire({
               position: 'top-end',
               type: 'success',
-              title: 'MRP Updated!',
+              title: 'Price Updated!',
               showConfirmButton: false,
               timer: 1500
             });
             item.mrp = mrp;
             item.tp = tp;
+            item.unit_price = unit_price;
             $('#mrp' + index).addClass('updated-low-stock');
             $('#tp' + index).addClass('updated-low-stock');
+            $('#unit_price' + index).addClass('updated-low-stock');
           })
           .catch(err => {
             console.log(err)

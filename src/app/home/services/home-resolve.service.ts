@@ -28,8 +28,6 @@ export class HomeResolveService implements Resolve<any> {
                 return this.service.allUser();
             case 'supplier':
                 return this.service.getCompanyList();
-            case 'customer':
-                return this.service.getCustomers();
             case 'orders':
                 return this.service.getCompanies();
             case 'inventory':

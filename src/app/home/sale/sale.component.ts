@@ -48,6 +48,8 @@ export class SaleComponent implements OnInit {
   users = [];
   paymentTypes = [];
   isAntibiotic = false;
+  customer_balance = 0
+
   order: any = {
     token: "",
     sub_total: 0,
@@ -364,6 +366,7 @@ export class SaleComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.order.customer_name = response.name;
+          this.customer_balance = response.balance
           this.customerName.nativeElement.focus();
         },
         error: (err) => {
