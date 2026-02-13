@@ -100,6 +100,7 @@
                 <th style="width: 10%;">{{ 'Total Discount' | translate }}</th>
                 <th style="width: 10%;">{{ 'Total Grand Amount' | translate }}</th>
                 <th style="width: 10%;">{{ 'Total Profit' | translate }}</th>
+                <th style="width: 10%;">{{ 'Grand Profit' | translate }}</th>
                 <th style="width: 10%;">{{ 'Total Due' | translate }}</th>
               </tr>
             </thead>
@@ -115,8 +116,11 @@
                 <td><span
                     style="font-weight: bold;">= {{ summary.sum_grand_total | number: "1.2-2"}} {{ currency }}</span>
                 </td>
-                <td><span
-                    style="font-weight: bold;">= {{ summary.sum_total_profit | number: "1.2-2"}} {{ currency }}</span>
+                <td>
+                  <span style="font-weight: bold;">= {{ summary.sum_total_profit | number: "1.2-2"}} {{ currency }}</span>
+                </td>
+                <td>
+                  <span style="font-weight: bold;">= {{ (summary.sum_total_profit - summary.sum_sale_discount) | number: "1.2-2"}} {{ currency }}</span>
                 </td>
                 <td><span
                     style="font-weight: bold;">= {{ summary.sum_sale_due | number: "1.2-2"}} {{ currency }}</span>
@@ -139,6 +143,7 @@
                 <td rowspan="2">{{ 'Total Amount' | translate }}</td>
                 <td rowspan="2">{{ 'Total Discount' | translate }}</td>
                 <td rowspan="2">{{ 'Grand Total' | translate }}</td>
+                <td rowspan="2">{{ 'Grand Profit' | translate }}</td>
                 <td rowspan="2">{{ 'Total Due' | translate }}</td>
                 <td rowspan="2">{{ 'Customer' | translate }}</td>
                 <td rowspan="2">{{ 'Payment' | translate }}</td>
@@ -183,6 +188,7 @@
                       <td class="sale-info" [attr.rowspan]="item.item.length">{{ item.sale_amount | number: "1.2-2" }}</td>
                       <td class="sale-info" [attr.rowspan]="item.item.length">{{ item.sale_discount | number: "1.2-2" }}</td>
                       <td class="sale-info" [attr.rowspan]="item.item.length">{{ item.grand_total | number: "1.2-2" }}</td>
+                      <td class="sale-info" [attr.rowspan]="item.item.length">{{ (item.total_profit - item.sale_discount) | number: "1.2-2" }}</td>
                       <td class="sale-info" [attr.rowspan]="item.item.length">{{ item.sale_due | number: "1.2-2" }}</td>
                       <td class="sale-info" [attr.rowspan]="item.item.length">{{ item.customer.name }} <br> {{ item.customer.mobile }}
                       <td class="sale-info" [attr.rowspan]="item.item.length">{{ item.payment_type }} </td>
