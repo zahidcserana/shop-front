@@ -544,7 +544,7 @@ export class SaleComponent implements OnInit {
       Swal.fire({
         type: "warning",
         title: "Oops...",
-        text: "Please, select medicine and enter quantity!",
+        text: "Please, select item and enter quantity!",
         showConfirmButton: false,
       });
     }
@@ -581,12 +581,7 @@ export class SaleComponent implements OnInit {
       this.availableQuantity.batch_no = this.cartItem.batch_no;
       this.saleService
         .getAvailableQuantity(this.availableQuantity)
-        .subscribe(
-          (data) =>
-          (this.availability = data.available_quantity
-            ? data.available_quantity
-            : null)
-        );
+        .subscribe((data) => this.availability = data.available_quantity);
     } else {
       this.availability = null;
     }
