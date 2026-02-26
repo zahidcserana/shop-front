@@ -59,7 +59,11 @@
                 </tr>
               </tbody>
             </table>
-            <boot-pagination style="width: 100%" [totalSize]="pagi.total" [listSize]="pagi.limit"
+            <boot-pagination 
+              style="width: 100%"
+              [totalSize]="pagi.total"
+              [page]="pagi.page"
+              [listSize]="pagi.limit"
               (pageChange)="reloadTable($event)">
             </boot-pagination>
           </div>

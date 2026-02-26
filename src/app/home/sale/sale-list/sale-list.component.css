@@ -107,3 +107,27 @@
 #invoice2-print-div {
   display: none;
 }
+
+/* This class will be used for the PDF capture */
+.invoice-order-container {
+    font-size: 18px !important; /* Larger text for the PDF */
+    line-height: 1.5;
+    color: #000;
+    background-color: #fff;
+    padding: 20px;
+}
+
+/* Ensure images or tables inside remarks don't overflow */
+.invoice-order-container table {
+    width: 100% !important;
+    border-collapse: collapse;
+}
+
+/* Hide buttons so they don't show up in the PDF */
+.no-print {
+    display: none;
+}
+
+.ml-10p {
+  margin-left: 10%;
+}

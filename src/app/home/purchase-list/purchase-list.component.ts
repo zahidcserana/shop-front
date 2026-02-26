@@ -72,16 +72,16 @@ export class PurchaseListComponent implements OnInit {
     this.getPurchaseList(this.pagi.page, this.pagi.limit, this.filter);
   }
   reloadTable(e) {
-    this.getPurchaseList(e.page, e.limit, e.filter);
+    this.getPurchaseList(e.page, e.limit, this.filter);
   }
   filterList(e) {
     this.filter = e;
-    this.getPurchaseList(1, 500, this.filter);
+    this.getPurchaseList(1, this.pagi.limit, this.filter);
   }
   private setData(res) {
     this.pagi.total = res["total"] || 0;
     this.pagi.page = parseInt(res["page_no"]) || 1;
-    this.pagi.limit = parseInt(res["limit"]) || 500;
+    this.pagi.limit = parseInt(res["limit"]) || 100;
   }
   getPurchaseList(p, l, q) {
     this.customLoader = true;

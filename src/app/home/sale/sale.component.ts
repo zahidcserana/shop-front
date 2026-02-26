@@ -48,6 +48,8 @@ export class SaleComponent implements OnInit {
   users = [];
   paymentTypes = [];
   isAntibiotic = false;
+  customer_balance = 0
+
   order: any = {
     token: "",
     sub_total: 0,
@@ -66,6 +68,7 @@ export class SaleComponent implements OnInit {
     customer_mobile: "",
     prescription_image: "",
     sendsms: false,
+    is_delivery_order: false
   };
   searchData: any[] = [];
   loader_sub: boolean;
@@ -363,6 +366,7 @@ export class SaleComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.order.customer_name = response.name;
+          this.customer_balance = response.balance
           this.customerName.nativeElement.focus();
         },
         error: (err) => {
@@ -540,7 +544,7 @@ export class SaleComponent implements OnInit {
       Swal.fire({
         type: "warning",
         title: "Oops...",
-        text: "Please, select medicine and enter quantity!",
+        text: "Please, select item and enter quantity!",
         showConfirmButton: false,
       });
     }
@@ -577,12 +581,7 @@ export class SaleComponent implements OnInit {
       this.availableQuantity.batch_no = this.cartItem.batch_no;
       this.saleService
         .getAvailableQuantity(this.availableQuantity)
-        .subscribe(
-          (data) =>
-          (this.availability = data.available_quantity
-            ? data.available_quantity
-            : null)
-        );
+        .subscribe((data) => this.availability = data.available_quantity);
     } else {
       this.availability = null;
     }
@@ -871,6 +870,10 @@ export class SaleComponent implements OnInit {
 
 
   this.order.token = localStorage.getItem("token");
+
+  if (this.config.enDeliveryOrder) {
+    this.order.is_delivery_order = this.config.enDeliveryOrder
+  }
   
   this.saleService
     .makeSaleOrder(this.order)

@@ -8,6 +8,7 @@ export class AppConfigService {
   enSerialNo: boolean = false;
   enTP: boolean = false;
   enEMI: boolean = false;
+  enDeliveryOrder: boolean = false;
   logoUrl: string = '';
 
   loadFromStorage() {
@@ -23,11 +24,13 @@ export class AppConfigService {
         this.enSerialNo = !!user.config.en_serial_no;
         this.enTP = !!user.config.en_tp;
         this.enEMI = !!user.config.en_emi;
+        this.enDeliveryOrder = !!user.config.en_delivery_order;
       } else {
         this.enBatch = false;
         this.enSerialNo = false;
         this.enTP = false;
         this.enEMI = false;
+        this.enDeliveryOrder = false;
       }
     }
   }
