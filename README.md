@@ -1,9 +1,5 @@
-# Smart Pharmacy Management System
+# Shop Management
 
-## TODO
-
-- http://localhost:4200/#/purchase 
-- Show barcode issue
 ## Module
 
 - Purchase

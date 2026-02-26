@@ -50,7 +50,14 @@ export class SaleFilterComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  searchDelivered(value: boolean) {
+    this.saleData.is_sync = !this.saleData.is_sync 
+    this.searchSaleData(true)
+  }
+
+  ngOnInit() {
+    this.saleData.is_sync = this.config.enDeliveryOrder
+  }
   ngAfterViewInit() {
     // this._dateRange();
   }
@@ -130,7 +137,7 @@ export class SaleFilterComponent implements OnInit {
       }
     }
   }
-  searchSaleData() {
+  searchSaleData(is_sync_search = false) {
     if (this.saleData.sale_date) {
       this.dateFormate();
     }
@@ -138,7 +145,7 @@ export class SaleFilterComponent implements OnInit {
       this.getMedicineId();
     }
     this.filter = FORMAT_SEARCH(this.saleData);
-    if (this.filter) {
+    if (this.filter || is_sync_search) {
       this.loadList.emit(this.filter);
       this.search = true;
     }

@@ -12,6 +12,7 @@ import { SaleFilterComponent } from './sale-filter/sale-filter.component';
 import { BsDatepickerModule} from 'ngx-bootstrap';
 import { SharedPipeModule } from '../../pipes/shared-pipe.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { CKEditorModule } from 'ckeditor4-angular';
 
 const routes: Routes = [
   {
@@ -31,7 +32,8 @@ const routes: Routes = [
     FormsModule,
     BsDatepickerModule.forRoot(),
     SharedPipeModule,
-    TranslateModule
+    TranslateModule,
+    CKEditorModule
   ],
   providers: [SaleService, DatePipe]
 })

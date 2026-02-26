@@ -16,6 +16,9 @@ export class HomeService {
   getCompanyList() {
     return this.http.get(`company-list`).pipe(map(res => res));
   }
+  getCustomers() {
+    return this.http.get("customers").pipe(map(res => res));
+  }
   getCompaniesByInventory() {
     return this.http.get("companies/inventory").pipe(map(res => res));
   }

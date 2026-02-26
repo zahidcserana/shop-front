@@ -101,7 +101,7 @@
                     <p *ngIf="item.quantity<'0'">0</p>
                     <p *ngIf="item.quantity>='0'">{{ item.quantity }}</p>
                   </td>
-                  <td *ngIf="config.enTP"><span id='mrp{{ i }}'>{{ item.unit_price | number: "1.2-2" }}</span></td>
+                  <td *ngIf="config.enTP"><span id='unit_price{{ i }}'>{{ item.unit_price | number: "1.2-2" }}</span></td>
                   <td><span id='mrp{{ i }}'>{{ item.tp | number: "1.2-2" }}</span></td>
                   <td><span id='tp{{ i }}'>{{ item.mrp | number: "1.2-2" }}</span></td>
                   <td>

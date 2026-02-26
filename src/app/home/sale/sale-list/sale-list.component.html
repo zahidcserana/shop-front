@@ -52,16 +52,20 @@
               <td>{{ item.customer_mobile }}</td>
               <td>{{ item.total_payble_amount }}</td>
               <td>
-                <a (click)="openModal(item.id, 'sale-modal')" id="item_id" class="btn btn-info"><i
-                    class="fa fa-eye"></i>
+                <a (click)="openModal(item.id, 'sale-modal')" id="item_id" class="btn btn-info" title="{{ 'Edit' | translate }}">
+                  <i class="fa fa-eye"></i>
                 </a>
                 &nbsp;
-                <a (click)="openModal(item.id, 'print-modal')" id="item_id" class="btn btn-warning"><i
-                    class="fa fa-file-pdf"></i>
+                <a (click)="openModal(item.id, 'print-modal')" id="item_id" class="btn btn-warning" title="{{ 'Invoice' | translate }}">
+                  <i class="fa fa-file-pdf"></i>
                 </a>
                 &nbsp;
-                <a (click)="openModalPos(item.id,'print-modal-pos')" id="item_id" class="btn btn-success">
+                <a (click)="openModalPos(item.id,'print-modal-pos')" id="item_id" class="btn btn-success" title="{{ 'Print' | translate }}">
                   <i class="fa fa-print"></i>
+                </a>
+                &nbsp;
+                <a (click)="openModal(item.id, 'sale-order-modal')" id="item_id" class="btn btn-info" title="{{ 'Remarks' | translate }}">
+                  <i class="fa fa-calendar"></i>
                 </a>
               </td>
             </tr>
@@ -74,7 +78,11 @@
             </tbody>
           </ng-template>
         </table>
-        <boot-pagination style="width: 100%" [totalSize]="pagi.total" [listSize]="pagi.limit"
+        <boot-pagination 
+          style="width: 100%"
+          [totalSize]="pagi.total"
+          [page]="pagi.page"
+          [listSize]="pagi.limit"
           (pageChange)="reloadTable($event)">
         </boot-pagination>
       </div>
@@ -566,6 +574,59 @@
   </button>
 </jw-modal>
 
+<jw-modal id="sale-order-modal" class="data-view-modal">
+  <div class="row">
+    <div *ngIf="orderDetails" class="col-md-12">
+      <header class="clearfix" style="margin-bottom: 0;">
+        <div id="logo">
+          <span>{{ 'Order Details' | translate }}</span>
+        </div>
+      </header>
+      <main>
+        <div style="text-align: center;padding-bottom: 1%">
+          <span style="padding-right: 2%">{{ 'Invoice' | translate }}: {{ orderDetails.invoice }}</span>
+          <span style="padding-left: 2%">{{ orderDetails.created_at }}</span>
+        </div>
+        <form id="myForm" (ngSubmit)="updateSaleOrder()">
+          <div class="form-group">
+            <ckeditor
+              [(ngModel)]="orderDetails.remarks"
+              name="remarks"
+              [config]="editorConfig">
+            </ckeditor>
+          </div>
+
+          <div class="mt-2 flex">
+            <button type="submit" class="btn btn-info">
+              {{ 'Save' | translate }}
+            </button>
+            &nbsp;
+
+            <button type="button" class="btn btn-success ml-10p" (click)="downloadPDF()">
+              <i class="fa fa-download"></i> Download
+            </button>
+            &nbsp;
+
+            <label class="form-check-label ml-10p" *ngIf="this.config.enDeliveryOrder">
+              <input
+                (click)="deliveryOrder()"
+                type="checkbox"
+                name="is_sync"
+                [(ngModel)]="orderDetails.is_sync"
+                class="form-check-input">
+              <span>{{ 'Delivered' | translate }}</span>
+            </label>
+            
+            <button type="button" id="close-div" (click)="closeModal('sale-order-modal')" class="btn btn-warning btn-xs float-right">
+              {{ 'Close' | translate }}
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+</jw-modal>
+
 <jw-modal id="print-modal" class="data-view-modal">
   <div class="row" style="padding: 50px">
     <div *ngIf="orderDetails" class="col-md-12" style="border: black solid 1px; width: 100%">
@@ -670,8 +731,14 @@
                     class="form-check-input"> % </label>
               </td>
               <td style="text-align: right;padding-right: 2%">
-                <input type="number" [(ngModel)]="orderDetails.discount" class="form-control" autofocus
-                  (input)="calculation()" (keydown.enter)="submit()">
+                <input 
+                  autofocus
+                  (input)="calculation()" 
+                  type="number" 
+                  [(ngModel)]="orderDetails.discount" 
+                  class="form-control" 
+                  (keydown.enter)="submit()"
+                >
               </td>
             </tr>
             <tr>
@@ -917,6 +984,19 @@
   </div>
 </div>
 
+<div #invoiceContent id="invoice-order-div" *ngIf="orderDetails">
+    <div class="invoice-order-container" *ngIf="showEditor">
+      <div style="text-align: center; border-bottom: 2px solid #EEE; padding-bottom: 20px;">
+          <h2>{{ 'Invoice' | translate }}: {{ orderDetails.invoice }}</h2>
+          <p>{{ orderDetails.created_at }}</p>
+      </div>
+
+      <div style="margin-top: 30px;">
+          <div [innerHTML]="orderDetails.remarks"></div>
+      </div>
+    </div>
+</div>
+
 <div #invoice2Section id="invoice2-print-div">
   <div class="row">
     <div *ngIf="orderDetails" class="col-md-12 mt-5" style="width: 100%">
@@ -936,7 +1016,7 @@
 
         <div class="row mb-4">
           <div [ngStyle]="{ color: colorCode }" class="col-8 text-left">
-            <h4>{{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</h4>
+            <h5>{{ orderDetails.branch_area }}, {{ orderDetails.branch_city }}</h5>
           </div>
           <div [ngStyle]="{ color: colorCode }" class="col-4">
             <strong># {{ orderDetails.invoice }}</strong>
@@ -1052,7 +1132,7 @@
                 {{ currency }}&nbsp;{{ orderDetails.discount | number: "1.2-2" }}
               </td>
             </tr>
-            <tr [ngStyle]="{ backgroundColor: colorCodeSuper, color: colorCodeText }">
+            <tr [ngStyle]="{ backgroundColor: colorCodeSuper, color: colorCodeText, border: '1px solid #5F6F76' }">
               <td colspan="2" class="thanku"  [ngStyle]="{ backgroundColor: colorCode, color: colorCodeText }">
                 {{ 'THANK YOU FOR YOUR BUSINESS' | translate }}
               </td>
@@ -1066,7 +1146,21 @@
                 {{ currency }} {{ orderDetails.total_payble_amount | number: "1.2-2"}}
               </td>
             </tr>
-            <tr>
+            <tr *ngIf="orderDetails.customer_balance">
+              <td colspan="2" class="text-left ml-2">{{ 'Opening Balance' | translate }}: &nbsp;&nbsp;<strong>{{ (orderDetails.customer_balance - orderDetails.total_due_amount) | number: "1.2-2" }}</strong></td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="3"></td>
+            </tr>
+            <tr *ngIf="orderDetails.customer_balance">
+              <td colspan="2" class="text-left ml-2">{{ 'Total Amount Due' | translate }}: &nbsp;<strong>{{ orderDetails.customer_balance | number: "1.2-2" }}</strong></td>
+              <td *ngIf="freeQtyShow">&nbsp;</td>
+              <td *ngIf="tpShow">&nbsp;</td>
+              <td *ngIf="profitShow">&nbsp;</td>
+              <td colspan="3"></td>
+            </tr>
+            <tr *ngIf="orderDetails.customer_balance === '' || orderDetails.customer_balance === 0">
               <td colspan="8">&nbsp;</td>
             </tr>
             <tr>
